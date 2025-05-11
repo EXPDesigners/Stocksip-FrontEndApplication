@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "header-content"
+  name: "product-movement-details"
 }
 </script>
 

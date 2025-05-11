@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "header-content"
+  name: "zone-create-and-edit"
 }
 </script>
 

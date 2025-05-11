@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "header-content"
+  name: "alert-list.component"
 }
 </script>
 
