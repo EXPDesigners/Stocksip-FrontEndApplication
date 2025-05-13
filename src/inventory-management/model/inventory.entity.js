@@ -40,4 +40,8 @@ export class Inventory {
         this.capacity = capacity;
         this.userId = userId;
     }
+
+    getTotalNumberOfProducts() {
+        return this.products.length;
+    }
 }
