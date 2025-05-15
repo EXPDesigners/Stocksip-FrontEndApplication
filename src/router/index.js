@@ -6,6 +6,7 @@ import ConfirmationCodeComponent from '../authentication/pages/confirmation-code
 import ProfileComponent from '../profile-management/pages/profile.component.vue'
 import DashboardComponent from '../analytics-and-reporting/pages/dashboard.component.vue'
 import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.component.vue'
+import WarehouseComponent from '../inventory-management/pages/warehouse.component.vue';
 
 const routes = [
     {
@@ -46,6 +47,11 @@ const routes = [
         path: '/alerts',
         name: 'Alerts',
         component: AlertComponent
+    },
+    {
+        path: '/warehouses',
+        name: 'Warehouses',
+        component: WarehouseComponent
     }
 ]
 
