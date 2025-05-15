@@ -42,12 +42,11 @@ export default {
               </ul>
             </div>
             <div class="resumen-img">
-              <img src="https://www.svgrepo.com/show/331984/dashboard-analytics.svg" alt="Dashboard" />
             </div>
           </div>
-          <div class="dashboard-card alertas">
+          <div class="dashboard-card alerts">
             <h2>Important Alerts</h2>
-            <div class="alerta-item">
+            <div class="alert-item">
               <div>Whisky Escocés Premium</div>
               <div>Current stock: <span class="danger">5</span></div>
               <div>Minimum stock: <span>10</span></div>
@@ -59,7 +58,7 @@ export default {
             </div>
           </div>
         </div>
-        <div class="dashboard-card accesos">
+        <div class="dashboard-card access">
           <h2 class="access-title">Quick Access</h2>
           <div class="access-row">
             <router-link to="/inventario" class="access-btn acceso-inventario access-btn-lg">
@@ -68,11 +67,11 @@ export default {
             </router-link>
             <router-link to="/compras" class="access-btn acceso-compras access-btn-lg">
               <span class="access-icon"><i class="pi pi-shopping-cart"></i></span>
-              <span class="access-link">shopping</span>
+              <span class="access-link">Shopping</span>
             </router-link>
             <router-link to="/zonas" class="access-btn acceso-zonas access-btn-lg">
               <span class="access-icon"><i class="pi pi-building"></i></span>
-              <span class="access-link">areas</span>
+              <span class="access-link">Zones</span>
             </router-link>
           </div>
         </div>
@@ -90,7 +89,6 @@ export default {
 }
 .dashboard-main {
   flex: 1;
-  margin-left: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -113,23 +111,26 @@ export default {
   min-width: 280px;
   flex: 1 1 320px;
   color: #323130;
+  font-size: 1.5rem;
 }
 .resumen h2, .alertas h2, .accesos h2 {
   color: #6E0081;
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 .resumen ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  font-size: 1.5rem;
 }
 .resumen li {
   margin-bottom: 0.7rem;
-  font-size: 1.1rem;
   display: flex;
   align-items: center;
+  font-size: 1.5rem;
 }
+
 .bold {
   font-weight: bold;
   color: #26021D;
@@ -140,15 +141,15 @@ export default {
 .warning {
   color: #D98C4A;
 }
-.alertas .danger {
+.alerts .danger {
   color: #D90429;
   font-weight: bold;
 }
-.alertas .warning {
+.alerts .warning {
   color: #D98C4A;
   font-weight: bold;
 }
-.alerta-item {
+.alert-item {
   margin-bottom: 1rem;
 }
 hr {
@@ -158,7 +159,7 @@ hr {
 }
 .access-title {
   color: #26021D;
-  font-size: 1.15rem;
+  font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -190,7 +191,8 @@ hr {
   box-shadow: 0 4px 12px rgba(38,2,29,0.13);
 }
 .access-icon {
-  font-size: 1.5rem;
+  font-size: 4rem;
+
   display: flex;
   align-items: center;
 }
@@ -198,7 +200,7 @@ hr {
   color: #6E0081;
   text-decoration: underline;
   font-weight: 600;
-  font-size: 1.08rem;
+  font-size: 1.5rem;
 }
 .acceso-btn:hover .access-link {
   color: #59033A;
@@ -210,11 +212,11 @@ hr {
   .dashboard-main {
     margin-left: 0;
   }
-  .accesos-row {
+  .access-row {
     flex-direction: column;
     gap: 0.7rem;
   }
-  .acceso-btn {
+  .access-btn {
     min-width: unset;
     width: 100%;
     justify-content: flex-start;
@@ -229,7 +231,7 @@ hr {
     padding: 1rem;
     min-width: unset;
   }
-  .accesos-row {
+  .access-row {
     gap: 0.5rem;
   }
 }
@@ -290,13 +292,13 @@ hr {
 .resumen-label.warning {
   color: #D98C4A;
 }
-.acceso-btn-lg {
+.access-btn-lg {
   min-width: 370px;
   min-height: 100px;
   font-size: 4rem;
   padding: 2.7rem 3.5rem;
 }
-.acceso-btn-lg .acceso-icon {
+.acceso-btn-lg .access-icon {
   font-size: 3.5rem;
 }
 @media (max-width: 1100px) {
