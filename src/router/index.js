@@ -4,6 +4,7 @@ import RegisterComponent from '../authentication/pages/register.component.vue'
 import PasswordRecoveryComponent from '../authentication/pages/password-recovery.component.vue'
 import ConfirmationCodeComponent from '../authentication/pages/confirmation-code.component.vue'
 import ProfileComponent from '../profile-management/pages/profile.component.vue'
+import DashboardComponent from '../analytics-and-reporting/pages/dashboard.component.vue'
 
 const routes = [
     {
@@ -34,6 +35,11 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: ProfileComponent
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: DashboardComponent
     }
 ]
 
