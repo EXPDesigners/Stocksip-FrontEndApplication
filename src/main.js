@@ -5,6 +5,14 @@ import {PrimeVue} from '@primevue/core';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import Material from '@primeuix/themes/material';
+
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
+
 import {
     Button,
     Card,
@@ -20,9 +28,15 @@ import {
 import i18n from "./i18n/index.js";
 import router from "./router/index.js";
 
+const vuetify = createVuetify({
+    components,
+    directives,
+})
+
 createApp(App)
     .use(i18n)
     .use(router)
+    .use(vuetify)
     .use(PrimeVue, { theme: { preset: Material}, ripple: true})
     .use(ConfirmationService)
     .use(DialogService)

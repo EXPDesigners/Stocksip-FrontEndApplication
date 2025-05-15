@@ -1,0 +1,14 @@
+{
+  "login": {
+    "title": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "signIn": "Sign In",
+    "forgotPassword": "Forgot your password?",
+    "or": "or",
+    "hello": "Hello, user",
+    "createAccount": "Create your personal account to access all the features of the platform",
+    "register": "Register"
+  }
+}
