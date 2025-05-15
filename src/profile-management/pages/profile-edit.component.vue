@@ -112,7 +112,7 @@ export default {
 </script>
 
 <template>
-  <div class="profile-container">
+  <div class="profile-edit-container">
     <div class="profile-left">
       <div class="password-section">
         <h2>Change Password</h2>
@@ -272,11 +272,13 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto:wght@400;500;700&display=swap');
 
-.profile-container {
-  display: flex;
+.profile-edit-container {
   gap: 24px;
   padding: 24px;
   font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .profile-left,
@@ -290,10 +292,11 @@ export default {
   padding: 24px;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
 }
 
 h2 {
-  color: #263238;
+  color: #26021D;
   font-family: 'Poppins', sans-serif;
   font-size: 1.5rem;
   margin-bottom: 24px;
@@ -307,25 +310,25 @@ h2 {
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #263238;
+  color: #26021D;
   font-weight: 500;
 }
 
 .form-input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #263238;
+  border: 1px solid #26021D;
   border-radius: 8px;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  color: #263238;
+  color: #26021D;
   background-color: white;
   outline: none;
   transition: border-color 0.3s;
 }
 
 .form-input:focus {
-  border-color: #8E24AA;
+  border-color: #6E0081;
 }
 
 .password-input,
@@ -341,7 +344,7 @@ h2 {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #8E24AA;
+  color: #6E0081;
   cursor: pointer;
   padding: 4px;
 }
@@ -351,7 +354,7 @@ h2 {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #8E24AA;
+  color: #6E0081;
 }
 
 .error-message {
@@ -381,7 +384,7 @@ h2 {
 }
 
 .save-button {
-  background-color: #890E4F;
+  background-color: #59033A;
   color: white;
   border: none;
 }
@@ -392,8 +395,8 @@ h2 {
 
 .cancel-button {
   background-color: transparent;
-  border: 2px solid #890E4F;
-  color: #890E4F;
+  border: 2px solid #59033A;
+  color: #59033A;
 }
 
 .cancel-button:hover {
@@ -401,9 +404,6 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  .profile-container {
-    flex-direction: column;
-  }
 
   .profile-left,
   .profile-right {

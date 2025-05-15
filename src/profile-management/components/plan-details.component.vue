@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
 .plans-container {
-  background-color: #f4ede3;
+  background-color: #F7EDDC;
   padding: 40px 20px;
   text-align: center;
 }
@@ -77,14 +77,14 @@ export default {
 }
 
 .free {
-  border: 8px solid #8E24AA;
-  color: #8E24AA;
+  border: 8px solid #6E0081;
+  color: #6E0081;
   background-color: #ffffff;
   border-radius: 45px;
 }
 
 .premium {
-  background-color: #273238;
+  background-color: #26021D;
   color: #ffffff;
   border-radius: 45px;
 }

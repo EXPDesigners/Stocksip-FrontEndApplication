@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './app.vue'
-import {PrimeVue} from '@primevue/core';
+import { PrimeVue } from '@primevue/core';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import Material from '@primeuix/themes/material';
@@ -17,13 +17,30 @@ import {
     Button,
     Card,
     Checkbox,
-    Column, ConfirmationService,
+    Column,
+    ConfirmationService,
     ConfirmDialog,
     DataTable,
-    Dialog, DialogService, Drawer,
-    FileUpload, FloatLabel, IconField, InputIcon, InputNumber, InputText, Menu, Rating, Row,
+    Dialog,
+    DialogService,
+    Drawer,
+    FileUpload,
+    FloatLabel,
+    IconField,
+    InputIcon,
+    InputNumber,
+    InputText,
+    Menu,
+    Menubar, // ✅ Importado aquí
+    Rating,
+    Row,
     Select,
-    SelectButton, Tag, Textarea, Toast, ToastService, Toolbar
+    SelectButton,
+    Tag,
+    Textarea,
+    Toast,
+    ToastService,
+    Toolbar
 } from "primevue";
 import i18n from "./i18n/index.js";
 import router from "./router/index.js";
@@ -37,7 +54,7 @@ createApp(App)
     .use(i18n)
     .use(router)
     .use(vuetify)
-    .use(PrimeVue, { theme: { preset: Material}, ripple: true})
+    .use(PrimeVue, { theme: { preset: Material }, ripple: true })
     .use(ConfirmationService)
     .use(DialogService)
     .use(ToastService)
@@ -57,6 +74,7 @@ createApp(App)
     .component('pv-input-text', InputText)
     .component('pv-input-number', InputNumber)
     .component('pv-menu', Menu)
+    .component('pv-menubar', Menubar) // ✅ Registrado aquí
     .component('pv-rating', Rating)
     .component('pv-row', Row)
     .component('pv-drawer', Drawer)

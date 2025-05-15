@@ -1,6 +1,4 @@
 <script>
-
-
 export default {
   name: 'toolbar-content',
   props: {
@@ -13,13 +11,10 @@ export default {
 </script>
 
 <template>
-  <pv-menubar>
+  <pv-menubar class="custom-toolbar">
     <template #start>
-      <pv-button icon="pi pi-bars" class="p-button-text" />
       <h1 class="toolbar-title">{{ pageTitle }}</h1>
     </template>
-
-
     <template #end>
       <div class="flex items-center gap-2">
         Profile
@@ -34,11 +29,22 @@ export default {
   flex: 1 1 auto;
 }
 
+.custom-toolbar {
+  background-color: #F7EDDC !important;
+  color: #6E0081 !important;
+  border: none !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+
 .toolbar-title {
   padding-left: 2rem;
-  color: #6F0082;
+  background-color: #F7EDDC;
+  color: #6E0081;
+  width: 100%;
   font-weight: Bold;
-  font-size: 50px
+  font-size: 50px;
+  font-family: 'Poppins', sans-serif;
 }
 
 </style>
