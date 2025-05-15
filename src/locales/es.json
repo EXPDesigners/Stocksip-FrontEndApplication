@@ -1,0 +1,14 @@
+{
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recordarme",
+    "signIn": "Iniciar Sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "or": "o",
+    "hello": "Hola, usuario",
+    "createAccount": "Crea tu cuenta personal para acceder a todas las funciones de la plataforma",
+    "register": "Registrarse"
+  }
+}

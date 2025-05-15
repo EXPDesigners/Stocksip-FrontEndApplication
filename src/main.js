@@ -1,29 +1,60 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './app.vue'
-import {PrimeVue} from '@primevue/core';
+import { PrimeVue } from '@primevue/core';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import Material from '@primeuix/themes/material';
+
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
+
 import {
     Button,
     Card,
     Checkbox,
-    Column, ConfirmationService,
+    Column,
+    ConfirmationService,
     ConfirmDialog,
     DataTable,
-    Dialog, DialogService, Divider, Drawer,
-    FileUpload, FloatLabel, IconField, InputIcon, InputNumber, InputText, Menu, Rating, Row,
+    Dialog,
+    DialogService,
+    Drawer,
+    FileUpload,
+    FloatLabel,
+    IconField,
+    InputIcon,
+    InputNumber,
+    InputText,
+    Menu,
+    Menubar, // ✅ Importado aquí
+    Rating,
+    Row,
     Select,
-    SelectButton, Tag, Textarea, Toast, ToastService, Toolbar
+    SelectButton,
+    Tag,
+    Textarea,
+    Toast,
+    ToastService,
+    Toolbar
 } from "primevue";
 import i18n from "./i18n/index.js";
 import router from "./router/index.js";
 
+const vuetify = createVuetify({
+    components,
+    directives,
+})
+
 createApp(App)
     .use(i18n)
     .use(router)
-    .use(PrimeVue, { theme: { preset: Material}, ripple: true})
+    .use(vuetify)
+    .use(PrimeVue, { theme: { preset: Material }, ripple: true })
     .use(ConfirmationService)
     .use(DialogService)
     .use(ToastService)
@@ -43,6 +74,7 @@ createApp(App)
     .component('pv-input-text', InputText)
     .component('pv-input-number', InputNumber)
     .component('pv-menu', Menu)
+    .component('pv-menubar', Menubar) // ✅ Registrado aquí
     .component('pv-rating', Rating)
     .component('pv-row', Row)
     .component('pv-drawer', Drawer)
@@ -50,5 +82,4 @@ createApp(App)
     .component('pv-textarea', Textarea)
     .component('pv-toolbar', Toolbar)
     .component('pv-toast', Toast)
-    .component('pv-divider', Divider)
     .mount('#app')
