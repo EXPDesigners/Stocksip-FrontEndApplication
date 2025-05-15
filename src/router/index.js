@@ -41,7 +41,7 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: DashboardComponent
-    }
+    },
     {
         path: '/alerts',
         name: 'Alerts',
