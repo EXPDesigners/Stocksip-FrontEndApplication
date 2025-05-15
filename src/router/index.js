@@ -5,6 +5,7 @@ import PasswordRecoveryComponent from '../authentication/pages/password-recovery
 import ConfirmationCodeComponent from '../authentication/pages/confirmation-code.component.vue'
 import ProfileComponent from '../profile-management/pages/profile.component.vue'
 import DashboardComponent from '../analytics-and-reporting/pages/dashboard.component.vue'
+import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.component.vue'
 
 const routes = [
     {
@@ -40,6 +41,11 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: DashboardComponent
+    }
+    {
+        path: '/alerts',
+        name: 'Alerts',
+        component: AlertComponent
     }
 ]
 
