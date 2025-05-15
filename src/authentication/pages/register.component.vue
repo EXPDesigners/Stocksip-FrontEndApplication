@@ -148,19 +148,18 @@ export default {
   display: flex;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  background-color: #F4EDE3;
+  background-color: #F7EDDC;
 }
 
 .register-section {
   display: flex;
   flex-direction: column;
-  background-color: #263238;
+  background-color: #26021D;
   padding: 8rem;
   justify-content: center;
   align-items: center;
   width: 70%;
-  border-top-right-radius: 6rem;
-  border-bottom-right-radius: 6rem;
+  border-radius: 0 6rem 6rem 0;
   color: #F4EDE3;
 }
 
@@ -170,6 +169,7 @@ export default {
   margin-bottom: 2rem;
   text-align: center;
   font-family: 'Poppins', sans-serif;
+  color: #F4EDE3;
 }
 
 .register-section p {
@@ -219,7 +219,7 @@ export default {
 
 .sign-in-button {
   font-family: 'Roboto', sans-serif;
-  background-color: #880E4F;
+  background-color: #59033A;
   color: #F4EDE3;
   font-weight: bold;
   font-size: 1rem;
@@ -258,7 +258,7 @@ export default {
 .registration-form h2 {
   font-size: 2.6rem;
   font-weight: bold;
-  color: #8E24AA;
+  color: #6E0081;
   margin-bottom: 1rem;
   text-align: center;
   font-family: 'Poppins', sans-serif;
@@ -280,14 +280,14 @@ export default {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #8E24AA;
+  color: #6E0081;
   font-family: 'Inter', sans-serif;
 }
 
 .form-input {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid #263238;
+  border: 1px solid #26021D;
   border-radius: 45px;
   font-family: 'Inter', sans-serif;
   color: #4E4E4E;
@@ -297,7 +297,7 @@ export default {
 }
 
 .form-input:focus {
-  border-color: #8E24AA;
+  border-color: #6E0081;
 }
 
 .password-input {
@@ -318,7 +318,7 @@ export default {
 
 .register-button {
   font-family: 'Roboto', sans-serif;
-  background-color: #880E4F;
+  background-color: #59033A;
   color: #F4EDE3;
   font-weight: bold;
   font-size: 1rem;
@@ -338,7 +338,6 @@ export default {
 .divider {
   text-align: center;
   margin: 1.5rem 0;
-  color: var(--light-text);
   font-size: 0.9rem;
   position: relative;
 }

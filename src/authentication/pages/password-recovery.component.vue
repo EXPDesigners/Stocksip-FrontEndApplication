@@ -77,7 +77,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto:wght@400;500;700&display=swap');
 
 .recover-container {
-  background-color: #f5ede2;
+  background-color: #F7EDDC;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -85,9 +85,9 @@ export default {
 }
 
 .recover-header {
-  background-color: #252f34;
+  background-color: #26021D;
   width: 100%;
-  height: 100px;
+  height: 210px;
   padding: 2rem;
   border-bottom-left-radius: 6rem;
   border-bottom-right-radius: 6rem;
@@ -101,6 +101,7 @@ export default {
   justify-content: center;
   font-size: 3rem;
   font-family: 'Poppins', sans-serif;
+  color: #F7EDDC;
 }
 
 .recover-description {
@@ -139,7 +140,7 @@ export default {
 }
 
 .form-input:focus {
-  border-color: #8E24AA;
+  border-color: #6E0081;
 }
 
 .error-message {
@@ -153,7 +154,7 @@ export default {
 .send-button-recover {
   align-items: center;
   font-family: 'Roboto', sans-serif;
-  background-color: #890E4F;
+  background-color: #59033A;
   color: white;
   font-weight: bold;
   font-size: 1.3rem;
