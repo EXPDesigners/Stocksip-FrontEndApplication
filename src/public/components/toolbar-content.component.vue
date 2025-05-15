@@ -17,7 +17,6 @@ export default {
     </template>
     <template #end>
       <div class="flex items-center gap-2">
-        Profile
       </div>
     </template>
   </pv-menubar>
