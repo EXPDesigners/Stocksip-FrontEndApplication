@@ -14,6 +14,9 @@ export default {
     goToConfirmation() {
       // Add your confirmation navigation logic here
     },
+    goToDashboard() {
+      this.$router.push('/dashboard');
+    },
     goToRegister() {
       this.$router.push('/register');
     },
@@ -75,7 +78,7 @@ export default {
           </label>
         </div>
 
-        <button type="submit" class="sign-in-button">
+        <button type="submit" class="sign-in-button" @click.prevent="goToDashboard">
           Sign In
         </button>
 
