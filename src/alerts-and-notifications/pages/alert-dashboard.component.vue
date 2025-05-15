@@ -1,18 +1,22 @@
 <script>
+import SideNavbar from "@/public/components/side-navbar.vue";
+import ToolbarContent from "@/public/components/toolbar-content.component.vue";
+
 export default {
-  name: 'Alerts',
+  name: "alert-dashboard",
+  components: {ToolbarContent, SideNavbar},
   data() {
     return {
       stockAlerts: [
-        { name: 'Whisky Escocés Premium', stock: 5, min: 10 },
-        { name: 'Cerveza Artesanal IPA', stock: 8, min: 12 },
-        { name: 'Whisky Escocés Premium', stock: 5, min: 10 }
+        { name: 'Whisky Escocés Premium', stock: 5, minStock: 10 },
+        { name: 'Cerveza Artesanal IPA', stock: 8, minStock: 12 },
+        { name: 'Whisky Escocés Premium', stock: 5, minStock: 10 }
       ],
-      expirations: [
-        { name: 'Vino Tinto Malbec', days: 5 },
-        { name: 'Gin Botánico', days: 10 },
-        { name: 'Cerveza 1', days: 15 },
-        { name: 'Vino Blanco Malbec', days: 16 }
+      expirationAlerts: [
+        { name: 'Vino Tinto Malbec', expiresIn: 5 },
+        { name: 'Gin Botánico', expiresIn: 10 },
+        { name: 'Cerveza 1', expiresIn: 15 },
+        { name: 'Vino Blanco Malbec', expiresIn: 16 }
       ]
     }
   }
@@ -20,95 +24,104 @@ export default {
 </script>
 
 <template>
-  <div class="alerts-main">
-    <h1>Alerts</h1>
-    <div class="alert-container">
-      <pv-card class="card">
-        <template #title>
-          <h2>Urgent Repositioning</h2>
-        </template>
-        <template #content>
-          <div v-for="(item, i) in stockAlerts" :key="i" class="item">
-            <p>{{ item.name }}</p>
-            <p><span class="danger">Actual stock: {{ item.stock }}</span></p>
-            <p>Minimum stock: {{ item.min }}</p>
-            <hr v-if="i !== stockAlerts.length - 1" />
+  <div class="alerts-bg">
+    <side-navbar />
+    <div class="alerts-main">
+      <toolbar-content :pageTitle="'Alerts'" />
+      <div class="alerts-content">
+        <!-- Reposición urgente -->
+        <div class="alert-card">
+          <h2 class="card-title">Urgent Repositioning</h2>
+          <div v-for="(item, index) in stockAlerts" :key="index" class="alert-item">
+            <p class="item-name">{{ item.name }}</p>
+            <p class="item-critical">Actual stock: {{ item.stock }}</p>
+            <p class="item-min">Minimum stock: {{ item.minStock }}</p>
           </div>
-          <a>View all alerts</a>
-        </template>
-      </pv-card>
-      <pv-card class="card">
-        <template #title>
-          <h2>Next to expire</h2>
-        </template>
-        <template #content>
-          <div v-for="(item, i) in expirations" :key="i" class="item">
-            <p>{{ item.name }}</p>
-            <p class="warning">Expires in {{ item.days }} days!</p>
-            <hr v-if="i !== expirations.length - 1" />
+          <a href="#" class="card-link">View all alerts</a>
+        </div>
+        <!-- Próximos a vencer -->
+        <div class="alert-card">
+          <h2 class="card-title">Next to expire</h2>
+          <div v-for="(item, index) in expirationAlerts" :key="index" class="alert-item">
+            <p class="item-name">{{ item.name }}</p>
+            <p class="item-expiring">Expires in {{ item.expiresIn }} days!</p>
           </div>
-          <a>See all products</a>
-        </template>
-      </pv-card>
+          <a href="#" class="card-link">See all products</a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.alerts-main {
-  background-color: #F6EDDC;
-  min-height: 97.7vh;
-  padding: 16px;
-}
-
-h1 {
-  color: #6F0082;
-  font-weight: bold;
-  font-family: 'Poppins', sans-serif;
-  margin-bottom: 20px;
-  font-size: 50px;
-}
-
-.alert-container {
+.alerts-bg {
+  background: #f7eddc;
+  min-height: 100vh;
+  width: 100vw;
   display: flex;
-  gap: 24px;
+}
+
+.alerts-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.alerts-content {
+  padding: 2rem;
+  display: flex;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
-.card {
-  background-color: #F6EDDC;
-  flex: 1 1 400px;
-  padding: 16px;
+.alert-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(38, 2, 29, 0.07);
+  flex: 1 1 320px;
+  min-width: 280px;
 }
 
-h2 {
-  color: #26021C;
-  font-family: 'Inter Semi Bold', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  margin: 0;
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #26021d;
 }
 
-.danger {
-  color: red;
+.alert-item {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
 }
 
-.warning {
-  color: orange;
+.item-name {
+  font-weight: 600;
 }
 
-.item {
-  color: #32312F;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
+.item-critical {
+  color: #d90429;
+  font-size: 0.95rem;
 }
 
-a {
-  color: purple;
+.item-min {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.item-expiring {
+  color: #d98c4a;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.card-link {
+  font-size: 0.95rem;
+  color: #6e0081;
   text-decoration: underline;
-  cursor: pointer;
-  margin-top: 12px;
-  display: inline-block;
-  font-family: 'Inter', sans-serif;
+}
+.card-link:hover {
+  color: #59033a;
 }
 </style>
