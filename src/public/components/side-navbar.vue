@@ -29,13 +29,13 @@ export default {
 
       <ul class="nav-list">
         <li>
-          <router-link to="/" v-tooltip="'Dashboard'">
+          <router-link to="/dashboard" v-tooltip="'Dashboard'">
             <i class="pi pi-list"></i>
             <span v-if="isExpanded">Dashboard</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/prueba" v-tooltip="'Inventory'">
+          <router-link to="/inventory" v-tooltip="'Inventory'">
             <i class="pi pi-box"></i>
             <span v-if="isExpanded">Inventory</span>
           </router-link>
@@ -71,7 +71,7 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Profile'">
+          <router-link to="/profile" v-tooltip="'Profile'">
             <i class="pi pi-user"></i>
             <span v-if="isExpanded">Profile</span>
           </router-link>
