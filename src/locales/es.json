@@ -10,5 +10,30 @@
     "hello": "Hola, usuario",
     "createAccount": "Crea tu cuenta personal para acceder a todas las funciones de la plataforma",
     "register": "Registrarse"
+  },
+  "toolbar": {
+    "expand-contract": "Expandir/Contraer",
+    "dashboard": "Dashboard",
+    "inventory": "Inventario",
+    "alerts": "Alertas",
+    "reports": "Reportes",
+    "order": "Compras",
+    "storage": "Almacenamiento",
+    "settings": "Configuración",
+    "profile": "Perfil"
+  },
+  "warehouses": {
+    "location": "Ubicación",
+    "capacity": "Capacidad",
+    "create": "Crear nuevo almacén"
+  },
+  "components": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "show": "Ver"
   }
 }

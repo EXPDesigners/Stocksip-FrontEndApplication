@@ -23,57 +23,57 @@ export default {
 <template>
   <div class="sidenav-container">
     <aside :class="['sidenav', { expanded: isExpanded }]">
-      <button class="toggle-btn" @click="toggleSidebar" v-tooltip="'Expandir/Contraer'">
+      <button class="toggle-btn" @click="toggleSidebar" v-tooltip="$t('toolbar.expand-contract')">
         <i class="pi pi-bars"></i>
       </button>
 
       <ul class="nav-list">
         <li>
-          <router-link to="/dashboard" v-tooltip="'Dashboard'">
-            <i class="pi pi-list"></i>
-            <span v-if="isExpanded">Dashboard</span>
+          <router-link to="/dashboard" v-tooltip="$t('toolbar.dashboard')">
+            <i class="pi pi-chart-bar"></i>
+            <span v-if="isExpanded">{{ $t('toolbar.dashboard') }}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/inventory" v-tooltip="'Inventory'">
-            <i class="pi pi-box"></i>
-            <span v-if="isExpanded">Inventory</span>
+          <router-link to="/inventory" v-tooltip="$t('toolbar.inventory')">
+            <i class="pi pi-warehouse"></i>
+            <span v-if="isExpanded">{{$t('toolbar.inventory')}}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/alerts" v-tooltip="'Alerts'">
+          <router-link to="/alerts" v-tooltip="$t('toolbar.alerts')">
             <i class="pi pi-exclamation-triangle"></i>
-            <span v-if="isExpanded">Alerts</span>
+            <span v-if="isExpanded">{{ $t('toolbar.alerts') }}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Reports'">
+          <router-link to="/" v-tooltip="$t('toolbar.reports')">
             <i class="pi pi-file"></i>
-            <span v-if="isExpanded">Reports</span>
+            <span v-if="isExpanded">{{ $t('toolbar.reports') }}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Shop'">
+          <router-link to="/" v-tooltip="$t('toolbar.order')">
             <i class="pi pi-shopping-cart"></i>
-            <span v-if="isExpanded">Shop</span>
+            <span v-if="isExpanded">{{ $t('toolbar.order')}}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Storage'">
+          <router-link to="/" v-tooltip="$t('toolbar.storage')">
             <i class="pi pi-building"></i>
-            <span v-if="isExpanded">Storage</span>
+            <span v-if="isExpanded">{{ $t('toolbar.storage') }}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Settings'">
+          <router-link to="/" v-tooltip="$t('toolbar.settings')">
             <i class="pi pi-cog"></i>
-            <span v-if="isExpanded">Settings</span>
+            <span v-if="isExpanded">{{ $t('toolbar.settings') }}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/profile" v-tooltip="'Profile'">
+          <router-link to="/profile" v-tooltip="$t('toolbar.profile')">
             <i class="pi pi-user"></i>
-            <span v-if="isExpanded">Profile</span>
+            <span v-if="isExpanded">{{ $t('toolbar.profile') }}</span>
           </router-link>
         </li>
       </ul>

@@ -22,7 +22,7 @@ export default {
     <template #end>
       <div class="flex items-center gap-2">
       </div>
-      <div class="p-5">
+      <div class="language-switcher">
         <language-switcher></language-switcher>
       </div>
     </template>
@@ -51,6 +51,10 @@ export default {
   font-weight: Bold;
   font-size: 50px;
   font-family: 'Poppins', sans-serif;
+}
+
+.language-switcher {
+  padding-right: 6rem;
 }
 
 </style>

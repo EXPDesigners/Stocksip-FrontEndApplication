@@ -10,5 +10,30 @@
     "hello": "Hello, user",
     "createAccount": "Create your personal account to access all the features of the platform",
     "register": "Register"
+  },
+  "toolbar": {
+    "expand-contract": "Expand/Contract",
+    "dashboard": "Dashboard",
+    "inventory": "Inventory",
+    "alerts": "Alerts",
+    "reports": "Reports",
+    "order": "Orders",
+    "storage": "Storage",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
+  "warehouses": {
+    "location": "Location",
+    "capacity": "Capacity",
+    "create": "Create new warehouse"
+  },
+  "components": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "show": "Show"
   }
 }
