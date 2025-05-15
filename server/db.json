@@ -40,7 +40,7 @@
     {
       "warehouseId": 2,
       "name": "Warehouse 2",
-      "imageUrl": "https://material.angular.io/assets/img/examples/shiba2.jpg",
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157759/stocksipImages/z1h378mlpzlyjdug7vxx.jpg",
       "location": "Av. Micaela Bastidas 123",
       "city": "Lima",
       "state": "Lima",
