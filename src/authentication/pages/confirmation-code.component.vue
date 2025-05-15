@@ -107,7 +107,9 @@ export default {
           </div>
         </div>
 
-        <span v-if="error" class="error-message">{{ error }}</span>
+        <div class="error">
+          <span v-if="error" class="error-message">{{ error }}</span>
+        </div>
 
         <button
             type="submit"
@@ -132,7 +134,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto:wght@400;500;700&display=swap');
 
 .confirmation-container {
-  background-color: #f5ede2;
+  background-color: #F7EDDC;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -140,9 +142,9 @@ export default {
 }
 
 .confirmation-header {
-  background-color: #252f34;
+  background-color: #26021D;
   width: 100%;
-  height: 100px;
+  height: 210px;
   padding: 2rem;
   border-bottom-left-radius: 6rem;
   border-bottom-right-radius: 6rem;
@@ -154,6 +156,7 @@ export default {
   margin-top: 30px;
   font-weight: 600;
   font-size: 3rem;
+  color: #F7EDDC;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -198,12 +201,12 @@ export default {
 .code-input {
   width: 100%;
   height: 100%;
-  border: 2px solid #263238;
+  border: 2px solid #26021D;
   border-radius: 12px;
   font-size: 2rem;
   text-align: center;
   font-family: 'Inter', sans-serif;
-  color: #263238;
+  color: #26021D;
   background-color: white;
   transition: all 0.3s ease;
 }
@@ -214,16 +217,20 @@ export default {
   box-shadow: 0 0 0 2px rgba(142, 36, 170, 0.2);
 }
 
+
 .error-message {
   color: #dd0031;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-align: center;
   font-family: 'Inter', sans-serif;
+  width: 100%;
+  height: 1.5rem;
+  margin-left: 0;
 }
 
 .verify-button {
   font-family: 'Roboto', sans-serif;
-  background-color: #890E4F;
+  background-color: #59033A;
   color: white;
   font-weight: bold;
   font-size: 1.2rem;
@@ -257,7 +264,7 @@ export default {
 .resend-button {
   background: none;
   border: none;
-  color: #8E24AA;
+  color: #6E0081;
   font-weight: 500;
   cursor: pointer;
   font-family: 'Inter', sans-serif;

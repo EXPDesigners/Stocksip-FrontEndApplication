@@ -28,7 +28,7 @@ export default {
 </script>
 
 <template>
-  <div class="auth-container">
+  <div class="authentication-container">
     <!-- Login Section -->
     <div class="login-section">
       <h2>Sign In</h2>
@@ -97,7 +97,7 @@ export default {
     </div>
 
     <!-- Register Section -->
-    <div class="register-section">
+    <div class="hello-section">
       <h2>Hello, user</h2>
       <p>Create your personal account to access all the features of the platform</p>
 
@@ -127,26 +127,14 @@ export default {
 /* Move @import to the top */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto:wght@400;500;700&display=swap');
 
-:root {
-  --blue: #263238;
-  --magenta: #880E4F;
-  --purple: #8E24AA;
-  --red: #DD0031;
-  --dark-text: #fff;
-  --dark-background: #222;
-  --light-text: #4E4E4E;
-  --light-background: #F4EDE4;
-  --white: #fff;
-}
-
-.auth-container {
+.authentication-container {
   display: flex;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  background-color: #F4EDE3;
+  background-color: #F7EDDC;
 }
 
-.login-section, .register-section {
+.login-section, .hello-section {
   flex: 1;
   padding: 2rem;
   display: flex;
@@ -156,7 +144,7 @@ export default {
 }
 
 .login-section {
-  background-color: #F4EDE3;
+  background-color: #F7EDDC;
 }
 
 .form-group {
@@ -174,7 +162,7 @@ export default {
 .form-input {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid #263238;
+  border: 1px solid #26021D;
   border-radius: 45px;
   font-family: 'Inter', sans-serif;
   color: #4E4E4E;
@@ -206,7 +194,7 @@ export default {
 .form-select {
   width: 240px;
   padding: 0.8rem 1rem;
-  border: 1px solid #263238;
+  border: 1px solid #26021D;
   border-radius: 45px;
   font-family: 'Inter', sans-serif;
   color: white;
@@ -263,7 +251,7 @@ export default {
 .sign-in-button {
   align-items: center;
   font-family: 'Roboto', sans-serif;
-  background-color: #890E4F;
+  background-color: #59033A;
   color: white;
   font-weight: bold;
   font-size: 1rem;
@@ -281,22 +269,23 @@ export default {
   background-color: #6d0b3f;
 }
 
-.register-section {
-  background-color: #263238;
-  color: white;
-  border-top-left-radius: 6rem;
+.hello-section {
+  background-color: #26021D;
   border-bottom-left-radius: 6rem;
+  border-top-left-radius: 6rem;
+  color: white;
   align-items: center;
 }
 
-.register-section h2 {
+.hello-section h2 {
   font-weight: bold;
   font-size: 2.6rem;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 1rem;
+  color: #F7EDDC;
 }
 
-.register-section p {
+.hello-section p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   text-align: center;
@@ -305,7 +294,7 @@ export default {
 
 .register-button {
   font-family: 'Roboto', sans-serif;
-  background-color: #890E4F;
+  background-color: #59033A;
   color: white;
   font-weight: bold;
   font-size: 1rem;
@@ -383,7 +372,7 @@ export default {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1px solid #263238;
+  border: 1px solid #26021D;
   background-color: white;
   display: flex;
   align-items: center;
@@ -403,7 +392,7 @@ export default {
 
 .social-button i {
   font-size: 24px;
-  color: #263238;
+  color: #26021D;
 }
 
 /* Responsive Design */
@@ -454,7 +443,7 @@ export default {
 
 .form-select option {
   color: #4E4E4E;
-  background-color: #2A3B47;
+  background-color: #26021D;
   padding: 8px;
 }
 
