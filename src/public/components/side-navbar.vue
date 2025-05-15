@@ -88,10 +88,11 @@ export default {
 .sidenav-container {
   height: 100%;
   display: flex;
+  background-color: #F7EDDC;
 }
 
 .sidenav {
-  background-color: #273238;
+  background-color: #26021D;
   overflow: hidden;
   transition: width 0.3s ease;
   width: 64px;

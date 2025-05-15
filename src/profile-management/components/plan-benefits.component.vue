@@ -26,23 +26,25 @@ export default {
 <style scoped>
 .plan-benefits-container {
   text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4ede3;
-  color: #8E24AA;
+  font-family: 'Poppins', sans-serif;
+  background-color: #F7EDDC;
+  color: #6E0081;
   padding: 40px 0;
+  width: 100%;
 }
 
 .title {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 3rem;
+  color: #6E0081;
 }
 
 .description {
-  background-color: #9327b3;
+  background-color: #D98C4A;
   padding: 1rem;
   color: white;
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: 1.5;
   width: 100%;
   margin-bottom: 3rem;
@@ -54,8 +56,9 @@ export default {
   margin: 0 auto;
   padding: 1.5rem 2rem;
   border-radius: 10px;
+  font-family: 'Inter', sans-serif;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #333;
 }
 

@@ -4,10 +4,14 @@ import ProfileEdit from './profile-edit.component.vue';
 import PlanDetailsComponent from "@/profile-management/components/plan-details.component.vue";
 import PlanBenefits from "@/profile-management/components/plan-benefits.component.vue";
 import SideNavbar from "@/public/components/side-navbar.vue";
+import PlanDetails from "@/profile-management/components/plan-details.component.vue";
+import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 
 export default {
   name: 'profile',
   components: {
+    ToolbarContent,
+    PlanDetails,
     ProfileEdit,
     PlanDetailsComponent,
     PlanBenefits,
@@ -32,7 +36,9 @@ export default {
 </script>
 
 <template>
+
   <SideNavbar>
+    <ToolbarContent pageTitle="Profile" />
     <div class="profile-container">
       <div class="profile-left">
         <div class="user-card">
@@ -76,16 +82,17 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  background-color: #F4EDE3;
+  background-color: #F7EDDC;
   min-height: 100vh;
   padding-bottom: 40px;
+  width: 100%;
 }
 
 .profile-left {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 1000px;
+  width: 800px;
 }
 
 .user-card {
@@ -101,8 +108,8 @@ export default {
 }
 
 .avatar-container {
-  width: 260px;
-  height: 260px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   background-color: #ddd;
   display: flex;
@@ -124,7 +131,7 @@ export default {
 
 .user-name {
   margin-bottom: 5px;
-  color: #263238;
+  color: #26021D;
   font-size: 3rem;
   font-weight: bold;
 }
@@ -157,14 +164,14 @@ export default {
 }
 
 .account-type {
-  background-color: #f4ede3;
+  background-color: #F7EDDC;
   height: 100%;
   padding: 20px;
   justify-items: center;
 }
 
 .section-title {
-  color: #8E24AA;
+  color: #6E0081;
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 3rem;
@@ -191,7 +198,7 @@ export default {
 }
 
 .change-plan-link {
-  color: #8E24AA;
+  color: #6E0081;
   font-weight: 500;
   text-decoration: underline;
   font-size: 1.5rem;
