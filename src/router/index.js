@@ -6,6 +6,8 @@ import ConfirmationCodeComponent from '../authentication/pages/confirmation-code
 import ProfileComponent from '../profile-management/pages/profile.component.vue'
 import DashboardComponent from '../analytics-and-reporting/pages/dashboard.component.vue'
 import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.component.vue'
+import ReportsComponent from '../analytics-and-reporting/pages/report-management.component.vue'
+import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
 
 const routes = [
     {
@@ -46,6 +48,22 @@ const routes = [
         path: '/alerts',
         name: 'Alerts',
         component: AlertComponent
+    },
+    {
+        path: "/reports",
+        name: "Reports",
+        component: ReportsComponent
+    },
+    {
+        path: '/report-create',
+        name: 'report-create',
+        component: ReportCreateAndEdit
+    },
+    {
+        path: '/report-edit/:id',
+        name: 'report-edit',
+        component: ReportCreateAndEdit,
+        props: true
     }
 ]
 

@@ -47,7 +47,7 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Reports'">
+          <router-link to="/reports" v-tooltip="'Reports'">
             <i class="pi pi-file"></i>
             <span v-if="isExpanded">Reports</span>
           </router-link>
