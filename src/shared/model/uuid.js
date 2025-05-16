@@ -1,11 +1,11 @@
-import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
+import { v4 as uuid, validate as uuidValidate } from 'uuid';
 
 /**
  * Generate a UUID (Universally Unique Identifier).
  * @returns {string | Uint8Array} A UUID string.
  */
 export function generateUuid() {
-    return uuidv4();
+    return uuid();
 }
 
 /**

@@ -18,7 +18,7 @@ export class BaseService {
 
     /**
      * Retrieves a resource by its ID
-     * @param {string} id - The ID of the resource to retrieve
+     * @param {string | number } id - The ID of the resource to retrieve
      * @returns {Promise<AxiosResponse<any>>} Promise that resolves to the resource object
      */
     getById(id) {
@@ -36,7 +36,7 @@ export class BaseService {
 
     /**
      * Updates an existing product
-     * @param {string} id - The ID of the resource to update
+     * @param {string | number } id - The ID of the resource to update
      * @param {Object} resource - The updated resource data
      * @returns {Promise<AxiosResponse<any>>} Promise that resolves to the updated resource
      */
@@ -46,7 +46,7 @@ export class BaseService {
 
     /**
      * Deletes a resource by its ID
-     * @param {string} id - The ID of the resource to delete
+     * @param {string | number } id - The ID of the resource to delete
      * @returns {Promise<AxiosResponse<any>>} Promise that resolves when the resource is deleted
      */
     delete(id) {
