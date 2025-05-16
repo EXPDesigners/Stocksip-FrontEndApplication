@@ -10,6 +10,8 @@ import ReportsComponent from '../analytics-and-reporting/pages/report-management
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue';
 import ProductCreateAndEditComponent from "@/inventory-management/pages/product-create-and-edit.component.vue";
 import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
+import CareGuideComponent from "@/analytics-and-reporting/pages/care-guide-dashboard.component.vue";
+import CareGuideCreate from "@/analytics-and-reporting/pages/care-guide-create-and-edit.component.vue";
 
 const routes = [
     {
@@ -83,6 +85,22 @@ const routes = [
         component: ProductCreateAndEditComponent,
         props: true
     },
+    {
+        path: '/care-guide',
+        name: 'care-guide',
+        component: CareGuideComponent
+    },
+    {
+        path: '/care-guide/create',
+        name: 'care-guide-create',
+        component: CareGuideCreate
+    },
+    {
+        path: '/care-guide/edit/:id',
+        name: 'care-guide-edit',
+        component: CareGuideCreate,
+        props: true
+    }
 ];
 
 const router = createRouter({
