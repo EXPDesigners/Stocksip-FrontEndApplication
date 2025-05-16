@@ -1,17 +1,18 @@
 <script>
-import {Warehouse} from "@/inventory-management/model/warehouse.entity.js";
-import {Button as PvButton} from "primevue";
+import { Warehouse } from "@/inventory-management/model/warehouse.entity.js";
 
 export default {
   name: "warehouse-item",
-  components: {PvButton},
-  props: { warehouse: { Warehouse, required: true}},
+  props: {
+    warehouse: { type: Warehouse, required: true }
+  },
   methods: {
-    navigateToCreate() {
-
+    navigateToEdit() {
+        this.$router.push({ name: 'EditWarehouse', params: { id: this.warehouse.id } });
     },
-    navigateToZones() {
 
+    navigateToZones() {
+      this.$router.push({name: 'Zones', params: { id: this.warehouse.id }});
     }
   }
 }
@@ -37,14 +38,13 @@ export default {
             icon="pi pi-pencil"
             class="edit-button action-button"
             :label="$t('components.edit')"
-            @click="navigateToCreate">
+            @click="navigateToEdit">
         </pv-button>
         <pv-button
             class="show-button action-button"
             :label="$t('components.show')"
             @click="navigateToZones">
         </pv-button>
-
       </div>
     </template>
   </pv-card>
