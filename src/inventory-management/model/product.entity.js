@@ -1,5 +1,5 @@
-import {generateUuid} from "../../shared/model/uuid.js";
-import {ValidationError} from "../../shared/model/errors.js";
+import {generateUuid} from "@/shared/model/uuid.js";
+import {ValidationError} from "@/shared/model/errors.js";
 
 /**
  * @constructor
