@@ -104,14 +104,17 @@ export default {
   padding: 2rem;
 }
 .title {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
-  color: #26021D;
+  color: #6F0082;
   margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
 }
 .subtitle {
+  color: #32312F;
   font-size: 1.3rem;
   margin-bottom: 1rem;
+  font-family: 'Inter Semi Bold', sans-serif;
 }
 .report-nav {
   display: flex;
@@ -121,6 +124,7 @@ export default {
   border-radius: 10px;
   padding: 1.5rem;
   justify-content: space-between;
+  font-family: 'Roboto', sans-serif;
 }
 .nav-btn {
   background: #fff;
