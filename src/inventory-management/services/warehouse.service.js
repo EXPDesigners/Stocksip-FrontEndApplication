@@ -1,4 +1,4 @@
-import {BaseService} from "../../shared/services/base.service.js";
+import {BaseService} from "@/shared/services/base.service.js";
 import {generateUuid} from "@/shared/model/uuid.js";
 
 /**
