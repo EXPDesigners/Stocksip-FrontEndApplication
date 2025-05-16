@@ -9,31 +9,28 @@ import {generateUuid} from "../../shared/model/uuid.js";
  * @param {string} location - The physical location of the warehouse.
  * @param {string} city - The city where the warehouse is located.
  * @param {string} state - The state where the warehouse is located.
- * @param {string} country - The country where the warehouse is located.
+ * @param {string} postalCode - The postal code of the warehouse.
  * @param {number} capacity - The physical space the warehouse uses in cubic meters.
  * @param {string} profileId - The ID of the person that owns the warehouse.
  */
 export class Warehouse {
     constructor({
-        warehouseId = '',
+        id = '',
         name = '',
         imageUrl = '',
         location ='',
         city = '',
         state = '',
-        country = '',
+        postalCode = '',
         capacity = 0,
-        profileId = ''
                 }) {
-        this.warehouseId = generateUuid();
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.location = location;
         this.city = city;
         this.state = state;
-        this.country = country;
+        this.postalCode = postalCode;
         this.capacity = capacity;
-        this.userId = userId;
-
     }
 }
