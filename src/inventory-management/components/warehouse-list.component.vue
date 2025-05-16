@@ -5,15 +5,15 @@ import WarehouseItem from "@/inventory-management/components/warehouse-item.comp
 export default {
   name: "warehouse-list",
   components: {WarehouseItem},
-  props: {warehouses: {type: Array[Warehouse], required: true}},
+  props: {warehouses: {type: Array[Warehouse], required: true}}
 }
 </script>
 
 <template>
   <div class="grid-container">
     <div class="grid">
-      <div v-for="warehouse in warehouses" :key="warehouse.warehouseId" class="grid-item">
-        <warehouse-item :warehouse="warehouse" />
+      <div v-for="warehouse in warehouses" :key="warehouse.id" class="grid-item">
+        <warehouse-item :warehouse="warehouse"/>
       </div>
     </div>
   </div>
