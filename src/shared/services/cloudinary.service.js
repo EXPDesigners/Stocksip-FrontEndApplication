@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+const cloudName = 'deuy1pr9e';
+const uploadPreset = 'unsigned_warehouses';
 
 export default {
     async uploadImage(file) {
