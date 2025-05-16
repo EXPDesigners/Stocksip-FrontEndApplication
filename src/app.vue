@@ -8,6 +8,7 @@ export default {
   <v-app>
     <v-main>
       <router-view></router-view>
+      <pv-toast/>
     </v-main>
   </v-app>
 </template>
