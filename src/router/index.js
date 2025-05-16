@@ -7,6 +7,8 @@ import ProfileComponent from '../profile-management/pages/profile.component.vue'
 import DashboardComponent from '../analytics-and-reporting/pages/dashboard.component.vue'
 import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.component.vue'
 import WarehouseComponent from '../inventory-management/pages/warehouse.component.vue';
+import CreateAndEditWarehouse from "@/inventory-management/pages/warehouse-create-and-edit.component.vue";
+import ZonesComponent from '../inventory-management/pages/zones.component.vue'
 
 const routes = [
     {
@@ -52,6 +54,21 @@ const routes = [
         path: '/warehouses',
         name: 'Warehouses',
         component: WarehouseComponent
+    },
+    {
+        path: '/warehouses/create',
+        name: 'CreateWarehouse',
+        component: CreateAndEditWarehouse
+    },
+    {
+        path: '/warehouses/edit/:id',
+        name: 'EditWarehouse',
+        component: CreateAndEditWarehouse,
+    },
+    {
+        path: '/warehouses/zones/:id',
+        name: 'Zones',
+        component: ZonesComponent,
     }
 ]
 
