@@ -53,15 +53,9 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="'Shop'">
+          <router-link to="/" v-tooltip="'Orders'">
             <i class="pi pi-shopping-cart"></i>
             <span v-if="isExpanded">Shop</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/" v-tooltip="'Storage'">
-            <i class="pi pi-building"></i>
-            <span v-if="isExpanded">Storage</span>
           </router-link>
         </li>
         <li>

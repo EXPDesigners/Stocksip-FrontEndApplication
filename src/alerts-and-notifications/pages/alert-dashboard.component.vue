@@ -27,26 +27,26 @@ export default {
   <div class="alerts-bg">
     <side-navbar />
     <div class="alerts-main">
-      <toolbar-content :pageTitle="'Alertas'" />
+      <toolbar-content :pageTitle="'Alerts'" />
       <div class="alerts-content">
         <!-- Reposición urgente -->
         <div class="alert-card">
-          <h2 class="card-title">Reposición urgente</h2>
+          <h2 class="card-title">Urgent Repositioning</h2>
           <div v-for="(item, index) in stockAlerts" :key="index" class="alert-item">
             <p class="item-name">{{ item.name }}</p>
-            <p class="item-critical">Stock actual: {{ item.stock }}</p>
-            <p class="item-min">Stock mínimo: {{ item.minStock }}</p>
+            <p class="item-critical">Actual stock: {{ item.stock }}</p>
+            <p class="item-min">Minimum stock: {{ item.minStock }}</p>
           </div>
-          <a href="#" class="card-link">Ver todas las alertas</a>
+          <a href="#" class="card-link">View all alerts</a>
         </div>
         <!-- Próximos a vencer -->
         <div class="alert-card">
-          <h2 class="card-title">Próximos a vencer</h2>
+          <h2 class="card-title">Next to expire</h2>
           <div v-for="(item, index) in expirationAlerts" :key="index" class="alert-item">
             <p class="item-name">{{ item.name }}</p>
-            <p class="item-expiring">¡Vence en {{ item.expiresIn }} días!</p>
+            <p class="item-expiring">Expires in {{ item.expiresIn }} days!</p>
           </div>
-          <a href="#" class="card-link">Ver todos los productos</a>
+          <a href="#" class="card-link">See all products</a>
         </div>
       </div>
     </div>
