@@ -35,7 +35,7 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/inventory" v-tooltip="$t('toolbar.inventory')">
+          <router-link to="/warehouses" v-tooltip="$t('toolbar.inventory')">
             <i class="pi pi-warehouse"></i>
             <span v-if="isExpanded">{{$t('toolbar.inventory')}}</span>
           </router-link>
