@@ -23,9 +23,15 @@
     "profile": "Perfil"
   },
   "warehouses": {
+    "name": "Nombre",
     "location": "Ubicación",
     "capacity": "Capacidad",
-    "create": "Crear nuevo almacén"
+    "city": "Ciudad",
+    "state": "Estado",
+    "postal-code": "Código Postal",
+    "create": "Crear nuevo almacén",
+    "create_success": "¡Almacén creado con éxito!",
+    "update_success": "¡Almacén actualizado con éxito!"
   },
   "components": {
     "save": "Guardar",
@@ -34,6 +40,14 @@
     "edit": "Editar",
     "add": "Agregar",
     "search": "Buscar",
-    "show": "Ver"
+    "show": "Ver",
+    "update": "Actualizar",
+    "upload-image": "Elegir imagen",
+    "upload-file": "Subir archivo",
+    "no-chosen-file": "Ningún archivo elegido"
+  },
+  "toast": {
+    "success": "Éxito",
+    "error": "Error"
   }
 }

@@ -23,9 +23,15 @@
     "profile": "Profile"
   },
   "warehouses": {
+    "name": "Name",
     "location": "Location",
     "capacity": "Capacity",
-    "create": "Create new warehouse"
+    "city": "City",
+    "state": "State",
+    "postal-code": "Postal Code",
+    "create": "Create new warehouse",
+    "create_success": "Warehouse created successfully!",
+    "update_success": "Warehouse updated successfully!"
   },
   "components": {
     "save": "Save",
@@ -34,6 +40,14 @@
     "edit": "Edit",
     "add": "Add",
     "search": "Search",
-    "show": "Show"
+    "show": "Show",
+    "update": "Update",
+    "upload-image": "Choose image",
+    "upload-file": "Upload file",
+    "no-chosen-file": "No file chosen"
+  },
+  "toast": {
+    "success": "Success",
+    "error": "Error"
   }
 }
