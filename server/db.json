@@ -1,11 +1,40 @@
 {
-  "profiles": [{
-    "id": 1,
-    "name": "Farid"
-  },
+  "profiles": [
+    {
+      "id": 1,
+      "name": "Farid"
+    },
     {
       "id": 2,
       "name": "Sebastian"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Whisky",
+      "unitPrice": 20.23,
+      "content": 1000,
+      "expirationDate": "",
+      "imageUrl": "",
+      "productType": "Whisky",
+      "currentStock": 10,
+      "state": "IN-INVENTORY",
+      "minimumStock": 4,
+      "providerId": "123123"
+    },
+    {
+      "id": 1,
+      "name": "Whisky",
+      "unitPrice": 20.23,
+      "content": 1000,
+      "expirationDate": "10/10/2026",
+      "imageUrl": "",
+      "productType": "Whisky",
+      "currentStock": 10,
+      "minimumStock": 4,
+      "state": "IN-INVENTORY",
+      "providerId": 123123
     }
   ],
   "warehouses": [

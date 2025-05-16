@@ -62,12 +62,6 @@ export default {
   data() {
     return {
       /**
-       * @type {Array}
-       * @description Array of currently selected items in the data table
-       */
-      selectedItems: [],
-
-      /**
        * @description Filter configuration for the data table
        */
       filters: null
@@ -87,24 +81,6 @@ export default {
      */
     newItem() {
       this.$emit('new-item-requested');
-    },
-
-    /**
-     * Shows a confirmation dialog for deleting selected items
-     * If confirmed, emits the delete-selected-items-requested event with selected items
-     */
-    confirmDeleteSelected() {
-      this.$confirm.require({
-        message:      `Are you sure you want to delete the selected ${this.title.plural}?`,
-        header:       'Confirmation',
-        icon:         'pi pi-exclamation-triangle',
-        rejectClass:  'p-button-secondary p-button-outlined',
-        rejectLabel:  'Cancel',
-        acceptLabel:  'Delete',
-        acceptClass:  'p-button-danger',
-        accept:       () => this.$emit('delete-selected-items-requested', this.selectedItems),
-        reject:       () => {}
-      });
     },
 
     /**
@@ -161,8 +137,6 @@ export default {
   <pv-toolbar class="mb-4">
     <template #start>
       <pv-button class="mr-2" icon="pi pi-plus" label="New" severity="success" @click="newItem"/>
-      <pv-button :disabled="!selectedItems || !selectedItems.length" icon="pi pi-trash" label="Delete" severity="danger"
-                 @click="confirmDeleteSelected"/>
     </template>
     <template #end>
       <pv-button icon="pi pi-download" label="Export" severity="help" @click="exportToCsv($event)"/>
@@ -173,7 +147,6 @@ export default {
   <!-- Data Table Section -->
   <pv-data-table
       ref="dt"
-      v-model:selection="selectedItems"
       :filters="filters"
       :paginator="true"
       :rows="10"
@@ -182,7 +155,7 @@ export default {
       current-page-report-template="Showing {first} to {last} of {totalRecords} ${{title.plural}}"
       data-key="id"
       paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown">
-    <pv-column :exportable="false" selection-mode="multiple" style="width: 3rem"/>
+    <pv-column :exportable="false" style="width: 2rem"/>
     <slot name="custom-columns"></slot>
     <pv-column v-if="dynamic" v-for="column in columns" :key="column.field" :field="column.field" :header="column.header"/>
     <pv-column :exportable="false" style="min-width:8rem">

@@ -35,7 +35,7 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/inventory" v-tooltip="'Inventory'">
+          <router-link to="/inventory/id_i/products" v-tooltip="'Inventory'">
             <i class="pi pi-box"></i>
             <span v-if="isExpanded">Inventory</span>
           </router-link>
