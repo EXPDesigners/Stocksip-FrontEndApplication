@@ -27,125 +27,151 @@
   ],
   "warehouses": [
     {
-      "warehouseId": 1,
       "name": "Warehouse 1",
-      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157277/stocksipImages/iuj3ac91phua3kcrittk.jpg",
       "location": "Av. Sol 123",
       "city": "Lima",
       "state": "Lima",
       "postalCode": "15001",
-      "capacity": 1000,
-      "profileId": 1
+      "capacity": 1200,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157277/stocksipImages/iuj3ac91phua3kcrittk.jpg",
+      "id": "1"
     },
     {
-      "warehouseId": 2,
       "name": "Warehouse 2",
-      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157759/stocksipImages/z1h378mlpzlyjdug7vxx.jpg",
       "location": "Av. Micaela Bastidas 123",
       "city": "Lima",
       "state": "Lima",
-      "postalCode": "15001",
-      "capacity": 500,
-      "profileId": 2
+      "postalCode": "15678",
+      "capacity": 850,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157759/stocksipImages/z1h378mlpzlyjdug7vxx.jpg",
+      "id": "2"
     },
     {
-      "warehouseId": 3,
       "name": "Warehouse 3",
-      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157361/stocksipImages/ggm2wesomwwm29icu5og.jpg",
       "location": "Av. Sol 456",
       "city": "Lima",
       "state": "Lima",
       "postalCode": "15001",
-      "capacity": 1000,
-      "profileId": 1
+      "capacity": 1200,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157361/stocksipImages/ggm2wesomwwm29icu5og.jpg",
+      "id": "3"
     },
     {
-      "warehouseId": 4,
+      "id": "4",
       "name": "Warehouse 4",
       "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157759/stocksipImages/z1h378mlpzlyjdug7vxx.jpg",
       "location": "Av. Sol 456",
       "city": "Lima",
       "state": "Lima",
       "postalCode": "15001",
-      "capacity": 1900,
-      "profileId": 1
+      "capacity": 1900
     },
     {
-      "warehouseId": 5,
       "name": "Warehouse 5",
-      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157430/stocksipImages/lw8vne0hty8w2s1fyevp.jpg",
       "location": "Av. Sol 456",
       "city": "Lima",
       "state": "Lima",
       "postalCode": "15001",
-      "capacity": 1900,
-      "profileId": 1
+      "capacity": 2200,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157430/stocksipImages/lw8vne0hty8w2s1fyevp.jpg",
+      "id": "5"
     },
     {
-      "warehouseId": 6,
+      "id": "6",
       "name": "Warehouse 6",
       "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747157543/stocksipImages/ptpzzssype89xe5ryguh.jpg",
       "location": "Av. Sol 456",
       "city": "Lima",
       "state": "Lima",
       "postalCode": "15001",
-      "capacity": 1900,
-      "profileId": 1
+      "capacity": 1900
+    },
+    {
+      "name": "Warehouse 9",
+      "location": "Av. Lavalle",
+      "city": "Lima",
+      "state": "Cusco",
+      "postalCode": "12345",
+      "capacity": 1000,
+      "imageUrl": "",
+      "id": "2dccc257-de03-4a71-98fb-1941ca9a8259"
+    },
+    {
+      "name": "Warehouse 10",
+      "location": "Av. Sol",
+      "city": "Lima",
+      "state": "Cusco",
+      "postalCode": "12345",
+      "capacity": 4500,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747386386/oi0hfrvydpjwb0lneink.jpg",
+      "id": "b8ce773b-44b0-4d59-a1ae-bc068da1948e"
+    },
+    {
+      "name": "Warehouse 11",
+      "location": "Av. Sol",
+      "city": "Lima",
+      "state": "Cusco",
+      "postalCode": "12288",
+      "capacity": 4000,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747385900/b8n5klzfxqie53nsbb8d.png",
+      "id": "985a730f-bc96-4566-8d45-e0281bc2a4aa"
+    },
+    {
+      "name": "Warehouse 12",
+      "location": "Av. San Marcos",
+      "city": "San Isidro",
+      "state": "Lima",
+      "postalCode": "54231",
+      "capacity": 1600,
+      "imageUrl": "https://res.cloudinary.com/deuy1pr9e/image/upload/v1747387969/ivwmjue9lhiqztvxa2qq.jpg",
+      "id": "4dc033f6-55fc-471e-872c-5e4eebcec3c3"
     }
   ],
   "zones": [
     {
       "zoneId": 1,
-      "warehouseId": 1,
       "name": "Principal warehouse",
       "type": "Wines",
       "description": "Recommended temperature: 16 - 20 °C"
     },
     {
       "zoneId": 2,
-      "warehouseId": 1,
       "name": "Cold zone",
       "type": "Wines",
       "description": "Recommended temperature: 1 - 15 °C"
     },
     {
       "zoneId": 3,
-      "warehouseId": 2,
       "name": "Exhibition zone",
       "type": "Whiskeys",
       "description": "Recommended temperature: 8 - 10 °C"
     },
     {
       "zoneId": 4,
-      "warehouseId": 2,
       "name": "Exhibition zone",
       "type": "Whiskeys",
       "description": "Recommended temperature: 8 - 10 °C"
     },
     {
       "zoneId": 5,
-      "warehouseId": 2,
       "name": "Exhibition zone",
       "type": "Whiskeys",
       "description": "Recommended temperature: 8 - 10 °C"
     },
     {
       "zoneId": 6,
-      "warehouseId": 2,
       "name": "Exhibition zone",
       "type": "Whiskeys",
       "description": "Recommended temperature: 8 - 10 °C"
     },
     {
       "zoneId": 7,
-      "warehouseId": 2,
       "name": "Exhibition zone",
       "type": "Whiskeys",
       "description": "Recommended temperature: 8 - 10 °C"
     },
     {
       "zoneId": 8,
-      "warehouseId": 2,
       "name": "Exhibition zone",
       "type": "Whiskeys",
       "description": "Recommended temperature: 8 - 10 °C"
