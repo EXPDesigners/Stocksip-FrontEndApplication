@@ -8,6 +8,8 @@ import DashboardComponent from '../analytics-and-reporting/pages/dashboard.compo
 import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.component.vue'
 import ReportsComponent from '../analytics-and-reporting/pages/report-management.component.vue'
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
+import CareGuideComponent from '../analytics-and-reporting/pages/care-guide-dashboard.component.vue'
+import CareGuideCreate from '../analytics-and-reporting/pages/care-guide-create-and-edit.component.vue'
 
 const routes = [
     {
@@ -63,6 +65,22 @@ const routes = [
         path: '/report-edit/:id',
         name: 'report-edit',
         component: ReportCreateAndEdit,
+        props: true
+    },
+    {
+        path: '/care-guide',
+        name: 'care-guide',
+        component: CareGuideComponent
+    },
+    {
+        path: '/care-guide/create',
+        name: 'care-guide-create',
+        component: CareGuideCreate
+    },
+    {
+        path: '/care-guide/edit/:id',
+        name: 'care-guide-edit',
+        component: CareGuideCreate,
         props: true
     }
 ]
