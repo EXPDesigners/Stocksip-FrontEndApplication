@@ -1,16 +1,20 @@
 <script>
+import UserService from "@/authentication/services/user.service.js";
+
 export default {
   name: "register",
   data() {
     return {
       hide: true,
       hideConfirm: true,
+      loading: false,
+      error: '',
       formData: {
         fullName: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: ''
+        role: 'User'  // puedes cambiar la lógica aquí
       }
     }
   },
@@ -24,10 +28,37 @@ export default {
       } else {
         this.hideConfirm = !this.hideConfirm;
       }
+    },
+    async onSubmit() {
+      this.error = '';
+
+      if (this.formData.password !== this.formData.confirmPassword) {
+        this.error = "Passwords don't match";
+        return;
+      }
+
+      this.loading = true;
+
+      try {
+        await UserService.register({
+          name: this.formData.fullName,
+          email: this.formData.email,
+          password: this.formData.password,
+          role: this.formData.role
+        });
+
+        alert('User registered successfully!');
+        // Aquí puedes resetear el formulario o redirigir
+      } catch (err) {
+        this.error = 'Registration failed. ' + (err.message || '');
+      } finally {
+        this.loading = false;
+      }
     }
   }
 }
 </script>
+
 
 <template>
   <div class="auth-container">
@@ -59,7 +90,7 @@ export default {
     <!-- Right section: Registration form -->
     <div class="registration-form">
       <h2>Create Account</h2>
-      <form @submit.prevent>
+      <form @submit.prevent="onSubmit">
         <div class="form-group">
           <label for="fullName">Full Name</label>
           <input
@@ -122,7 +153,7 @@ export default {
           </div>
         </div>
 
-        <button class="register-button">
+        <button class="register-button" type="submit">
           Create account
         </button>
 

@@ -15,42 +15,17 @@
   ],
   "profiles": [
     {
+      "id": 1,
       "profileId": 1,
       "name": "Farid",
+      "email": "farid@example.com",
       "role": "Liquor Store Manager"
     },
     {
+      "id": 2,
       "profileId": 2,
       "name": "Sebastian",
       "role": "Supplier"
-    }
-  ],
-  "products": [
-    {
-      "id": "1",
-      "name": "Whisky",
-      "unitPrice": 20.23,
-      "content": 1000,
-      "expirationDate": "",
-      "imageUrl": "",
-      "productType": "Whisky",
-      "currentStock": 10,
-      "state": "IN-INVENTORY",
-      "minimumStock": 4,
-      "providerId": "123123"
-    },
-    {
-      "id": 1,
-      "name": "Whisky",
-      "unitPrice": 20.23,
-      "content": 1000,
-      "expirationDate": "10/10/2026",
-      "imageUrl": "",
-      "productType": "Whisky",
-      "currentStock": 10,
-      "minimumStock": 4,
-      "state": "IN-INVENTORY",
-      "providerId": 123123
     }
   ],
   "warehouses": [

@@ -1,22 +1,28 @@
+import axios from 'axios';
+
+const apiUrl = import.meta.env.VITE_API_URL;
+const profileEndpoint = import.meta.env.VITE_PROFILE_ENDPOINT_PATH;
+
 class ProfileService {
-    constructor() {}
+    async getProfileById(profileId) {
+        try {
+            const response = await axios.get(`${apiUrl}${profileEndpoint}/${profileId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            throw error;
+        }
+    }
 
-    /**
-     * Simulates sending the profile data to the backend
-     * @param {Object} profile - The profile data to be updated
-     * @returns {Promise} A promise that resolves with the updated profile
-     */
     async editProfile(profile) {
-        console.log('Profile sent to backend:', profile);
-
-        // Simulating an API call with a Promise
-        return new Promise((resolve) => {
-            // Simulating some network delay
-            setTimeout(() => {
-                resolve(profile);
-            }, 500);
-        });
+        try {
+            const response = await axios.put(`${apiUrl}${profileEndpoint}/${profile.profileId}`, profile);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            throw error;
+        }
     }
 }
 
-export default ProfileService;
+export default new ProfileService();
