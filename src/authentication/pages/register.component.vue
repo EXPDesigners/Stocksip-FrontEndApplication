@@ -14,7 +14,7 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'User'  // puedes cambiar la lógica aquí
+        role: 'User'
       }
     }
   },
