@@ -1,21 +1,20 @@
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import ProfileService from "@/profile-management/services/profile.service.js";
+import profileService from "@/profile-management/services/profile.service.js";
+import userService from "@/authentication/services/user.service.js";
 
 export default {
   name: 'profile-edit',
-  components: {
-  },
   setup() {
     const toast = useToast();
-    const profileService = new ProfileService();
 
     const hideActual = ref(true);
     const hideNew = ref(true);
     const hideConfirm = ref(true);
 
     const form = reactive({
+      profileId: null,
       name: '',
       email: '',
       businessName: '',
@@ -98,6 +97,22 @@ export default {
       Object.keys(errors).forEach(key => errors[key] = '');
     };
 
+
+    onMounted(async () => {
+      const currentUser = userService.getCurrentUser();
+      if (!currentUser || !currentUser.profileId) {
+        console.error('No profileId found in currentUser');
+        return;
+      }
+
+      try {
+        const profile = await profileService.getProfileById(currentUser.profileId);
+        Object.assign(form, profile);
+      } catch (error) {
+        console.error('Error al cargar perfil:', error);
+      }
+    });
+
     return {
       form,
       errors,
@@ -105,11 +120,12 @@ export default {
       hideNew,
       hideConfirm,
       save,
-      cancel,
+      cancel
     };
   }
 };
 </script>
+
 
 <template>
   <div class="profile-edit-container">

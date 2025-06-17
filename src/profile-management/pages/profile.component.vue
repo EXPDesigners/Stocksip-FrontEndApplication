@@ -1,35 +1,85 @@
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import ProfileEdit from './profile-edit.component.vue';
-import PlanDetailsComponent from "@/profile-management/components/plan-details.component.vue";
-import PlanBenefits from "@/profile-management/components/plan-benefits.component.vue";
-import SideNavbar from "@/public/components/side-navbar.vue";
+import PlanDetailsComponent from '@/profile-management/components/plan-details.component.vue';
+import PlanBenefits from '@/profile-management/components/plan-benefits.component.vue';
+import SideNavbar from '@/public/components/side-navbar.vue';
+import ToolbarContent from '@/public/components/toolbar-content.component.vue';
+
 import PlanDetails from "@/profile-management/components/plan-details.component.vue";
-import ToolbarContent from "@/public/components/toolbar-content.component.vue";
+import profileService from "@/profile-management/services/profile.service.js";
+import userService from "@/authentication/services/user.service.js";
 
 export default {
-  name: 'profile',
+  name: 'ProfileComponent',
   components: {
-    ToolbarContent,
     PlanDetails,
+    ToolbarContent,
+    SideNavbar,
     ProfileEdit,
     PlanDetailsComponent,
-    PlanBenefits,
-    SideNavbar
+    PlanBenefits
   },
   setup() {
+    const fileInput = ref(null);
     const userData = reactive({
-      name: 'Juan Pérez',
-      email: 'correo123@gmail.com'
+      profileId: 0,
+      name: '',
+      email: '',
+      role: '',
+      businessName: '',
+      businessAddress: '',
+      phone: ''
     });
 
     const uploadNewPhoto = () => {
       console.log('Subir nueva foto');
+      fileInput.value.click();
     };
+
+    const onFileSelected = (event) => {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        console.log('Archivo seleccionado:', file);
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64Image = reader.result;
+          console.log('Imagen en base64:', base64Image);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    onMounted(async () => {
+      const currentUser = userService.getCurrentUser();
+      console.log('Current user:', currentUser);
+
+      if (!currentUser || !currentUser.profileId) {
+        console.error('No profileId found in currentUser');
+        return;
+      }
+
+
+      const profileId = currentUser.profileId;
+
+      console.log('Fetching profile for ID:', profileId);
+
+      try {
+        const profile = await profileService.getProfileById(profileId);
+        console.log('Profile fetched:', profile);
+        Object.assign(userData, profile);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      }
+    });
 
     return {
       userData,
-      uploadNewPhoto
+      fileInput,
+      uploadNewPhoto,
+      onFileSelected
     };
   }
 };
@@ -53,7 +103,7 @@ export default {
           <div class="user-info">
             <h2 class="user-name">{{ userData.name }}</h2>
             <p class="user-email">{{ userData.email }}</p>
-            <button class="upload" @click="uploadNewPhoto">Subir nueva foto</button>
+            <button class="upload" @click="uploadNewPhoto">Upload New Photo</button>
           </div>
         </div>
         <ProfileEdit />
@@ -63,7 +113,7 @@ export default {
         <h2 class="section-title">Account Type</h2>
         <div class="account-box">
           <div class="account-info">
-            <p><strong>Role:</strong> Liquor Store Owner</p>
+            <p><strong>Role:</strong> {{ userData.role }}</p>
             <p><strong>Current Plan:</strong> Free</p>
           </div>
           <a class="change-plan-link" href="#">Do you want to change your plan?</a>
@@ -159,9 +209,6 @@ export default {
   background-color: #6d0b3f;
 }
 
-.full-width {
-  width: 100%;
-}
 
 .account-type {
   background-color: #F7EDDC;

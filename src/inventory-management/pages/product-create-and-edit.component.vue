@@ -1,5 +1,5 @@
 <script>
-import CreateAndEdit from "../../shared/components/create-and-edit.component.vue"
+import CreateAndEdit from "../../shared/components/create-and-edit.component.vue";
 import {InputText as PvInputText} from "primevue";
 import {CascadeSelect} from "primevue";
 
@@ -51,6 +51,12 @@ export default {
             <label for="productType"> Product Type </label>
             <CascadeSelect v-model="product.productType" :options="['Vodka', 'Tequila', 'Wine']" optionLabel="cname" option-group-label="name"
                            class="w-56" placeholder="Select a Type"/>
+
+            <label for="currentStock"> Current Stock </label>
+            <pv-input-text id="currentStock" v-model="product.currentStock" :class="{ 'p-invalid': submitted && !product.currentStock }"/>
+
+            <label for="expirationDate"> Minimum Stock </label>
+            <pv-input-text id="minimumStock" v-model="product.minimumStock" :class="{ 'p-invalid': submitted && !product.minimumStock }"/>
           </pv-float-label>
         </div>
       </div>

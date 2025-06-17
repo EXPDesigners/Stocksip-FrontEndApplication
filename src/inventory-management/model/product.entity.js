@@ -1,5 +1,5 @@
-import {generateUuid} from "../../shared/model/uuid.js";
-import {ValidationError} from "../../shared/model/errors.js";
+import {generateUuid} from "@/shared/model/uuid.js";
+import {ValidationError} from "@/shared/model/errors.js";
 
 /**
  * @constructor
@@ -16,28 +16,32 @@ import {ValidationError} from "../../shared/model/errors.js";
  */
 export class Product {
     constructor({
+                    id='',
                     name='',
                     unitPrice=0,
                     content=0,
-                    expirationDate= null,
+                    expirationDate= "",
                     imageUrl='',
                     productType='',
                     currentStock=0,
+                    state='',
                     minimumStock=0,
                     providerId=''
                 })
     {
+        /**
         if (!Number.isInteger(currentStock) || currentStock <= 0) {
-            throw ValidationError('Current stock of product must be a positive integer number.')
+            throw new ValidationError('Current stock of product must be a positive integer number.');
         }
 
         if (!Number.isInteger(minimumStock) || minimumStock <= 0) {
-            throw ValidationError('Minimum stock of product must be a positive integer number.')
+            throw new ValidationError('Minimum stock of product must be a positive integer number.');
         }
 
         if (content <= 0) {
-            throw ValidationError('Content of product must be a positive number.')
+            throw new ValidationError('Content of product must be a positive number.');
         }
+            */
 
         this.id = generateUuid();
         this.name = name;
@@ -51,30 +55,4 @@ export class Product {
         this.state = "IN-INVENTORY";
         this.providerId = providerId;
     }
-
-    get currentStock() { return this.currentStock; }
-
-    get minimumStock() { return this.minimumStock; }
-
-    get unitPrice() { return this.unitPrice; }
-
-    get expirationDate() { return this.expirationDate; }
-
-    get content() { return this.content; }
-
-    get state() { return this.state; }
-
-    set minimumStock(number) { this.minimumStock = number; }
-
-    set addStock(number) { this.currentStock += number; }
-
-    set removeStock(number) { this.currentStock -= number; }
-
-    set editName(newName) { this.name = newName; }
-
-    set modifyUnitPrice(newUnitPrice) { this.unitPrice = newUnitPrice; }
-
-    set newState(newState) { this.state = newState; }
-
-    canEdit() { return this.state === "IN-INVENTORY"; }
 }

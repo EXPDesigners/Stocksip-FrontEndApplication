@@ -38,10 +38,13 @@ export default {
       this.$router.push({ name: 'report-edit', params: { id: index } })
     },
     deleteReport(index) {
-      if (confirm('¿Eliminar este reporte?')) {
+      if (confirm('Delete this report?')) {
         this.reports.splice(index, 1)
         localStorage.setItem('reports', JSON.stringify(this.reports))
       }
+    },
+    goToCareGuide() {
+      this.$router.push({ name: 'care-guide' })
     }
   }
 }
@@ -57,7 +60,7 @@ export default {
         <button class="nav-btn">Internal referral</button>
         <button class="nav-btn active">Loss Reporting</button>
         <button class="nav-btn">Care</button>
-        <button class="nav-btn">Conservation</button>
+        <button class="nav-btn" @click="goToCareGuide">Conservation</button>
       </div>
 
       <div class="report-subheader">
@@ -87,12 +90,15 @@ export default {
 .title {
   font-size: 3rem;
   font-weight: bold;
-  color: #26021D;
+  color: #6F0082;
   margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
 }
 .subtitle {
+  color: #32312F;
   font-size: 1.3rem;
   margin-bottom: 1rem;
+  font-family: 'Inter Semi Bold', sans-serif;
 }
 .report-nav {
   display: flex;
@@ -113,6 +119,7 @@ export default {
   font-weight: bold;
   margin-left: 50px;
   font-size: 1.3rem;
+  font-family: 'Roboto', sans-serif;
 }
 .nav-btn.active,
 .nav-btn:hover {

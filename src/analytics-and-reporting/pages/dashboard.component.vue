@@ -1,13 +1,15 @@
 <script>
 import ToolbarContent from '@/public/components/toolbar-content.component.vue';
 import SideNavbar from '@/public/components/side-navbar.vue';
+import Chart from 'primevue/chart';
 import { useRouter } from 'vue-router';
 
 export default {
   name: 'dashboard',
   components: {
     ToolbarContent,
-    SideNavbar
+    SideNavbar,
+    Chart
   },
   setup() {
     const router = useRouter();
@@ -16,11 +18,62 @@ export default {
       router.push('/dashboard');
     };
 
+    const rotationData = {
+      labels: ['Product A', 'Product B', 'Product C'],
+      datasets: [
+        {
+          data: [70, 20, 10],
+          backgroundColor: ['#B0F2B6', '#F7B2AD', '#E5D3F2']
+        }
+      ]
+    };
+
+    const rotationOptions = {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: function (value) {
+              return value + '%';
+            }
+          }
+        }
+      }
+    };
+
+    const products = [
+      {
+        name: 'Malbec Red Wine',
+        type: 'Spirit',
+        expiration: '2024-04-24',
+        currentStock: 20,
+        minStock: 20,
+        price: 20
+      },
+      {
+        name: 'White Wine',
+        type: 'Spirit',
+        expiration: '2024-04-23',
+        currentStock: 20,
+        minStock: 15,
+        price: 20
+      }
+    ];
+
     return {
-      goToDashboard
+      goToDashboard,
+      rotationData,
+      rotationOptions,
+      products
     };
   }
-}
+};
 </script>
 
 <template>
@@ -78,6 +131,48 @@ export default {
       </div>
     </div>
   </div>
+  <!-- Rotation charts -->
+  <section class="rotation">
+    <div class="rotation-row">
+      <div class="rotation-card">
+        <h3>Highest Turnover</h3>
+        <Chart class="char" type="bar" :data="rotationData" :options="rotationOptions" />
+      </div>
+      <div class="rotation-card">
+        <h3>Lowest Turnover</h3>
+        <Chart class="char" type="bar" :data="rotationData" :options="rotationOptions" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Expiration risk table -->
+  <section class="risk">
+    <div class="risk-card">
+      <h3>Expiration Risk <span class="badge">Highest</span></h3>
+      <table class="risk-table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Expiration Date</th>
+          <th>Current Stock</th>
+          <th>Minimum Stock</th>
+          <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="product in products" :key="product.name">
+          <td>{{ product.name }}</td>
+          <td>{{ product.type }}</td>
+          <td>{{ product.expiration }}</td>
+          <td>{{ product.currentStock }}</td>
+          <td>{{ product.minStock }}</td>
+          <td>{{ product.price }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -205,6 +300,94 @@ hr {
 .acceso-btn:hover .access-link {
   color: #59033A;
 }
+
+.rotation {
+  background: #F7EDDC;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rotation-row {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  width: 1200px;
+  height: 400px;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.rotation-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(38,2,29,0.07);
+  padding: 2rem;
+  flex: 1;
+  font-size: 1.5rem;
+}
+
+.rotation-card .char {
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+}
+
+.risk-card {
+  background: #F7EDDC;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.risk-card h3 {
+  color: #6E0081;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.risk-table {
+  width: 1400px;
+  background: #fff;
+  border-collapse: collapse;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+.risk-table th,
+.risk-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  font-size: 1.2rem;
+}
+.risk-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.badge {
+  background: #6E0081;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.risk {
+  background: #F7EDDC;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 900px) {
   .dashboard-row {
     flex-direction: column;

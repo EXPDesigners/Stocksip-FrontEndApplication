@@ -1,4 +1,5 @@
 <script>
+import userService from "@/authentication/services/user.service.js";
 export default {
   name: "login",
   data() {
@@ -25,7 +26,23 @@ export default {
     },
     togglePassword() {
       this.hide = !this.hide;
+    },
+    async loginUser() {
+      try {
+        const success = await userService.login(this.email, this.password);
+        if (success) {
+          const currentUser = userService.getCurrentUser();
+          console.log('Usuario logueado:', currentUser);
+          this.goToDashboard(); // redirecciona
+        } else {
+          alert('Credenciales inválidas');
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        alert('Error al iniciar sesión');
+      }
     }
+
   }
 }
 </script>
@@ -78,7 +95,7 @@ export default {
           </label>
         </div>
 
-        <button type="submit" class="sign-in-button" @click.prevent="goToDashboard">
+        <button type="submit" class="sign-in-button" @click="loginUser">
           Sign In
         </button>
 

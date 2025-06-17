@@ -1,15 +1,7 @@
 <script>
-/**
- * @constant {Object} defaultStyle - Default dialog width styling
- */
 
 const defaultStyle = { width: '400px' };
 
-/**
- * @component
- * @description A reusable dialog component for creating and editing entities.
- * Provides a standardized interface for entity creation and editing operations.
- */
 export default {
   name: "create-and-edit",
   props: {
@@ -88,8 +80,8 @@ export default {
      */
     getDialogStyle() {
       let dialogStyle = defaultStyle;
-      dialogStyle = this.size === 'standard' ? { width: '600px'} : defaultStyle;
-      dialogStyle = this.size === 'large' ? { width: '900px'} : defaultStyle;
+      dialogStyle = this.size === 'standard' ? { width: '900px'} : defaultStyle;
+      dialogStyle = this.size === 'large' ? { width: '1200px'} : defaultStyle;
       return dialogStyle;
     }
   }

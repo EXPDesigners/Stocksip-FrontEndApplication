@@ -1,6 +1,10 @@
 <script>
+
+import LanguageSwitcher from "@/public/components/language-switcher.component.vue";
+
 export default {
   name: 'toolbar-content',
+  components: {LanguageSwitcher},
   props: {
     pageTitle: {
       type: String,
@@ -17,6 +21,9 @@ export default {
     </template>
     <template #end>
       <div class="flex items-center gap-2">
+      </div>
+      <div class="language-switcher">
+        <language-switcher></language-switcher>
       </div>
     </template>
   </pv-menubar>
@@ -44,6 +51,10 @@ export default {
   font-weight: Bold;
   font-size: 50px;
   font-family: 'Poppins', sans-serif;
+}
+
+.language-switcher {
+  padding-right: 6rem;
 }
 
 </style>
