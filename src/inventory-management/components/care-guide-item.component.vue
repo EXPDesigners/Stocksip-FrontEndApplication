@@ -9,12 +9,11 @@ export default {
 
 <template>
   <tr>
-    <td><img :src="guide.imagen" class="thumb" /></td>
+    <td><img :src="guide.imageUrl" class="thumb" /></td>
     <td>
-      <a @click="$emit('ver-detalle', guide)" class="product-name">{{ guide.nombre }}</a>
+      <a @click="$emit('ver-detalle', guide)" class="product-name">{{ guide.name }}</a>
     </td>
-    <td>{{ guide.tipo }}</td>
-    <td>{{ guide.descripcion }}</td>
+    <td>{{ guide.type }}</td>
     <td>
       <button class="btn editar" @click="$emit('editar', guide)">Edit</button>
     </td>
