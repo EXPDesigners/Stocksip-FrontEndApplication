@@ -16,8 +16,8 @@ import InventoryComponent from "@/inventory-management/pages/inventory.component
 
 import ReportsComponent from '../analytics-and-reporting/pages/report-management.component.vue'
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
-import CareGuideComponent from '../analytics-and-reporting/pages/care-guide-dashboard.component.vue'
-import CareGuideCreate from '../analytics-and-reporting/pages/care-guide-create-and-edit.component.vue'
+import CareGuideComponent from '../inventory-management/pages/care-guide-dashboard.component.vue'
+import CareGuideCreate from '../inventory-management/pages/care-guide-create-and-edit.component.vue'
 
 const routes = [
     {
