@@ -1,11 +1,18 @@
 <script>
-
 export default {
   name: 'care-guide-detail',
   props: {
-    producto: Object
+    guide: {
+      type: Object,
+      required: true
+    }
   },
-  emits: ['close']
+  emits: ['close'],
+  computed: {
+    details() {
+      return this.guide.toDetailedJSON();
+    }
+  }
 }
 </script>
 
@@ -13,28 +20,24 @@ export default {
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Product detail</h2>
+        <h2>Detalles del Producto</h2>
         <button class="close-btn" @click="$emit('close')">✖</button>
       </div>
 
-      <div v-if="producto" class="product-card">
+      <div v-if="guide" class="product-card">
         <div class="header">
           <div>
-            <h3>{{ producto.nombre }}</h3>
-            <p>Type of Liquor: {{ producto.tipo }}</p>
+            <h3>{{ guide.name }}</h3>
+            <p>Tipo de Licor: {{ guide.type }}</p>
           </div>
-          <img :src="producto.imagen" class="product-image" />
+          <img :src="guide.imageUrl" class="product-image" alt="Imagen del producto" />
         </div>
 
         <ul class="info-list">
-          <li><i class="pi pi-thermometer"></i> Temperature: {{ producto.detalles.temperatura }}</li>
-          <li><i class="pi pi-sun"></i> Storage: {{ producto.detalles.almacenamiento }}</li>
-          <li><i class="pi pi-clock"></i> Duration: {{ producto.detalles.duracion }}</li>
-          <li><i class="pi pi-comment"></i> Comments: {{ producto.detalles.comentarios }}</li>
-          <li>
-            <input type="checkbox" v-model="producto.detalles.entregado" />
-            Change status to delivered
-          </li>
+          <li><i class="pi pi-thermometer"></i> Temperatura: {{ details.temperature }}</li>
+          <li><i class="pi pi-sun"></i> Almacenamiento: {{ details.storage }}</li>
+          <li><i class="pi pi-clock"></i> Duración: {{ details.duration }}</li>
+          <li><i class="pi pi-comment"></i> Comentarios: {{ details.comments }}</li>
         </ul>
       </div>
     </div>
@@ -84,11 +87,14 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 }
 .product-image {
-  width: 100px;
-  height: auto;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .info-list {
   list-style: none;
@@ -96,6 +102,13 @@ export default {
   margin-top: 1.5rem;
 }
 .info-list li {
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.info-list i {
+  color: #666;
+  font-size: 1.2rem;
 }
 </style>
