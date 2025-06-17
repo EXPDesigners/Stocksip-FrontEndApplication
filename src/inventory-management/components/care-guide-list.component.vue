@@ -1,5 +1,5 @@
 <script>
-import CareGuideItem from "@/analytics-and-reporting/components/care-guide-item.component.vue";
+import CareGuideItem from "@/inventory-management/components/care-guide-item.component.vue";
 
 export default {
   name: "care-guide-list",
@@ -19,7 +19,6 @@ export default {
       <th>Imagen</th>
       <th>Nombre</th>
       <th>Tipo</th>
-      <th>Descripción</th>
       <th>Acciones</th>
     </tr>
     </thead>
