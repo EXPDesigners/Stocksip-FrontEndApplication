@@ -1,45 +1,68 @@
 <script>
 import SideNavbar from '@/public/components/side-navbar.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { reactive, computed } from 'vue'
+import { reactive, computed, onMounted } from 'vue'
+import { ReportService } from '../services/report.service.js'
 
 export default {
   name: 'reports-create-and-edit',
   components: { SideNavbar },
-  setup() {
+  props: {
+    id: {
+      type: [String, Number],
+      required: true
+    }
+  },
+  setup(props) {
     const route = useRoute()
     const router = useRouter()
-    const id = route.params.id
-
-    const reports = JSON.parse(localStorage.getItem('reports') || '[]')
-
-    const existing = id !== undefined ? reports[parseInt(id)] : null
+    const isEdit = route.path.includes('/edit')
 
     const form = reactive({
-      nombre: existing?.nombre || '',
-      tipo: existing?.tipo || '',
-      precio: existing?.precio || 0,
-      cantidad: existing?.cantidad || 0,
-      fecha: existing?.fecha || new Date().toISOString().substring(0, 10)
+      products: '',
+      type: '',
+      price: 0,
+      amount: 0,
+      date: new Date().toISOString().split('T')[0]
     })
 
-    const totalCosto = computed(() => `S/. ${(form.precio * form.cantidad).toFixed(2)}`)
+    const totalCost = computed(() => `S/. ${(form.price * form.amount).toFixed(2)}`)
 
-    const handleSubmit = () => {
-      if (id !== undefined) {
-        reports[parseInt(id)] = { ...form }
-      } else {
-        reports.push({ ...form })
+    const loadReport = async () => {
+      if (isEdit) {
+        try {
+          const report = await ReportService.getReportById(props.id)
+          Object.assign(form, report)
+        } catch (error) {
+          console.error('Error loading report:', error)
+          router.push('/reports')
+        }
       }
-      localStorage.setItem('reports', JSON.stringify(reports))
+    }
+
+    const handleSubmit = async () => {
+      try {
+        if (isEdit) {
+          await ReportService.updateReport(props.id, form)
+        } else {
+          await ReportService.createReport({
+            ...form,
+            id: props.id
+          })
+        }
+        router.push('/reports')
+      } catch (error) {
+        console.error('Error saving report:', error)
+      }
+    }
+
+    const cancel = () => {
       router.push('/reports')
     }
 
-    const cancelar = () => {
-      router.push('/reports')
-    }
+    onMounted(loadReport)
 
-    return { form, totalCosto, handleSubmit, cancelar }
+    return { form, totalCost, handleSubmit, cancel }
   }
 }
 </script>
@@ -53,7 +76,7 @@ export default {
       <div class="report-nav">
         <button class="nav-btn">Internal referral</button>
         <button class="nav-btn active">Loss reporting</button>
-        <button class="nav-btn">Care</button>
+        <button class="nav-btn">Resupplies</button>
         <button class="nav-btn">Conservation</button>
       </div>
 
@@ -62,31 +85,31 @@ export default {
       <form @submit.prevent="handleSubmit" class="report-form">
         <div class="form-group">
           <label>Product name</label>
-          <input v-model="form.nombre" required />
+          <input v-model="form.products" required />
         </div>
         <div class="form-group">
           <label>Type</label>
-          <input v-model="form.tipo" required />
+          <input v-model="form.type" required />
         </div>
         <div class="form-group">
           <label>Price</label>
-          <input type="number" v-model.number="form.precio" required />
+          <input type="number" v-model.number="form.price" required min="0" step="0.01" />
         </div>
         <div class="form-group">
           <label>Quantity</label>
-          <input type="number" v-model.number="form.cantidad" required />
+          <input type="number" v-model.number="form.amount" required min="1" />
         </div>
         <div class="form-group">
           <label>Date</label>
-          <input type="date" v-model="form.fecha" required />
+          <input type="date" v-model="form.date" required />
         </div>
         <div class="form-group">
-          <label>Total lost cost</label>
-          <input :value="totalCosto" readonly />
+          <label>Total cost</label>
+          <input :value="totalCost" readonly />
         </div>
         <div class="form-actions">
           <button type="submit" class="btn save">Save</button>
-          <button type="button" class="btn cancel" @click="cancelar">Cancel</button>
+          <button type="button" class="btn cancel" @click="cancel">Cancel</button>
         </div>
       </form>
     </div>
