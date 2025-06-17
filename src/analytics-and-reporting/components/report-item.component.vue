@@ -2,8 +2,10 @@
 export default {
   name: "report-item",
   props: {
-    report: Object,
-    index: Number
+    report: {
+      type: Object,
+      required: true
+    }
   },
   emits: ['edit', 'delete']
 }
@@ -11,14 +13,18 @@ export default {
 
 <template>
   <tr>
-    <td>{{ report.nombre }}</td>
-    <td>{{ report.tipo }}</td>
-    <td>S/. {{ report.precio.toFixed(2) }}</td>
-    <td>{{ report.cantidad }}</td>
-    <td>{{ report.fecha }}</td>
+    <td>{{ report.products }}</td>
+    <td>{{ report.type }}</td>
+    <td>S/. {{ report.price.toFixed(2) }}</td>
+    <td>{{ report.amount }}</td>
+    <td>{{ report.date }}</td>
     <td>
-      <button class="action-btn edit" @click="$emit('edit', index)">Edit</button>
-      <button class="action-btn delete" @click="$emit('delete', index)">Delete</button>
+      <button class="action-btn edit" @click="$emit('edit', report.id)">
+        <i class="pi pi-pencil"></i>
+      </button>
+      <button class="action-btn delete" @click="$emit('delete', report.id)">
+        <i class="pi pi-trash"></i>
+      </button>
     </td>
   </tr>
 </template>
@@ -31,13 +37,28 @@ export default {
   border-radius: 6px;
   font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+
 .edit {
   background: #5A033A;
   color: white;
 }
+
+.edit:hover {
+  background: #4a032a;
+}
+
 .delete {
-  background: #5A033A;
+  background: #dc3545;
   color: white;
+}
+
+.delete:hover {
+  background: #c82333;
+}
+
+tr:hover {
+  background-color: #f8f9fa;
 }
 </style>
