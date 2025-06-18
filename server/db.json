@@ -11,21 +11,54 @@
       "username": "sebastian@example.com",
       "password": "123456",
       "profileId": 2
+    },
+    {
+      "username": "camila@example.com",
+      "password": "12345678",
+      "id": 3,
+      "profileId": 3
+    },
+    {
+      "username": "nuevo456@example.com",
+      "password": "123456",
+      "id": 4,
+      "profileId": 4
     }
   ],
   "profiles": [
     {
-      "id": 1,
       "profileId": 1,
       "name": "Farid",
       "email": "farid@example.com",
-      "role": "Liquor Store Manager"
+      "businessName": "Business",
+      "businessAddress": "Av. Alameda",
+      "phone": "123456789",
+      "currentPassword": "",
+      "newPassword": "",
+      "confirmPassword": "",
+      "id": 1,
+      "role": "Liquor Store Owner"
     },
     {
       "id": 2,
       "profileId": 2,
       "name": "Sebastian",
       "role": "Supplier"
+    },
+    {
+      "id": 3,
+      "profileId": 3,
+      "name": "Camila",
+      "email": "camila@example.com",
+      "role": "Supplier"
+    },
+    {
+      "id": 4,
+      "profileId": 4,
+      "userId": 4,
+      "name": "Nuevo",
+      "email": "nuevo456@example.com",
+      "role": "store_owner"
     }
   ],
   "warehouses": [

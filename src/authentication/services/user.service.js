@@ -46,23 +46,28 @@ class UserService extends BaseService {
     async register({ name, email, password, role }) {
         try {
             // Crear usuario
-            const newUserRes = await this.create({ username: email, password });
+            const newUserRes = await axios.post(`${this.apiUrl}/users`, {
+                username: email,
+                password
+            });
             const newUser = newUserRes.data;
 
             // Crear perfil asociado
             const profile = {
-                profileId: newUser.id,  // mismo ID que usuario, si quieres
-                userId: newUser.id,     // para relación explícita
+                id: newUser.id,         // ID del perfil será igual al del usuario
+                profileId: newUser.id,  // También usado como identificador lógico
+                userId: newUser.id,     // Referencia explícita al user
                 name,
                 email,
                 role
             };
 
-            // POST perfil - asegura '/' en URL
-            await axios.post(`${this.apiUrl.replace(/\/?$/, '/')}${this.profileEndpoint.replace(/^\//, '')}`, profile);
+            await axios.post(`${this.apiUrl}/profiles`, profile);
 
-            // Actualiza el usuario con profileId
-            await this.update(newUser.id, { profileId: newUser.id });
+            // Actualizar el usuario con el profileId
+            await axios.patch(`${this.apiUrl}/users/${newUser.id}`, {
+                profileId: newUser.id
+            });
 
             return newUser;
         } catch (error) {
@@ -70,6 +75,7 @@ class UserService extends BaseService {
             throw error;
         }
     }
+
 
 }
 

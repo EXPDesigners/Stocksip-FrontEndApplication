@@ -14,7 +14,7 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'User'
+        role: ''
       }
     }
   },
@@ -48,7 +48,6 @@ export default {
         });
 
         alert('User registered successfully!');
-        // Aquí puedes resetear el formulario o redirigir
       } catch (err) {
         this.error = 'Registration failed. ' + (err.message || '');
       } finally {
@@ -67,16 +66,6 @@ export default {
       <h2>Welcome back</h2>
       <p>Enter your personal details to use all the features of the platform</p>
 
-      <div class="form-group select-group">
-        <label for="role" class="select-label">Select your role</label>
-        <select v-model="formData.role" id="role" class="form-select">
-          <option value="" disabled selected>Select role</option>
-          <option value="store_owner">Liquor Store Owner</option>
-          <option value="supplier">Supplier</option>
-        </select>
-        <span class="select-arrow"></span>
-      </div>
-
       <button class="sign-in-button" @click="goToSignIn">
         Sign up
       </button>
@@ -91,6 +80,17 @@ export default {
     <div class="registration-form">
       <h2>Create Account</h2>
       <form @submit.prevent="onSubmit">
+
+        <div class="form-group select-group">
+          <label for="role" class="select-label">Select Your Role</label>
+          <select v-model="formData.role" id="role" class="form-select">
+            <option value="" class="select-role" disabled selected>Select role</option>
+            <option value="Liquor Store Owner">Liquor Store Owner</option>
+            <option value="Supplier">Supplier</option>
+          </select>
+          <span class="select-arrow"></span>
+        </div>
+
         <div class="form-group">
           <label for="fullName">Full Name</label>
           <input
@@ -214,26 +214,38 @@ export default {
   width: 240px;
   margin-top: 1rem;
   position: relative;
-}
+  background-color: #f7eddc;
 
-.select-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #F4EDE3;
-  font-family: 'Inter', sans-serif;
-}
+  .select-label {
+    font-family: 'Inter', sans-serif;
+    display: block;
+    color: #26021C;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
 
-.form-select {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1px solid rgba(244, 237, 227, 0.3);
-  border-radius: 45px;
-  font-family: 'Inter', sans-serif;
-  color: #F4EDE3;
-  background-color: rgba(244, 237, 227, 0.1);
-  outline: none;
-  appearance: none;
-  cursor: pointer;
+  .form-select {
+    padding: 0.8rem 1rem;
+    border: 2px solid #26021C;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    color: #4E4E4E;
+    font-size: 1rem;
+    background-color: white;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+
+    .select-role {
+      color: white;
+    }
+  }
+
+  .form-select:focus {
+    border-color: #6E0081;
+    background-color: #fff;
+  }
+
 }
 
 .select-arrow {
@@ -244,7 +256,7 @@ export default {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #F4EDE3;
+  border-top: 5px solid #26021C;
   pointer-events: none;
 }
 
