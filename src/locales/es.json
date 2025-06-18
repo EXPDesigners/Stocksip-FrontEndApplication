@@ -1,0 +1,53 @@
+{
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recordarme",
+    "signIn": "Iniciar Sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "or": "o",
+    "hello": "Hola, usuario",
+    "createAccount": "Crea tu cuenta personal para acceder a todas las funciones de la plataforma",
+    "register": "Registrarse"
+  },
+  "toolbar": {
+    "expand-contract": "Expandir/Contraer",
+    "dashboard": "Dashboard",
+    "inventory": "Inventario",
+    "alerts": "Alertas",
+    "reports": "Reportes",
+    "order": "Compras",
+    "storage": "Almacenamiento",
+    "settings": "Configuración",
+    "profile": "Perfil"
+  },
+  "warehouses": {
+    "name": "Nombre",
+    "location": "Ubicación",
+    "capacity": "Capacidad",
+    "city": "Ciudad",
+    "state": "Estado",
+    "postal-code": "Código Postal",
+    "create": "Crear nuevo almacén",
+    "create_success": "¡Almacén creado con éxito!",
+    "update_success": "¡Almacén actualizado con éxito!"
+  },
+  "components": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "show": "Ver",
+    "update": "Actualizar",
+    "upload-image": "Elegir imagen",
+    "upload-file": "Subir archivo",
+    "no-chosen-file": "Ningún archivo elegido"
+  },
+  "toast": {
+    "success": "Éxito",
+    "error": "Error"
+  }
+}
