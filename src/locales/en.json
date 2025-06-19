@@ -24,14 +24,16 @@
   },
   "warehouses": {
     "name": "Name",
-    "location": "Location",
+    "address": "Address",
     "capacity": "Capacity",
     "city": "City",
     "state": "State",
     "postal-code": "Postal Code",
     "create": "Create new warehouse",
     "create_success": "Warehouse created successfully!",
-    "update_success": "Warehouse updated successfully!"
+    "update_success": "Warehouse updated successfully!",
+    "emptyTitle": "No warehouses created",
+    "emptyDescription": "You can create a new warehouse by clicking the button below."
   },
   "components": {
     "save": "Save",

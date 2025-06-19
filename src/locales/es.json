@@ -24,14 +24,16 @@
   },
   "warehouses": {
     "name": "Nombre",
-    "location": "Ubicación",
+    "address": "Ubicación",
     "capacity": "Capacidad",
     "city": "Ciudad",
     "state": "Estado",
     "postal-code": "Código Postal",
     "create": "Crear nuevo almacén",
     "create_success": "¡Almacén creado con éxito!",
-    "update_success": "¡Almacén actualizado con éxito!"
+    "update_success": "¡Almacén actualizado con éxito!",
+    "emptyTitle": "No se han creado almacenes",
+    "emptyDescription": "Puedes crear un nuevo almacén haciendo clic en el botón de abajo."
   },
   "components": {
     "save": "Guardar",
