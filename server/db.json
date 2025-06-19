@@ -23,6 +23,12 @@
       "password": "123456",
       "id": 4,
       "profileId": 4
+    },
+    {
+      "username": "hola@example.com",
+      "password": "1234",
+      "id": 5,
+      "profileId": 5
     }
   ],
   "profiles": [
@@ -59,6 +65,14 @@
       "name": "Nuevo",
       "email": "nuevo456@example.com",
       "role": "store_owner"
+    },
+    {
+      "id": 5,
+      "profileId": 5,
+      "userId": 5,
+      "name": "Hola",
+      "email": "hola@example.com",
+      "role": "Liquor Store Owner"
     }
   ],
   "warehouses": [
@@ -405,6 +419,656 @@
       "imageUrl": "https://res.cloudinary.com/dmhlgoedk/image/upload/v1750143806/og8bwurxprzp7oxkrlbz.jpg",
       "description": "Temperatura recomendada: 15 - 16°C. Almacenar en Lugar fresco. Duración después de abierto: 12 meses. Comentarios: Pose.",
       "id": "8"
+    }
+  ],
+  "catalogs": [
+    {
+      "id": 1,
+      "name": "Catalogo 5",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:31:29.392Z",
+      "isPublished": true
+    },
+    {
+      "id": 2,
+      "name": "Catalogo 2",
+      "profileId": 3,
+      "dateCreated": "2025-05-13T00:00:00Z",
+      "isPublished": true
+    }
+  ],
+  "catalogItems": [
+    {
+      "id": "a1",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Tinto Malbec",
+      "productType": "Destilado",
+      "brand": "Bodega del Sur",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a3",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Ron Cartavio",
+      "productType": "Ron",
+      "brand": "Ron Cartavio",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 921,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a4",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Absolut Vodka",
+      "productType": "Vodka",
+      "brand": "Los Angeles",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 921,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a5",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Blanco",
+      "productType": "Destilado",
+      "brand": "Rio Grande",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 92,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a6",
+      "catalogId": "2",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Tinto Malbec",
+      "productType": "Destilado",
+      "brand": "bodega del Sur",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a8",
+      "catalogId": 1,
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vodka",
+      "productType": "Alcohol",
+      "brand": "Absolut",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 124,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    }
+  ],
+  "purchase-orders": [
+    {
+      "id": "bf0c24a5-8f05-44e1-99c1-ed863a54b63e",
+      "date": {
+        "_date": "2025-06-19T06:21:48.758Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {},
+      "items": [
+        {
+          "id": "a3",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Ron Cartavio",
+          "productType": "Ron",
+          "brand": "Ron Cartavio",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "a4",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Absolut Vodka",
+          "productType": "Vodka",
+          "brand": "",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 1842,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 2
+    },
+    {
+      "id": "8393b5cf-8c4a-4192-b323-63040d371e36",
+      "date": {
+        "_date": "2025-06-19T06:27:55.669Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {},
+      "items": [
+        {
+          "id": "a3",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Ron Cartavio",
+          "productType": "Ron",
+          "brand": "Ron Cartavio",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "a4",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Absolut Vodka",
+          "productType": "Vodka",
+          "brand": "",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 1842,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 2
+    },
+    {
+      "id": "d99a5fbb-9a92-4448-a176-6ae9548bb5da",
+      "date": {
+        "_date": "2025-06-19T06:28:42.585Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {},
+      "items": [
+        {
+          "id": "a8",
+          "catalogId": 1,
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vodka",
+          "productType": "Alcohol",
+          "brand": "Absolut",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 124,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 124,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "9219daff-f12e-429d-94fe-f10d370c2b9a",
+      "date": {
+        "_date": "2025-06-19T06:35:32.381Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {},
+      "items": [
+        {
+          "id": "a5",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Blanco",
+          "productType": "Destilado",
+          "brand": "",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 92,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 92,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "f56c8bb3-025d-4355-981b-f4f729141436",
+      "date": {
+        "_date": "2025-06-19T06:42:29.338Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a8",
+          "catalogId": 1,
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vodka",
+          "productType": "Alcohol",
+          "brand": "Absolut",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 124,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 124,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "598d8ea0-9cd3-4442-ace1-545889c87f83",
+      "date": {
+        "_date": "2025-06-19T06:43:21.780Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a1",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Tinto Malbec",
+          "productType": "Destilado",
+          "brand": "Bodega del Sur",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 290,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "a3",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Ron Cartavio",
+          "productType": "Ron",
+          "brand": "Ron Cartavio",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "a4",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Absolut Vodka",
+          "productType": "Vodka",
+          "brand": "",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "a5",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Blanco",
+          "productType": "Destilado",
+          "brand": "",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 92,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "a8",
+          "catalogId": 1,
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vodka",
+          "productType": "Alcohol",
+          "brand": "Absolut",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 124,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        },
+        {
+          "id": "f1736a35-56bd-47fe-87bd-2dce2e6b5b51",
+          "catalogId": 1,
+          "dateAdded": "2025-06-19T02:31:29.418Z",
+          "name": "hola",
+          "productType": "adios",
+          "brand": "holis",
+          "content": 23,
+          "unitPrice": {
+            "_amount": 123,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 2471,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 6
+    },
+    {
+      "id": "7ab2ec96-db07-4d81-bff3-bb9b281b288c",
+      "date": {
+        "_date": "2025-06-19T06:49:47.790Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a6",
+          "catalogId": "2",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Tinto Malbec",
+          "productType": "Destilado",
+          "brand": "bodega del Sur",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 290,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "f3bc08bc-8463-4557-88a2-1bc3adb7ff2a",
+      "date": {
+        "_date": "2025-06-19T06:55:47.943Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a4",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Absolut Vodka",
+          "productType": "Vodka",
+          "brand": "",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 921,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 921,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "cf028fdd-a69b-43c4-8702-ba8cd83803fe",
+      "date": {
+        "_date": "2025-06-19T09:23:02.394Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a1",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Tinto Malbec",
+          "productType": "Destilado",
+          "brand": "Bodega del Sur",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 290,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
     }
   ]
 }

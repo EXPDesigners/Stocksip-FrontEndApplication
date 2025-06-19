@@ -37,26 +37,42 @@ class UserService extends BaseService {
         }
     }
 
-
     getCurrentUser() {
         const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
         return savedUser ? JSON.parse(savedUser) : null;
     }
 
+    getCurrentUserProfile() {
+        const user = this.getCurrentUser();
+        return user && user.profile ? user.profile : null;
+    }
+
+    async getProfileByEmail(email) {
+        try {
+            const response = await axios.get(`${this.apiUrl}/profiles`, {
+                params: { email }
+            });
+
+            const profiles = response.data;
+            return profiles.length > 0 ? profiles[0] : null;
+        } catch (error) {
+            console.error('Error al obtener perfil por email:', error);
+            return null;
+        }
+    }
+
     async register({ name, email, password, role }) {
         try {
-            // Crear usuario
             const newUserRes = await axios.post(`${this.apiUrl}/users`, {
                 username: email,
                 password
             });
             const newUser = newUserRes.data;
 
-            // Crear perfil asociado
             const profile = {
-                id: newUser.id,         // ID del perfil será igual al del usuario
-                profileId: newUser.id,  // También usado como identificador lógico
-                userId: newUser.id,     // Referencia explícita al user
+                id: newUser.id,
+                profileId: newUser.id,
+                userId: newUser.id,
                 name,
                 email,
                 role
@@ -64,7 +80,6 @@ class UserService extends BaseService {
 
             await axios.post(`${this.apiUrl}/profiles`, profile);
 
-            // Actualizar el usuario con el profileId
             await axios.patch(`${this.apiUrl}/users/${newUser.id}`, {
                 profileId: newUser.id
             });
@@ -75,8 +90,6 @@ class UserService extends BaseService {
             throw error;
         }
     }
-
-
 }
 
 export default new UserService();
