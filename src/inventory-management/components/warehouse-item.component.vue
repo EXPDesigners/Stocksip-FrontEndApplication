@@ -8,11 +8,11 @@ export default {
   },
   methods: {
     navigateToEdit() {
-        this.$router.push({ name: 'EditWarehouse', params: { id: this.warehouse.id } });
+        this.$router.push({ name: 'EditWarehouse', params: { warehouseId: this.warehouse.warehouseId } });
     },
 
     navigateToZones() {
-      this.$router.push({name: 'Zones', params: { id: this.warehouse.id }});
+      this.$router.push({name: 'Zones', params: { warehouseId: this.warehouse.warehouseId } });
     }
   }
 }
@@ -28,7 +28,7 @@ export default {
     </template>
 
     <template #content>
-      <p class="warehouse-text">{{ $t('warehouses.location') }}: {{ warehouse.location }}</p>
+      <p class="warehouse-text">{{ $t('warehouses.address') }}: {{ warehouse.fullAddress }}</p>
       <p class="warehouse-text">{{ $t('warehouses.capacity') }}: {{ warehouse.capacity }} m³</p>
     </template>
 

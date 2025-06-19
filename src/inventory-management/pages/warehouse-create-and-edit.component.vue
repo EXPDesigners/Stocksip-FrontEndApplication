@@ -210,7 +210,7 @@ export default {
                 </div>
 
                 <div class="field col-12 md:col-6">
-                  <label for="location">{{ $t('warehouses.location') }}</label>
+                  <label for="location">{{ $t('warehouses.address') }}</label>
                   <pv-input-text
                       id="location"
                       v-model="form.location"
