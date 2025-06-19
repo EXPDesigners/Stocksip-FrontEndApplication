@@ -26,24 +26,23 @@ export default {
   },
   mounted() {
     const currentProfile = userService.getCurrentUserProfile();
-    console.log('👤 Perfil actual:', currentProfile);
 
     if (!currentProfile?.role) {
-      console.warn('⚠️ Perfil no encontrado o sin rol');
+      console.warn('Profile not found or no role');
       return;
     }
 
     this.profile = currentProfile;
 
     const role = this.profile.role.toLowerCase().trim();
-    console.log('🎭 Rol normalizado:', role);
+    console.log('Role:', role);
 
     if (role === 'supplier') {
       this.isSupplier = true;
     } else if (role === 'liquor store owner') {
       this.isLiquorStoreOwner = true;
     } else {
-      console.warn('❓ Rol no reconocido:', role);
+      console.warn('Unrecognized role:', role);
     }
   }
 };

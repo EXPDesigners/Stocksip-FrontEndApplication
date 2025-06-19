@@ -435,55 +435,6 @@
       "profileId": 3,
       "dateCreated": "2025-05-13T00:00:00Z",
       "isPublished": true
-    },
-    {
-      "id": 3,
-      "name": "asas",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T02:12:58.224Z",
-      "isPublished": false
-    },
-    {
-      "id": 4,
-      "name": "dsddsd",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T02:13:40.043Z",
-      "isPublished": false
-    },
-    {
-      "id": 5,
-      "name": "dsdsd",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T02:13:51.732Z",
-      "isPublished": false
-    },
-    {
-      "id": 6,
-      "name": "Catalogo 4",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T02:14:07.933Z",
-      "isPublished": false
-    },
-    {
-      "id": 7,
-      "name": "Catalogo 4",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T02:14:25.327Z",
-      "isPublished": false
-    },
-    {
-      "id": 8,
-      "name": "Catalogo 89",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T02:32:00.235Z",
-      "isPublished": false
-    },
-    {
-      "id": 9,
-      "name": "Catálogo 456",
-      "profileId": 3,
-      "dateCreated": "2025-06-19T04:47:33.809Z",
-      "isPublished": false
     }
   ],
   "catalogItems": [
@@ -523,7 +474,7 @@
       "dateAdded": "2025-05-13T00:00:00Z",
       "name": "Absolut Vodka",
       "productType": "Vodka",
-      "brand": "",
+      "brand": "Los Angeles",
       "content": 123,
       "unitPrice": {
         "_amount": 921,
@@ -538,7 +489,7 @@
       "dateAdded": "2025-05-13T00:00:00Z",
       "name": "Vino Blanco",
       "productType": "Destilado",
-      "brand": "",
+      "brand": "Rio Grande",
       "content": 123,
       "unitPrice": {
         "_amount": 92,
@@ -572,51 +523,6 @@
       "content": 123,
       "unitPrice": {
         "_amount": 124,
-        "_currency": {
-          "_code": "PEN"
-        }
-      }
-    },
-    {
-      "id": "f1736a35-56bd-47fe-87bd-2dce2e6b5b51",
-      "catalogId": 1,
-      "dateAdded": "2025-06-19T02:31:29.418Z",
-      "name": "hola",
-      "productType": "adios",
-      "brand": "holis",
-      "content": 23,
-      "unitPrice": {
-        "_amount": 123,
-        "_currency": {
-          "_code": "PEN"
-        }
-      }
-    },
-    {
-      "id": "da0e4ea9-8111-4949-87bb-75366a21f971",
-      "catalogId": 8,
-      "dateAdded": "2025-06-19T02:32:00.268Z",
-      "name": "hola",
-      "productType": "sksdsd",
-      "brand": "yey",
-      "content": 23,
-      "unitPrice": {
-        "_amount": 12222,
-        "_currency": {
-          "_code": "PEN"
-        }
-      }
-    },
-    {
-      "id": "8e4cdbcb-871e-4ca0-b2ea-e380119cffb0",
-      "catalogId": 9,
-      "dateAdded": "2025-06-19T04:47:33.836Z",
-      "name": "hola",
-      "productType": "adios",
-      "brand": "ya quiero dormir",
-      "content": 123,
-      "unitPrice": {
-        "_amount": 12,
         "_currency": {
           "_code": "PEN"
         }
@@ -1107,6 +1013,57 @@
       ],
       "totalAmount": {
         "_amount": 921,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "cf028fdd-a69b-43c4-8702-ba8cd83803fe",
+      "date": {
+        "_date": "2025-06-19T09:23:02.394Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "currentPassword": "",
+        "newPassword": "",
+        "confirmPassword": "",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a1",
+          "catalogId": "1",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Tinto Malbec",
+          "productType": "Destilado",
+          "brand": "Bodega del Sur",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 290,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 290,
         "_currency": {
           "_code": "PEN"
         }

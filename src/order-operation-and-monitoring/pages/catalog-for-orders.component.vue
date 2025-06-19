@@ -2,8 +2,8 @@
   <div>
     <div class="provider-input">
       <span class="p-float-label">
-        <InputText id="providerEmail" v-model="providerEmail" placeholder="supplier@example.com" />
         <label for="providerEmail">Supplier email</label>
+        <InputText id="providerEmail" class="InputText" v-model="providerEmail" placeholder="supplier@example.com" />
       </span>
       <Button label="Search" icon="pi pi-search" class="search-btn" @click="loadProviderCatalogs" />
     </div>
@@ -14,15 +14,21 @@
           :key="catalog.id"
           class="catalog-card"
       >
-        <template #title>{{ catalog.name }}</template>
+        <template #title>
+          <div class="catalog-name">
+            {{ catalog.name }}
+          </div>
+        </template>
         <template #subtitle>Publicado el {{ formatDate(catalog.dateCreated) }}
-          <Button label="See all products" icon="pi pi-eye" text @click="loadItems(catalog.id)" />
-          <ul v-if="selectedItems[catalog.id] !== undefined">
-            <li v-if="selectedItems[catalog.id].length === 0">No hay productos en este catálogo</li>
-            <li v-for="item in selectedItems[catalog.id]" :key="item.id" class="product-info">
-              <h4>{{ item.name }}</h4>
-            </li>
-          </ul>
+          <div class="catalog-content">
+            <Button label="See all products" icon="pi pi-eye" text @click="loadItems(catalog.id)" />
+            <ul v-if="selectedItems[catalog.id] !== undefined">
+              <li v-if="selectedItems[catalog.id].length === 0">No hay productos en este catálogo</li>
+              <li v-for="item in selectedItems[catalog.id]" :key="item.id" class="product-info">
+                <h4>{{ item.name }}</h4>
+              </li>
+            </ul>
+          </div>
         </template>
 
         <template #footer>
@@ -157,7 +163,26 @@ export default {
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  align-items: end;
+  flex-direction: column;
+  .InputText {
+    background-color: white;
+    color: gray;
+    border: 3px solid #5A033A;
+    border-radius: 45px;
+  }
+  label {
+    color: #5A033A;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+}
+
+.p-float-label {
+  background-color: #f7eddc;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-info {
@@ -166,5 +191,59 @@ export default {
 
 .search-btn {
   height: 42px;
+  background-color: #5A033A;
+  color: white;
+  width: fit-content;
+  font-size: 1.2rem;
+  border-radius: 45px;
+  border: none;
 }
+.search-btn:hover {
+  background-color: #6E0081;
+  color: white;
+}
+.search-btn:focus {
+  border-color: #6E0081;
+  color: white;
+}
+
+.market-container {
+  .catalog-card {
+    background-color: #fff;
+    border: 3px solid #5A033A;
+    border-radius: 35px;
+  }
+  .catalog-name {
+    font-size: 1.5rem;
+    color: #5A033A;
+    font-weight: bold;
+  }
+  .catalog-content {
+    align-items: center;
+    margin-top: 1rem;
+    color: gray;
+    padding: 2rem;
+    Button {
+      color: #6E0081;
+      border-radius: 45px;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.new-order {
+  background-color: #5A033A;
+  color: white;
+  border-radius: 45px;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.2rem;
+}
+.new-order:hover {
+  background-color: #6E0081;
+  color: white;
+}
+
 </style>

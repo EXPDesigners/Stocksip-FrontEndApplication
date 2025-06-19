@@ -7,7 +7,7 @@
           <strong>Created:</strong> {{ formatDate(catalog?.dateCreated) }}
         </span>
         <div class="actions">
-          <Button label="Publish" @click="onPublish" severity="info" outlined class="publish" />
+          <Button label="Publish" @click="onPublish" severity="info" class="publish" />
           <Button label="Edit" @click="goToEdit" class="edit" />
         </div>
       </div>
@@ -161,7 +161,7 @@ export default {
     };
 
     const formatPrice = (unitPrice) => {
-      if (!unitPrice) return 'Precio no disponible';
+      if (!unitPrice) return 'No valid price';
       return unitPrice.format?.('es-PE') ?? 'S/0.00';
     };
 
@@ -222,12 +222,27 @@ export default {
     background-color: #890E4F;
     color: white;
     font-size: 1.2rem;
+    border: none;
+    padding: 0.5rem 1.6rem;
+    border-radius: 45px;
+  }
+  .edit:hover {
+    background-color: #6E0081;
+    color: white;
+    border: none;
   }
   .publish {
     background-color: white;
     color: #890E4F;
     font-size: 1.2rem;
     border: #890E4F 4px solid;
+    padding: 0.5rem 1.6rem;
+    border-radius: 45px;
+  }
+  .publish:hover {
+    border: #6E0081 4px solid;
+    background-color: white;
+    color: #6E0081;
   }
 }
 

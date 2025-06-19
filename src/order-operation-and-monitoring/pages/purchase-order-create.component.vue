@@ -1,33 +1,33 @@
 <template>
-  <div class="purchase-order-container">
-    <h2>🧪 Purchase Order Create</h2>
-    <p><strong>Catalog ID:</strong> {{ catalogId }}</p>
+  <SideNavbar>
+    <ToolbarContent pageTitle="New Order" />
+    <div class="purchase-order-container">
+      <p>Total items: {{ catalogItems.length }}</p>
 
-    <p>Total items: {{ catalogItems.length }}</p>
+      <table>
+        <thead>
+        <tr>
+          <th>Select</th>
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in catalogItems" :key="item.id">
+          <td>
+            <input class="check" type="checkbox" v-model="selectedItems[item.id]" />
+          </td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.brand }}</td>
+          <td>{{ formatPrice(item.unitPrice) }}</td>
+        </tr>
+        </tbody>
+      </table>
 
-    <table>
-      <thead>
-      <tr>
-        <th>Select</th>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Price</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="item in catalogItems" :key="item.id">
-        <td>
-          <input type="checkbox" v-model="selectedItems[item.id]" />
-        </td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.brand }}</td>
-        <td>{{ formatPrice(item.unitPrice) }}</td>
-      </tr>
-      </tbody>
-    </table>
-
-    <button class="create-btn" @click="createOrder">🛒 Create Order</button>
-  </div>
+      <button class="create-btn" @click="createOrder">🛒 Create Order</button>
+    </div>
+  </SideNavbar>
 </template>
 
 
@@ -46,10 +46,14 @@ import userService from '@/authentication/services/user.service';
 import { v4 as uuidv4 } from 'uuid';
 import {PurchaseOrderService} from "@/order-operation-and-monitoring/services/purchase-order.service.js";
 import profileService from "@/profile-management/services/profile.service.js";
+import SideNavbar from "@/public/components/side-navbar.vue";
+import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 
 export default {
   name: 'PurchaseOrderCreateComponent',
   components: {
+    ToolbarContent,
+    SideNavbar,
     Card,
     Button,
     DataTable,
@@ -72,23 +76,20 @@ export default {
     onMounted(async () => {
       try {
         catalog.value = await catalogService.getCatalogById(catalogId);
-        console.log('[📦] Catálogo cargado:', catalog.value);
+        console.log('Catalog uploaded:', catalog.value);
 
         if (catalog.value?.profileId) {
           supplier.value = await profileService.getProfileById(catalog.value.profileId);
-          console.log('[👤] Perfil del proveedor cargado:', supplier.value);
+          console.log('Provider profile loaded:', supplier.value);
         }
       } catch (err) {
-        console.error('Error al cargar catálogo o proveedor:', err);
+        console.error('Error loading catalog or supplier:', err);
       }
     });
 
     const loadCatalogItems = async () => {
-      console.log('[📦] Iniciando carga de ítems del catálogo...');
-
       try {
         const items = await catalogService.getCatalogItems(catalogId);
-        console.log(`[✅] ${items.length} ítems recibidos del catálogo con ID: ${catalogId}`);
 
         catalogItems.value = items.map(item => {
           const rawPrice = item.unitPrice;
@@ -116,7 +117,7 @@ export default {
               throw new Error('Invalid amount');
             }
           } catch (err) {
-            console.warn(`[⚠️] Precio inválido en item ID ${item.id}:`, err.message);
+            console.warn(`Invalid price on item ID: ${item.id}:`, err.message);
             moneyInstance = null;
           }
 
@@ -126,7 +127,7 @@ export default {
           };
         });
 
-        console.log(`[✅] Ítems procesados correctamente: ${catalogItems.value.length}`);
+        console.log(`Items processed successfully: ${catalogItems.value.length}`);
         console.table(catalogItems.value.map(i => ({
           id: i.id,
           name: i.name,
@@ -134,7 +135,7 @@ export default {
           price: i.unitPrice ? i.unitPrice.amount : 'INVALID'
         })));
       } catch (err) {
-        console.error('[❌] Error al cargar ítems del catálogo:', err);
+        console.error('Error loading catalog items:', err);
       }
     };
 
@@ -158,13 +159,13 @@ export default {
       const profile = userService.getCurrentUserProfile();
 
       if (!profile) {
-        alert('Usuario no autenticado');
+        alert('Unauthenticated user');
         return;
       }
 
       const selectedItemIds = Object.keys(selectedItems.value).filter(id => selectedItems.value[id]);
       if (!selectedItemIds.length) {
-        alert('Selecciona al menos un producto');
+        alert('Select at least one product');
         return;
       }
 
@@ -176,7 +177,7 @@ export default {
 
       if (!Number.isFinite(totalAmount) || totalAmount < 0) {
         console.warn('[⚠️] TotalAmount inválido:', totalAmount);
-        alert('Error al calcular el monto total de la orden.');
+        alert('Error calculating the total order amount.');
         return;
       }
 
@@ -190,9 +191,9 @@ export default {
       if (supplierProfile) {
         try {
           supplier.value = await profileService.getProfileById(supplierProfile);
-          console.log('[👤] Perfil del proveedor cargado:', supplier.value);
+          console.log('Provider profile loaded:', supplier.value);
         } catch (err) {
-          console.error('[❌] Error cargando perfil proveedor:', err);
+          console.error('Error loading provider profile:', err);
         }
       }
 
@@ -214,7 +215,7 @@ export default {
 
       try {
         await orderService.createPurchaseOrder(order);
-        alert('Orden creada exitosamente');
+        alert('Order created successfully');
         router.push('/orders');
       } catch (err) {
         console.error('Error creating order:', err);
@@ -236,13 +237,54 @@ export default {
 </script>
 
 <style scoped>
-.purchase-card {
+
+.purchase-order-container {
   padding: 2rem;
-  margin: 2rem auto;
-  max-width: 800px;
+  max-width: 1000px;
+  background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  margin: 4rem auto 0;
+  font-size: 1.3rem;
+  p {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #5A033A;
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    border: 2px solid #4E4E4E;
+    margin-top: 2rem;
+    text-align: center;
+    thead {
+      background-color: #6E0081;
+      color: white;
+    }
+    th, td {
+      padding: 1rem;
+      border: 1px solid #4E4E4E;
+    }
+    th {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .check {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+  .create-btn {
+    background-color: #5A033A;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 45px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: background-color 0.3s ease;
+  }
 }
 
 .purchase-card h2 {

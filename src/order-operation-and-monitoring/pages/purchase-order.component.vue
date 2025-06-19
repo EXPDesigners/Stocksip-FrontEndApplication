@@ -1,22 +1,30 @@
 <template>
-  <div class="purchase-order-wrapper">
-    <div class="actions">
-      <router-link to="/catalog" class="new-order-button">
-        Nueva Orden
-      </router-link>
+  <SideNavbar>
+    <ToolbarContent pageTitle="Orders" />
+    <div class="order-container-page">
+      <div class="purchase-order-wrapper">
+        <div class="actions">
+          <router-link to="/catalog" class="new-order-button">
+            Nueva Orden
+          </router-link>
+        </div>
+        <PurchaseOrderListComponent :orders="orders" />
+      </div>
     </div>
-
-    <PurchaseOrderListComponent :orders="orders" />
-  </div>
+  </SideNavbar>
 </template>
 
 <script>
 import PurchaseOrderListComponent from "@/order-operation-and-monitoring/components/purchase-order-list.component.vue";
 import { PurchaseOrderService } from "@/order-operation-and-monitoring/services/purchase-order.service.js";
+import SideNavbar from "@/public/components/side-navbar.vue";
+import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 
 export default {
   name: 'PurchaseOrder',
   components: {
+    ToolbarContent,
+    SideNavbar,
     PurchaseOrderListComponent
   },
   data() {
@@ -43,13 +51,20 @@ export default {
   text-align: right;
 }
 
+.order-container-page {
+  background-color: #f7eddc;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
 .new-order-button {
-  background-color: #1976d2;
+  background-color: #5A033A;
   color: white;
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 45px;
   text-decoration: none;
   font-weight: bold;
+  font-size: 1.3rem;
 }
 </style>

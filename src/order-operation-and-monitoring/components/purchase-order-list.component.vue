@@ -2,9 +2,6 @@
   <div class="purchase-list-card">
     <h2 class="recent-orders">Recent Orders</h2>
 
-    <!-- Debug Info -->
-    <pre class="debug">Orders loaded: {{ orders.length }}</pre>
-
     <DataTable :value="orders" class="p-datatable-striped" :paginator="true" :rows="5">
       <Column field="id" header="ID">
         <template #body="{ data }">
@@ -94,8 +91,11 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .recent-orders {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #5A033A;
+}
+.p-datatable-striped {
+  background-color: #f7eddc;
 }
 </style>
