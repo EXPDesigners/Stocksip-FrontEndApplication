@@ -19,6 +19,9 @@ import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-
 import CareGuideComponent from '../inventory-management/pages/care-guide-dashboard.component.vue'
 import CareGuideCreate from '../inventory-management/pages/care-guide-create-and-edit.component.vue'
 
+import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
+import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
+
 const routes = [
     {
         path: '/',
@@ -128,6 +131,23 @@ const routes = [
         path: '/warehouses/zones/:id',
         name: 'Zones',
         component: ZonesComponent,
+    },
+    {
+        path: '/catalog',
+        name: 'Catalogs',
+        component: CatalogComponent,
+    },
+    {
+        path: '/catalog/new',
+        name: 'New Catalog',
+        component: CatalogCreateAndEditComponent,
+        props: true
+    },
+    {
+        path: '/catalog/edit/:catalogId',
+        name: 'Edit Catalog',
+        component: CatalogCreateAndEditComponent,
+        props: true
     }
 ];
 

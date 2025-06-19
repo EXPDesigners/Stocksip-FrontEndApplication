@@ -43,20 +43,24 @@ class UserService extends BaseService {
         return savedUser ? JSON.parse(savedUser) : null;
     }
 
+    getCurrentUserProfile() {
+        const user = this.getCurrentUser();
+        return user && user.profile ? user.profile : null;
+    }
+
+
     async register({ name, email, password, role }) {
         try {
-            // Crear usuario
             const newUserRes = await axios.post(`${this.apiUrl}/users`, {
                 username: email,
                 password
             });
             const newUser = newUserRes.data;
 
-            // Crear perfil asociado
             const profile = {
-                id: newUser.id,         // ID del perfil será igual al del usuario
-                profileId: newUser.id,  // También usado como identificador lógico
-                userId: newUser.id,     // Referencia explícita al user
+                id: newUser.id,
+                profileId: newUser.id,
+                userId: newUser.id,
                 name,
                 email,
                 role
@@ -64,7 +68,6 @@ class UserService extends BaseService {
 
             await axios.post(`${this.apiUrl}/profiles`, profile);
 
-            // Actualizar el usuario con el profileId
             await axios.patch(`${this.apiUrl}/users/${newUser.id}`, {
                 profileId: newUser.id
             });

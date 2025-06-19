@@ -23,6 +23,12 @@
       "password": "123456",
       "id": 4,
       "profileId": 4
+    },
+    {
+      "username": "hola@example.com",
+      "password": "1234",
+      "id": 5,
+      "profileId": 5
     }
   ],
   "profiles": [
@@ -59,6 +65,14 @@
       "name": "Nuevo",
       "email": "nuevo456@example.com",
       "role": "store_owner"
+    },
+    {
+      "id": 5,
+      "profileId": 5,
+      "userId": 5,
+      "name": "Hola",
+      "email": "hola@example.com",
+      "role": "Liquor Store Owner"
     }
   ],
   "warehouses": [
@@ -405,6 +419,231 @@
       "imageUrl": "https://res.cloudinary.com/dmhlgoedk/image/upload/v1750143806/og8bwurxprzp7oxkrlbz.jpg",
       "description": "Temperatura recomendada: 15 - 16°C. Almacenar en Lugar fresco. Duración después de abierto: 12 meses. Comentarios: Pose.",
       "id": "8"
+    }
+  ],
+  "catalogs": [
+    {
+      "id": 1,
+      "name": "Catalogo 5",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:31:29.392Z",
+      "isPublished": false
+    },
+    {
+      "id": 2,
+      "name": "Catalogo 2",
+      "profileId": 3,
+      "dateCreated": "2025-05-13T00:00:00Z",
+      "isPublished": true
+    },
+    {
+      "id": 3,
+      "name": "asas",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:12:58.224Z",
+      "isPublished": false
+    },
+    {
+      "id": 4,
+      "name": "dsddsd",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:13:40.043Z",
+      "isPublished": false
+    },
+    {
+      "id": 5,
+      "name": "dsdsd",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:13:51.732Z",
+      "isPublished": false
+    },
+    {
+      "id": 6,
+      "name": "Catalogo 4",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:14:07.933Z",
+      "isPublished": false
+    },
+    {
+      "id": 7,
+      "name": "Catalogo 4",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:14:25.327Z",
+      "isPublished": false
+    },
+    {
+      "id": 8,
+      "name": "Catalogo 89",
+      "profileId": 3,
+      "dateCreated": "2025-06-19T02:32:00.235Z",
+      "isPublished": false
+    }
+  ],
+  "catalogItems": [
+    {
+      "id": "a1",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Tinto Malbec",
+      "productType": "Destilado",
+      "brand": "Bodega del Sur",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a3",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Ron Cartavio",
+      "productType": "Ron",
+      "brand": "Ron Cartavio",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 921,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a4",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Absolut Vodka",
+      "productType": "Vodka",
+      "brand": "",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 921,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a5",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Blanco",
+      "productType": "Destilado",
+      "brand": "",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 92,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a6",
+      "catalogId": "2",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Tinto Malbec",
+      "productType": "Destilado",
+      "brand": "",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a7",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Blanco",
+      "productType": "Destilado",
+      "brand": "bodega del Sur",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 92,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a8",
+      "catalogId": 1,
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vodka",
+      "productType": "Alcohol",
+      "brand": "Absolut",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 124,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a9",
+      "catalogId": "",
+      "dateAdded": "",
+      "name": "",
+      "productType": "",
+      "brand": "",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 0,
+        "_currency": {
+          "_code": ""
+        }
+      }
+    },
+    {
+      "id": "a10",
+      "catalogId": "",
+      "dateAdded": "",
+      "name": "",
+      "productType": "",
+      "brand": "",
+      "content": 123,
+      "unitPrice": {
+        "_amount": 0,
+        "_currency": {
+          "_code": ""
+        }
+      }
+    },
+    {
+      "id": "f1736a35-56bd-47fe-87bd-2dce2e6b5b51",
+      "catalogId": 1,
+      "dateAdded": "2025-06-19T02:31:29.418Z",
+      "name": "hola",
+      "productType": "adios",
+      "brand": "holis",
+      "content": 23,
+      "unitPrice": {
+        "_amount": 123,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "da0e4ea9-8111-4949-87bb-75366a21f971",
+      "catalogId": 8,
+      "dateAdded": "2025-06-19T02:32:00.268Z",
+      "name": "hola",
+      "productType": "sksdsd",
+      "brand": "yey",
+      "content": 23,
+      "unitPrice": {
+        "_amount": 12222,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
     }
   ]
 }
