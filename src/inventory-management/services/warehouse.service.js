@@ -1,5 +1,6 @@
 import {BaseService} from "../../shared/services/base.service.js";
 import {generateUuid} from "@/shared/model/uuid.js";
+import {WarehouseAssembler} from "@/inventory-management/services/warehouse.assembler.js";
 
 /**
  * @class WarehouseService
@@ -18,7 +19,7 @@ export class WarehouseService extends BaseService {
      */
     async getWarehouses() {
         const response = await this.getAll();
-        return response.data;
+        return WarehouseAssembler.toEntitiesFromResources(response.data);
     }
 
     /**
@@ -28,7 +29,7 @@ export class WarehouseService extends BaseService {
      */
     async getWarehouseById(id) {
         const response = await this.getById(id);
-        return response.data;
+        return WarehouseAssembler.toEntityFromResource(response.data);
     }
 
     /**

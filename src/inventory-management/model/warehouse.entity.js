@@ -14,23 +14,34 @@ import {generateUuid} from "../../shared/model/uuid.js";
  * @param {string} profileId - The ID of the person that owns the warehouse.
  */
 export class Warehouse {
+
     constructor({
-        id = '',
+        warehouseId = 0,
         name = '',
-        imageUrl = '',
-        location ='',
+        street ='',
         city = '',
-        state = '',
+        district = '',
         postalCode = '',
+        country = '',
+        maxTemperature = 0,
+        minTemperature = 0,
         capacity = 0,
+        imageUrl = ''
                 }) {
-        this.id = id;
+        this.warehouseId = warehouseId;
         this.name = name;
-        this.imageUrl = imageUrl;
-        this.location = location;
+        this.street = street;
         this.city = city;
-        this.state = state;
+        this.district = district;
         this.postalCode = postalCode;
+        this.country = country;
+        this.maxTemperature = maxTemperature;
+        this.minTemperature = minTemperature;
         this.capacity = capacity;
+        this.imageUrl = imageUrl;
+    }
+
+    get fullAddress() {
+        return `${this.street}, ${this.city}, ${this.district}, ${this.postalCode}, ${this.country}`;
     }
 }
