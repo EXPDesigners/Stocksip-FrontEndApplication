@@ -53,7 +53,7 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/catalog" v-tooltip="$t('toolbar.order')">
+          <router-link to="/orders" v-tooltip="$t('toolbar.order')">
             <i class="pi pi-shopping-cart"></i>
             <span v-if="isExpanded">{{ $t('toolbar.order')}}</span>
           </router-link>

@@ -21,6 +21,9 @@ import CareGuideCreate from '../inventory-management/pages/care-guide-create-and
 
 import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
 import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
+import PurchaseOrderCreateComponent from "@/order-operation-and-monitoring/pages/purchase-order-create.component.vue";
+import PurchaseOrdersComponent from "@/order-operation-and-monitoring/pages/purchase-order.component.vue";
+import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.component.vue";
 
 const routes = [
     {
@@ -148,6 +151,16 @@ const routes = [
         name: 'Edit Catalog',
         component: CatalogCreateAndEditComponent,
         props: true
+    },
+    {
+        path: '/purchase-order/new/:catalogId',
+        name: 'PurchaseOrderCreate',
+        component: PurchaseOrderCreateComponent
+    },
+    {
+        path: '/orders',
+        name: 'PurchaseOrder',
+        component: OrdersComponent
     }
 ];
 

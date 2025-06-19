@@ -122,7 +122,7 @@ export default {
     );
 
     const deleteItem = async (id) => {
-      const confirmed = confirm('¿Estás seguro de que deseas eliminar este producto del catálogo?');
+      const confirmed = confirm('Are you sure you want to remove this product from the catalog?');
       if (!confirmed) return;
 
       const itemToDelete = catalogItems.value.find(item => item.id === id);
@@ -131,10 +131,10 @@ export default {
       try {
         await catalogService.deleteCatalogItem(id);
         catalogItems.value = catalogItems.value.filter(item => item.id !== id);
-        toast.add({ severity: 'info', summary: 'Producto eliminado', life: 3000 });
+        toast.add({ severity: 'info', summary: 'Removed product', life: 3000 });
       } catch (err) {
         console.error('Error al eliminar del backend:', err);
-        toast.add({ severity: 'error', summary: 'Error al eliminar el producto', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error deleting product', life: 3000 });
       }
     };
 
@@ -147,34 +147,22 @@ export default {
     const onPublish = async () => {
       const c = props.catalog;
       if (!c?.id || !c.profileId || !c.name || !c.dateCreated) {
-        toast.add({ severity: 'warn', summary: 'Catálogo incompleto', detail: 'No se puede publicar.', life: 4000 });
+        toast.add({ severity: 'warn', summary: 'Incomplete catalog', detail: 'No se puede publicar.', life: 4000 });
         return;
       }
 
       try {
         await catalogService.updateCatalog({ ...c, isPublished: true });
-        toast.add({ severity: 'success', summary: 'Catálogo publicado', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Published catalog', life: 3000 });
       } catch (err) {
         console.error('Error al publicar catálogo:', err);
-        toast.add({ severity: 'error', summary: 'Error al publicar', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error publishing', life: 3000 });
       }
     };
 
-    const formatPrice = (price) => {
-      if (!price || typeof price.amount !== 'number' || price.amount < 0 || !price.currency) {
-        return 'N/A';
-      }
-
-      try {
-        const money = new Money({
-          amount: price.amount,
-          currency: new Currency(price.currency.code ?? price.currency)
-        });
-        return money.toString();
-      } catch (err) {
-        console.warn('Error formatting price:', err);
-        return 'N/A';
-      }
+    const formatPrice = (unitPrice) => {
+      if (!unitPrice) return 'Precio no disponible';
+      return unitPrice.format?.('es-PE') ?? 'S/0.00';
     };
 
 

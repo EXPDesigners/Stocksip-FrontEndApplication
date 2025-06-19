@@ -9,7 +9,9 @@ export class PurchaseOrderService {
     }
 
     async getAll() {
+        console.log('📡 Fetching orders from:', apiUrl);
         const response = await axios.get(apiUrl);
+        console.log('Data received:', response.data);
         return response.data;
     }
 
