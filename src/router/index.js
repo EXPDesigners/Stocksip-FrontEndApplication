@@ -61,12 +61,12 @@ const routes = [
         component: CreateAndEditWarehouse
     },
     {
-        path: '/warehouses/edit/:id',
+        path: '/warehouses/edit/:warehouseId',
         name: 'EditWarehouse',
         component: CreateAndEditWarehouse,
     },
     {
-        path: '/warehouses/zones/:id',
+        path: '/warehouses/zones/:warehouseId',
         name: 'Zones',
         component: ZonesComponent,
     }
