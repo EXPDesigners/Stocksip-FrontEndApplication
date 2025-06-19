@@ -1,17 +1,13 @@
 <template>
   <div>
-    <!-- 🟦 Botón para Suppliers -->
     <div v-if="isSupplier" class="add-catalog-btn">
       <Button label="New Catalog" icon="pi pi-plus" @click="goToNewCatalog" />
     </div>
 
-    <!-- 🟨 Lista de Catálogos para Suppliers -->
     <CatalogList v-if="isSupplier" :catalogs="catalogs" />
 
-    <!-- 🟩 Catálogos para órdenes (Licorerías) -->
-    <CatalogForOrders v-else-if="isLiquorStoreOwner" :catalogCards="catalogs" />
+    <CatalogForOrders v-if="isLiquorStoreOwner" :catalogCards="catalogs" />
 
-    <!-- 🔴 Otros roles -->
     <p v-else>No tienes acceso a esta sección.</p>
   </div>
 </template>
@@ -46,31 +42,37 @@ export default {
     };
 
     onMounted(async () => {
-      const currentUser = userService.getCurrentUser();
-      console.log('Usuario actual:', currentUser);
+      const currentProfile = userService.getCurrentUserProfile();
+      console.log('Perfil actual:', currentProfile);
 
-      if (!currentUser?.profile || !currentUser.profile.role) {
+      if (!currentProfile?.role) {
         console.warn('Perfil no encontrado o sin rol');
         return;
       }
 
-      profile.value = currentUser.profile;
-      console.log('Rol del perfil:', profile.value.role);
+      profile.value = currentProfile;
 
       try {
-        if (profile.value.role === 'Supplier') {
+        const role = profile.value.role.toLowerCase().trim();
+        console.log('Rol normalizado:', role);
+
+        if (role === 'supplier') {
           isSupplier.value = true;
           catalogs.value = await catalogService.getCatalogByProfile(profile.value.profileId);
-        } else if (profile.value.role === 'Liquor Store Owner') {
+          console.log('Catálogos del supplier:', catalogs.value);
+        } else if (role === 'liquor store owner') {
           isLiquorStoreOwner.value = true;
           catalogs.value = await catalogService.getPublishedCatalogs();
+          console.log('Catálogos publicados:', catalogs.value);
         } else {
-          console.warn('Rol no reconocido');
+          console.warn('Rol no reconocido:', role);
         }
       } catch (err) {
         console.error('Error al cargar catálogos:', err);
       }
     });
+
+
 
     return {
       catalogs,

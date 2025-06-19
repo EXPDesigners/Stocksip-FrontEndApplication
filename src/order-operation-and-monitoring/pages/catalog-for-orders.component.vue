@@ -1,6 +1,5 @@
 <template>
-  <div v-if="isAllowed">
-    <!-- 🔍 Buscar proveedor -->
+  <div>
     <div class="provider-input">
       <span class="p-float-label">
         <InputText id="providerEmail" v-model="providerEmail" placeholder="supplier@example.com" />
@@ -9,7 +8,6 @@
       <Button label="Search" icon="pi pi-search" class="search-btn" @click="loadProviderCatalogs" />
     </div>
 
-    <!-- 🗂️ Lista de catálogos -->
     <div class="market-container">
       <Card
           v-for="catalog in catalogs"
@@ -17,17 +15,15 @@
           class="catalog-card"
       >
         <template #title>{{ catalog.name }}</template>
-        <template #subtitle>Publicado el {{ formatDate(catalog.dateCreated) }}</template>
-
-        <Button label="See all products" icon="pi pi-eye" text @click="loadItems(catalog.id)" />
-
-        <ul v-if="selectedItems[catalog.id]">
-          <li v-for="item in selectedItems[catalog.id]" :key="item.id" class="product-info">
-            <h4>{{ item.name }}</h4>
-            <p>{{ item.brand }} · {{ item.content }}ml</p>
-            <strong>{{ formatPrice(item.unitPrice) }}</strong>
-          </li>
-        </ul>
+        <template #subtitle>Publicado el {{ formatDate(catalog.dateCreated) }}
+          <Button label="See all products" icon="pi pi-eye" text @click="loadItems(catalog.id)" />
+          <ul v-if="selectedItems[catalog.id] !== undefined">
+            <li v-if="selectedItems[catalog.id].length === 0">No hay productos en este catálogo</li>
+            <li v-for="item in selectedItems[catalog.id]" :key="item.id" class="product-info">
+              <h4>{{ item.name }}</h4>
+            </li>
+          </ul>
+        </template>
 
         <template #footer>
           <Button
@@ -41,10 +37,6 @@
     </div>
   </div>
 
-  <!-- 🛑 Si no tiene permisos -->
-  <div v-else>
-    <p>No tienes permiso para ver esta sección.</p>
-  </div>
 </template>
 
 <script>
@@ -85,13 +77,18 @@ export default {
     });
 
     const loadItems = async (catalogId) => {
-      if (!selectedItems.value[catalogId]) {
-        try {
-          const items = await catalogService.getCatalogItems(catalogId);
-          selectedItems.value[catalogId] = items;
-        } catch (err) {
-          console.error('Error fetching items for catalog:', err);
-        }
+      try {
+        const items = await catalogService.getCatalogItems(catalogId);
+
+        // Forzar reactividad total
+        selectedItems.value = {
+          ...selectedItems.value,
+          [catalogId]: items
+        };
+
+        console.log('Productos cargados para catálogo', catalogId, items);
+      } catch (err) {
+        console.error('Error al cargar productos del catálogo:', err);
       }
     };
 
@@ -105,8 +102,7 @@ export default {
           return;
         }
 
-        const supplierCatalogs = await catalogService.getPublishedCatalogsByProfile(profile.profileId);
-        catalogs.value = supplierCatalogs;
+        catalogs.value = await catalogService.getPublishedCatalogsByProfile(profile.profileId);
       } catch (err) {
         toast.add({ severity: 'error', summary: 'Error al buscar proveedor o catálogos', life: 3000 });
         console.error(err);
