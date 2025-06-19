@@ -1,5 +1,3 @@
-import {generateUuid} from "../../shared/model/uuid.js";
-
 /**
  * Class representing a warehouse amount the bounded context inventory-management.
  * @module warehouse

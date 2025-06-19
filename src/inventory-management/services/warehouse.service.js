@@ -1,6 +1,7 @@
-import {BaseService} from "../../shared/services/base.service.js";
+
 import {generateUuid} from "@/shared/model/uuid.js";
 import {WarehouseAssembler} from "@/inventory-management/services/warehouse.assembler.js";
+import {BaseService} from "@/shared/services/base.service.js";
 
 /**
  * @class WarehouseService
