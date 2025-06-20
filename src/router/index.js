@@ -9,10 +9,9 @@ import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.co
 
 import WarehouseComponent from '../inventory-management/pages/warehouse.component.vue';
 import CreateAndEditWarehouse from "@/inventory-management/pages/warehouse-create-and-edit.component.vue";
-import ZonesComponent from '../inventory-management/pages/zones.component.vue'
+import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 import ProductCreateAndEditComponent from "@/inventory-management/pages/product-create-and-edit.component.vue";
-import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 import ReportsComponent from '../analytics-and-reporting/pages/report-management.component.vue'
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
@@ -21,6 +20,14 @@ import CareGuideCreate from '../inventory-management/pages/care-guide-create-and
 import ResupplyPlanDashboard from '../inventory-management/pages/resupply-plan-dashboard.component.vue'
 import ResupplyPlanCreatePage from '../inventory-management/pages/resupply-plan-create.page.vue'
 import ResupplyPlanEditPage from '../inventory-management/pages/resupply-plan-edit.page.vue'
+
+import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
+import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
+import PurchaseOrderCreateComponent from "@/order-operation-and-monitoring/pages/purchase-order-create.component.vue";
+import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.component.vue";
+import ProductListComponent from "@/inventory-management/components/product-list.component.vue";
+import ProductCreateAndEdit from "@/inventory-management/pages/product-create-and-edit.component.vue";
+import ProductManagementComponent from "@/inventory-management/components/product-management.component.vue";
 
 const routes = [
     {
@@ -123,7 +130,7 @@ const routes = [
         component: CreateAndEditWarehouse
     },
     {
-        path: '/warehouses/edit/:id',
+        path: '/warehouses/edit/:warehouseId',
         name: 'EditWarehouse',
         component: CreateAndEditWarehouse,
     },
@@ -147,6 +154,52 @@ const routes = [
         path: '/resupplies/:id/plans/edit',
         name: 'resupply-plan-edit',
         component: ResupplyPlanEditPage,
+    },
+        path: '/warehouses/:warehouseId/products',
+        name: 'Inventory',
+        component: InventoryComponent,
+    },
+    {
+        path: '/catalog',
+        name: 'Catalogs',
+        component: CatalogComponent,
+    },
+    {
+        path: '/catalog/new',
+        name: 'New Catalog',
+        component: CatalogCreateAndEditComponent,
+        props: true
+    },
+    {
+        path: '/catalog/edit/:catalogId',
+        name: 'Edit Catalog',
+        component: CatalogCreateAndEditComponent,
+        props: true
+    },
+    {
+        path: '/purchase-order/new/:catalogId',
+        name: 'PurchaseOrderCreate',
+        component: PurchaseOrderCreateComponent
+    },
+    {
+        path: '/orders',
+        name: 'PurchaseOrder',
+        component: OrdersComponent
+    },
+    {
+        path: '/products',
+        name: 'ProductList',
+        component: ProductManagementComponent
+    },
+    {
+        path: '/products/new',
+        name: 'ProductCreate',
+        component: ProductCreateAndEdit
+    },
+    {
+        path: '/products/:productId/edit',
+        name: 'ProductEdit',
+        component: ProductCreateAndEdit,
         props: true
     }
 ];

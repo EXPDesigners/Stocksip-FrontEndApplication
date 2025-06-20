@@ -23,15 +23,28 @@
     "profile": "Profile"
   },
   "warehouses": {
-    "name": "Name",
-    "location": "Location",
+    "title": "Warehouses",
+    "address": "Address",
     "capacity": "Capacity",
-    "city": "City",
-    "state": "State",
-    "postal-code": "Postal Code",
     "create": "Create new warehouse",
+    "editWarehouseTitle": "Edit Warehouse",
+    "createWarehouseTitle": "New Warehouse",
     "create_success": "Warehouse created successfully!",
-    "update_success": "Warehouse updated successfully!"
+    "update_success": "Warehouse updated successfully!",
+    "emptyTitle": "No warehouses created",
+    "emptyDescription": "You can create a new warehouse by clicking the button below.",
+    "form": {
+      "name": "Name of Warehouse",
+      "street": "Street",
+      "city": "City",
+      "district": "District",
+      "postal-code": "Postal Code",
+      "country": "Country",
+      "capacity": "Capacity",
+      "max-temperature": "Max Temperature",
+      "min-temperature": "Min Temperature",
+      "warehouse-image": "Warehouse Image"
+    }
   },
   "components": {
     "save": "Save",
@@ -44,10 +57,25 @@
     "update": "Update",
     "upload-image": "Choose image",
     "upload-file": "Upload file",
-    "no-chosen-file": "No file chosen"
+    "actual-image": "Current image",
+    "no-chosen-file": "No file chosen",
+    "complete-data": "Complete all fields in the form",
+    "edit-data": "You can edit the data in the form",
+    "preview": "Preview"
   },
   "toast": {
     "success": "Success",
     "error": "Error"
+  },
+  "errors": {
+    "name-required": "The name field is required.",
+    "street-required": "The street field is required.",
+    "city-required": "The city field is required.",
+    "district-required": "The district field is required.",
+    "postal-code-required": "The postal code field is required.",
+    "country-required": "The country field is required.",
+    "capacity-required": "The capacity field is required.",
+    "max-temperature-required": "The max temperature is 50.",
+    "min-temperature-required": "The min temperature is -50."
   }
 }

@@ -11,21 +11,85 @@
       "username": "sebastian@example.com",
       "password": "123456",
       "profileId": 2
+    },
+    {
+      "username": "camila@example.com",
+      "password": "12345678",
+      "id": 3,
+      "profileId": 3
+    },
+    {
+      "username": "nuevo456@example.com",
+      "password": "123456",
+      "id": 4,
+      "profileId": 4
+    },
+    {
+      "username": "hola@example.com",
+      "password": "1234",
+      "id": 5,
+      "profileId": 5
+    },
+    {
+      "username": "nuevo123@gmail.com",
+      "password": "12345678",
+      "id": 6,
+      "profileId": 6
     }
   ],
   "profiles": [
     {
-      "id": 1,
       "profileId": 1,
       "name": "Farid",
       "email": "farid@example.com",
-      "role": "Liquor Store Manager"
+      "businessName": "Business",
+      "businessAddress": "Av. Alameda",
+      "phone": "123456789",
+      "id": 1,
+      "role": "Liquor Store Owner"
     },
     {
       "id": 2,
       "profileId": 2,
       "name": "Sebastian",
       "role": "Supplier"
+    },
+    {
+      "id": 3,
+      "profileId": 3,
+      "name": "Camila",
+      "email": "camila@example.com",
+      "role": "Supplier"
+    },
+    {
+      "id": 4,
+      "profileId": 4,
+      "userId": 4,
+      "name": "Nuevo",
+      "email": "nuevo456@example.com",
+      "role": "store_owner"
+    },
+    {
+      "id": 5,
+      "profileId": 5,
+      "userId": 5,
+      "name": "Hola",
+      "email": "hola@example.com",
+      "role": "Liquor Store Owner"
+    },
+    {
+      "profileId": 6,
+      "name": "nuevo3",
+      "email": "nuevo123@gmail.com",
+      "businessName": "business3",
+      "businessAddress": "Avenida Riobamba intersección Calle Tarma 15066",
+      "phone": "973964283",
+      "currentPassword": "",
+      "newPassword": "",
+      "confirmPassword": "",
+      "id": 6,
+      "userId": 6,
+      "role": "Liquor Store Owner"
     }
   ],
   "warehouses": [
@@ -180,36 +244,6 @@
       "description": "Recommended temperature: 8 - 10 °C"
     }
   ],
-  "product": [
-    {
-      "name": "Vino Tinto Malbec",
-      "type": "Destilado",
-      "description": "Temperatura recomendada: 16 - 20 °C",
-      "imageUrl": "",
-      "id": "7ca4"
-    },
-    {
-      "name": "Vino Blanco",
-      "type": "Destilado",
-      "description": "Temperatura recomendada: 16 - 20 °C",
-      "imageUrl": "",
-      "id": "c52b"
-    },
-    {
-      "name": "Ron Cartavio",
-      "type": "Ron",
-      "description": "Temperatura recomendada: 16 - 20 °C",
-      "imageUrl": "",
-      "id": "aa97"
-    },
-    {
-      "name": "Absolut Vodka",
-      "type": "Vodka",
-      "description": "Temperatura recomendada: 16 - 20 °C",
-      "imageUrl": "",
-      "id": "1f2e"
-    }
-  ],
   "reports": [
     {
       "id": 1,
@@ -269,50 +303,89 @@
   "products": [
     {
       "id": 1,
-      "name": "Whisky Escocés Premium",
-      "current": 5,
-      "min": 7,
-      "expirationDate": "2025-07-15"
+      "name": "Ron Blanco",
+      "brandName": "Cartavio",
+      "liquorType": "Destilado",
+      "unitPriceAmount": 56,
+      "minimumStock": 32,
+      "updatedUnitPriceAmount": 56,
+      "updatedMinimumStock": 32
     },
     {
       "id": 2,
-      "name": "Cerveza Artesanal IPA",
-      "current": 8,
-      "min": 10,
-      "expirationDate": "2025-06-26"
+      "name": "Vodka",
+      "brandName": "Absolut",
+      "liquorType": "Vodka",
+      "unitPriceAmount": 45,
+      "minimumStock": 20,
+      "updatedUnitPriceAmount": 45,
+      "updatedMinimumStock": 20
     },
     {
       "id": 3,
-      "name": "Ron Añejo Reserva",
-      "current": 2,
-      "min": 1,
-      "expirationDate": "2025-06-25"
+      "name": "Vino Tinto Malbec",
+      "brandName": "Bodega del Sur",
+      "liquorType": "Vino",
+      "unitPriceAmount": 289,
+      "minimumStock": 15,
+      "updatedUnitPriceAmount": 289,
+      "updatedMinimumStock": 15
     },
     {
       "id": 4,
-      "name": "Vino Tinto Malbec",
-      "current": 10,
-      "min": 6,
-      "expirationDate": "2025-06-25"
+      "name": "Pisco Queirolo",
+      "brandName": "Queirolo",
+      "liquorType": "Pisco",
+      "unitPriceAmount": 67,
+      "minimumStock": 10,
+      "updatedUnitPriceAmount": 67,
+      "updatedMinimumStock": 10
     },
     {
       "id": 5,
-      "name": "Gin Botánico",
-      "current": 10,
-      "min": 6,
-      "expirationDate": "2025-06-25"
+      "name": "Whisky Jameson",
+      "brandName": "Jameson",
+      "liquorType": "Whisky",
+      "unitPriceAmount": 135,
+      "minimumStock": 25,
+      "updatedUnitPriceAmount": 135,
+      "updatedMinimumStock": 25
     },
     {
-      "id": 6,
-      "name": "Vino Blanco Chardonnay",
-      "current": 1,
-      "min": 0,
-      "expirationDate": "2025-06-25"
+      "name": "Product 1",
+      "brandName": "Brand 1",
+      "liquorType": "Type 1",
+      "unitPriceAmount": 450,
+      "minimumStock": 34,
+      "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750453644/ujair1z0nz3czriix2xg.png",
+      "providerId": 3,
+      "id": 8,
+      "min": 23
+    },
+    {
+      "name": "Vino Tinto Del Valle",
+      "brandName": "Tabernero",
+      "liquorType": "Destilado",
+      "unitPriceAmount": 44.5,
+      "minimumStock": 3,
+      "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png",
+      "providerId": 1,
+      "id": 9
+    },
+    {
+      "name": "Hola",
+      "brandName": "Ya funciona esta hvda",
+      "liquorType": "Liquor",
+      "unitPriceAmount": 56,
+      "minimumStock": 3,
+      "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454758/eyksx9zurvhqjttk2cyl.png",
+      "providerId": 3,
+      "id": 10
     }
   ],
   "settings": [
     {
-      "expirationAlertMargin": 10,
+      "expirationAlertMargin": 5,
       "id": 1
     }
   ],
@@ -380,8 +453,6 @@
       "productos": [
         "1",
         "2",
-        "1",
-        "2",
         "3",
         "5"
       ],
@@ -404,6 +475,144 @@
       "frecuencia": "Quincenal",
       "estado": "Activo",
       "id": "2"
+    }
+  ],
+  "catalogs": [
+    {
+      "id": 1,
+      "name": "Catalogo 5",
+      "profileId": 3,
+      "dateCreated": "2025-06-20T19:45:30.915Z",
+      "isPublished": false
+    },
+    {
+      "id": 2,
+      "name": "Catalogo 2",
+      "profileId": 3,
+      "dateCreated": "2025-05-13T00:00:00Z",
+      "isPublished": true
+    }
+  ],
+  "catalogItems": [
+    {
+      "id": "a1",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Tinto Malbec",
+      "productType": "Destilado",
+      "brand": "Bodega del Sur",
+      "content": 123,
+      "unitPrice": 289
+    },
+    {
+      "id": "a3",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Ron Cartavio",
+      "productType": "Ron",
+      "brand": "Ron Cartavio",
+      "content": 123,
+      "unitPrice": 45
+    },
+    {
+      "id": "a4",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Absolut Vodka",
+      "productType": "Vodka",
+      "brand": "Los Angeles",
+      "content": 123,
+      "unitPrice": 56
+    },
+    {
+      "id": "a5",
+      "catalogId": "1",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Blanco",
+      "productType": "Destilado",
+      "brand": "Rio Grande",
+      "content": 123,
+      "unitPrice": 67
+    },
+    {
+      "id": "a6",
+      "catalogId": "2",
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vino Tinto Malbec",
+      "productType": "Destilado",
+      "brand": "bodega del Sur",
+      "content": 123,
+      "unitPrice": 35
+    },
+    {
+      "id": "a8",
+      "catalogId": 1,
+      "dateAdded": "2025-05-13T00:00:00Z",
+      "name": "Vodka",
+      "productType": "Alcohol",
+      "brand": "Absolut",
+      "content": 123,
+      "unitPrice": 135
+    },
+    {
+      "id": "a9979a50-ccd4-4f60-91eb-3932ff9bc28d",
+      "catalogId": 1,
+      "dateAdded": "2025-06-20T00:45:51.340Z",
+      "name": "Vino Tinto Semiseco",
+      "productType": "Vino",
+      "brand": "Ron Cartavio",
+      "content": 450,
+      "unitPrice": 67
+    },
+    {
+      "id": "c0680aec-b1ad-4bf1-9e93-1bdd46763bf0",
+      "catalogId": 1,
+      "dateAdded": "2025-06-20T19:45:30.951Z",
+      "name": "Ron Blanco",
+      "productType": "Destilado",
+      "brand": "Tabernero",
+      "content": 560,
+      "unitPrice": 34
+    }
+  ],
+  "purchase-orders": [
+    {
+      "id": "6647671c-6f07-4f0d-9e06-fdc83cb3445b",
+      "date": {
+        "_date": "2025-06-20T19:53:04.428Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a6",
+          "catalogId": "2",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Tinto Malbec",
+          "productType": "Destilado",
+          "brand": "bodega del Sur",
+          "content": 123,
+          "unitPrice": 35
+        }
+      ],
+      "totalAmount": 35,
+      "totalItems": 1
     }
   ]
 }

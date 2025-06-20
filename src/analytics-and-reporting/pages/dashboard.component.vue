@@ -114,15 +114,15 @@ export default {
         <div class="dashboard-card access">
           <h2 class="access-title">Quick Access</h2>
           <div class="access-row">
-            <router-link to="/inventario" class="access-btn acceso-inventario access-btn-lg">
+            <router-link to="/catalog" class="access-btn acceso-inventario access-btn-lg">
               <span class="access-icon"><i class="pi pi-box"></i></span>
-              <span class="access-link">Inventory</span>
+              <span class="access-link">Catalogs</span>
             </router-link>
-            <router-link to="/compras" class="access-btn acceso-compras access-btn-lg">
+            <router-link to="/orders" class="access-btn acceso-compras access-btn-lg">
               <span class="access-icon"><i class="pi pi-shopping-cart"></i></span>
-              <span class="access-link">Shopping</span>
+              <span class="access-link">Orders</span>
             </router-link>
-            <router-link to="/zonas" class="access-btn acceso-zonas access-btn-lg">
+            <router-link to="/zones" class="access-btn acceso-zonas access-btn-lg">
               <span class="access-icon"><i class="pi pi-building"></i></span>
               <span class="access-link">Zones</span>
             </router-link>

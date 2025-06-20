@@ -4,7 +4,7 @@ import SideNavbar from "@/public/components/side-navbar.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 
 export default {
-  name: "inventory",
+  name: "Inventory",
   components: {ToolbarContent, SideNavbar, ProductManagement}
 }
 </script>

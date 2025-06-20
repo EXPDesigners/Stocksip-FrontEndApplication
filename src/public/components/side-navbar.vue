@@ -53,13 +53,13 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="$t('toolbar.order')">
+          <router-link to="/orders" v-tooltip="$t('toolbar.order')">
             <i class="pi pi-shopping-cart"></i>
             <span v-if="isExpanded">{{ $t('toolbar.order')}}</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="$t('toolbar.storage')">
+          <router-link to="/products" v-tooltip="$t('toolbar.storage')">
             <i class="pi pi-building"></i>
             <span v-if="isExpanded">{{ $t('toolbar.storage') }}</span>
           </router-link>
@@ -169,7 +169,7 @@ export default {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  margin-left: 64px;
+  margin-left: 0.5rem;
   transition: margin-left 0.3s ease;
 }
 

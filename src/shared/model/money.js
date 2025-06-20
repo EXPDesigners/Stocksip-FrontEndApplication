@@ -61,4 +61,11 @@ export class Money {
         return other instanceof Money &&
             this._amount === other.amount && this._currency.equals(other.currency);
     }
+
+    format(locale = 'es-PE') {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: this._currency.code
+        }).format(this._amount);
+    }
 }
