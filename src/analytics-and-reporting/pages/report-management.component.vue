@@ -55,6 +55,9 @@ export default {
     },
     goToCareGuide() {
       this.$router.push({ name: 'care-guide' })
+    },
+    goToResupplies() {
+      this.$router.push({ name: 'Resupplies' })
     }
   }
 }
@@ -69,7 +72,7 @@ export default {
       <div class="report-nav">
         <button class="nav-btn">Internal referral</button>
         <button class="nav-btn active">Loss reporting</button>
-        <button class="nav-btn">Resupplies</button>
+        <button class="nav-btn" @click="goToResupplies">Resupplies</button>
         <button class="nav-btn" @click="goToCareGuide">Conservation</button>
       </div>
 
