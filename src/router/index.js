@@ -66,7 +66,7 @@ const routes = [
         component: CreateAndEditWarehouse,
     },
     {
-        path: '/warehouses/zones/:warehouseId',
+        path: '/warehouses/:warehouseId',
         name: 'Zones',
         component: ZonesComponent,
     }
