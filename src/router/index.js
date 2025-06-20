@@ -18,6 +18,9 @@ import ReportsComponent from '../analytics-and-reporting/pages/report-management
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
 import CareGuideComponent from '../inventory-management/pages/care-guide-dashboard.component.vue'
 import CareGuideCreate from '../inventory-management/pages/care-guide-create-and-edit.component.vue'
+import ResupplyPlanDashboard from '../inventory-management/pages/resupply-plan-dashboard.component.vue'
+import ResupplyPlanCreatePage from '../inventory-management/pages/resupply-plan-create.page.vue'
+import ResupplyPlanEditPage from '../inventory-management/pages/resupply-plan-edit.page.vue'
 
 const routes = [
     {
@@ -128,6 +131,23 @@ const routes = [
         path: '/warehouses/zones/:id',
         name: 'Zones',
         component: ZonesComponent,
+    },
+    {
+        path: '/resupplies',
+        name: 'Resupplies',
+        component: ResupplyPlanDashboard
+    },
+    {
+        path: '/resupplies/:id/plans/new',
+        name: 'resupply-plan-create',
+        component: ResupplyPlanCreatePage,
+        props: true
+    },
+    {
+        path: '/resupplies/:id/plans/edit',
+        name: 'resupply-plan-edit',
+        component: ResupplyPlanEditPage,
+        props: true
     }
 ];
 
