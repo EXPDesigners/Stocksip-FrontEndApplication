@@ -6,7 +6,4 @@ export const Profile = {
     businessAddress: '',
     role: '',
     phone: '',
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
 };

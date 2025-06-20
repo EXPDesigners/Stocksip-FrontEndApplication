@@ -29,6 +29,12 @@
       "password": "1234",
       "id": 5,
       "profileId": 5
+    },
+    {
+      "username": "nuevo123@gmail.com",
+      "password": "12345678",
+      "id": 6,
+      "profileId": 6
     }
   ],
   "profiles": [
@@ -39,9 +45,6 @@
       "businessName": "Business",
       "businessAddress": "Av. Alameda",
       "phone": "123456789",
-      "currentPassword": "",
-      "newPassword": "",
-      "confirmPassword": "",
       "id": 1,
       "role": "Liquor Store Owner"
     },
@@ -72,6 +75,20 @@
       "userId": 5,
       "name": "Hola",
       "email": "hola@example.com",
+      "role": "Liquor Store Owner"
+    },
+    {
+      "profileId": 6,
+      "name": "nuevo3",
+      "email": "nuevo123@gmail.com",
+      "businessName": "business3",
+      "businessAddress": "Avenida Riobamba intersección Calle Tarma 15066",
+      "phone": "973964283",
+      "currentPassword": "",
+      "newPassword": "",
+      "confirmPassword": "",
+      "id": 6,
+      "userId": 6,
       "role": "Liquor Store Owner"
     }
   ],
@@ -426,8 +443,8 @@
       "id": 1,
       "name": "Catalogo 5",
       "profileId": 3,
-      "dateCreated": "2025-06-19T02:31:29.392Z",
-      "isPublished": true
+      "dateCreated": "2025-06-20T00:45:51.305Z",
+      "isPublished": false
     },
     {
       "id": 2,
@@ -523,6 +540,21 @@
       "content": 123,
       "unitPrice": {
         "_amount": 124,
+        "_currency": {
+          "_code": "PEN"
+        }
+      }
+    },
+    {
+      "id": "a9979a50-ccd4-4f60-91eb-3932ff9bc28d",
+      "catalogId": 1,
+      "dateAdded": "2025-06-20T00:45:51.340Z",
+      "name": "Vino Tinto Semiseco",
+      "productType": "Vino",
+      "brand": "Ron Cartavio",
+      "content": 450,
+      "unitPrice": {
+        "_amount": 50,
         "_currency": {
           "_code": "PEN"
         }
@@ -1053,6 +1085,54 @@
           "name": "Vino Tinto Malbec",
           "productType": "Destilado",
           "brand": "Bodega del Sur",
+          "content": 123,
+          "unitPrice": {
+            "_amount": 290,
+            "_currency": {
+              "_code": "PEN"
+            }
+          }
+        }
+      ],
+      "totalAmount": {
+        "_amount": 290,
+        "_currency": {
+          "_code": "PEN"
+        }
+      },
+      "totalItems": 1
+    },
+    {
+      "id": "959b3a35-4a57-4567-9b77-23d594cbbe2f",
+      "date": {
+        "_date": "2025-06-20T00:49:44.876Z"
+      },
+      "status": "Sent",
+      "buyer": {
+        "profileId": 1,
+        "name": "Farid",
+        "email": "farid@example.com",
+        "businessName": "Business",
+        "businessAddress": "Av. Alameda",
+        "phone": "123456789",
+        "id": 1,
+        "role": "Liquor Store Owner"
+      },
+      "supplier": {
+        "id": 3,
+        "profileId": 3,
+        "name": "Camila",
+        "email": "camila@example.com",
+        "role": "Supplier"
+      },
+      "items": [
+        {
+          "id": "a6",
+          "catalogId": "2",
+          "dateAdded": "2025-05-13T00:00:00Z",
+          "name": "Vino Tinto Malbec",
+          "productType": "Destilado",
+          "brand": "bodega del Sur",
           "content": 123,
           "unitPrice": {
             "_amount": 290,
