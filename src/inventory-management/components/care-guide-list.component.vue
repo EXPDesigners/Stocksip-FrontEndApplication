@@ -16,10 +16,10 @@ export default {
   <table class="guide-table">
     <thead>
     <tr>
-      <th>Imagen</th>
-      <th>Nombre</th>
-      <th>Tipo</th>
-      <th>Acciones</th>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
