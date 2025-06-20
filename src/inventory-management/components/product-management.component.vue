@@ -1,6 +1,5 @@
 <template>
   <SideNavbar>
-    <ToolbarContent pageTitle="Product Management" />
 
     <Button
         label="New Product"
