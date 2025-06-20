@@ -12,6 +12,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
+import { Form } from "@primevue/forms";
 
 import {
     Button,
@@ -31,7 +32,7 @@ import {
     InputNumber,
     InputText,
     Menu,
-    Menubar, // ✅ Importado aquí
+    Menubar, Message, // ✅ Importado aquí
     Rating,
     Row,
     Select,
@@ -82,4 +83,6 @@ createApp(App)
     .component('pv-textarea', Textarea)
     .component('pv-toolbar', Toolbar)
     .component('pv-toast', Toast)
+    .component('pv-form', Form)
+    .component('pv-message', Message)
     .mount('#app')

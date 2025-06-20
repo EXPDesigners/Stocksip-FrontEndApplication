@@ -9,10 +9,9 @@ import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.co
 
 import WarehouseComponent from '../inventory-management/pages/warehouse.component.vue';
 import CreateAndEditWarehouse from "@/inventory-management/pages/warehouse-create-and-edit.component.vue";
-import ZonesComponent from '../inventory-management/pages/zones.component.vue'
+import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 import ProductCreateAndEditComponent from "@/inventory-management/pages/product-create-and-edit.component.vue";
-import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 import ReportsComponent from '../analytics-and-reporting/pages/report-management.component.vue'
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
@@ -125,14 +124,14 @@ const routes = [
         component: CreateAndEditWarehouse
     },
     {
-        path: '/warehouses/edit/:id',
+        path: '/warehouses/edit/:warehouseId',
         name: 'EditWarehouse',
         component: CreateAndEditWarehouse,
     },
     {
-        path: '/warehouses/zones/:id',
-        name: 'Zones',
-        component: ZonesComponent,
+        path: '/warehouses/:warehouseId/products',
+        name: 'Inventory',
+        component: InventoryComponent,
     },
     {
         path: '/catalog',

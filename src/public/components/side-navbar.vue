@@ -169,7 +169,7 @@ export default {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  margin-left: 64px;
+  margin-left: 0.5rem;
   transition: margin-left 0.3s ease;
 }
 
