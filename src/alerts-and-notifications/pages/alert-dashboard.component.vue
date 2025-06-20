@@ -46,20 +46,20 @@ export default {
   <div class="alerts-bg">
     <side-navbar />
     <div class="alerts-main">
-      <toolbar-content :pageTitle="'Alerts'" />
+      <toolbar-content :pageTitle=" $t('alerts.title') " />
       <div class="alerts-content">
         <div v-if="loading">Loading...</div>
         <div v-else-if="error" class="error-msg">{{ error }}</div>
         <template v-else>
           <AlertList 
-            title="Urgent Repositioning" 
+            :title="$t('alerts.urgent-restocking')"
             :alerts="stockAlerts" 
             linkText="View all alerts"
             type="stock"
             @stock-updated="handleStockUpdated"
           />
           <AlertList 
-            title="Next to expire" 
+            :title="$t('alerts.next-to-expire')"
             :alerts="expirationAlerts" 
             linkText="See all products"
             type="expiration"

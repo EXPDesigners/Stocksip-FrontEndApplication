@@ -82,14 +82,14 @@ export default {
       <i :class="type === 'stock' ? 'pi pi-box' : 'pi pi-calendar'" class="no-alerts-icon"></i>
       <p class="no-alerts-message">
         {{ type === 'stock' 
-          ? '¡Todo en orden! No hay productos con stock bajo.' 
-          : '¡Buenas noticias! No hay productos próximos a vencer.' 
+          ? $t('alerts.no-content')
+          : $t('alerts.no-expired')
         }}
       </p>
       <p class="no-alerts-submessage">
         {{ type === 'stock'
-          ? 'Puedes configurar los niveles mínimos de stock usando el ícono de configuración.'
-          : 'Puedes ajustar los días de anticipación para las alertas de vencimiento.'
+          ? $t('alerts.no-content-description')
+          : $t('alerts.no-expired-description')
         }}
       </p>
     </div>

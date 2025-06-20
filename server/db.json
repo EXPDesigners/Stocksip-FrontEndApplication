@@ -349,7 +349,8 @@
       "unitPriceAmount": 135,
       "minimumStock": 25,
       "updatedUnitPriceAmount": 135,
-      "updatedMinimumStock": 25
+      "updatedMinimumStock": 25,
+      "min": 12
     },
     {
       "name": "Product 1",
@@ -360,17 +361,20 @@
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750453644/ujair1z0nz3czriix2xg.png",
       "providerId": 3,
       "id": 8,
-      "min": 23
+      "min": 21
     },
     {
+      "id": 9,
       "name": "Vino Tinto Del Valle",
       "brandName": "Tabernero",
       "liquorType": "Destilado",
+      "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png",
       "unitPriceAmount": 44.5,
       "minimumStock": 3,
-      "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png",
       "providerId": 1,
-      "id": 9
+      "updatedUnitPriceAmount": 44.5,
+      "updatedMinimumStock": 3,
+      "updatedImageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png"
     },
     {
       "name": "Hola",

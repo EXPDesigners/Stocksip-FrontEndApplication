@@ -85,7 +85,7 @@ export default {
         <div class="dashboard-row">
           <div class="dashboard-card resumen resumen-flex">
             <div class="resumen-info">
-              <h2 class="resumen-title">General Summary</h2>
+              <h2 class="resumen-title">{{ $t('dashboard.general-summary') }}</h2>
               <ul>
                 <li><span class="resumen-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#6E0081"><path d="M7 18c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H7zm0-2h10V8H7v8z"/></svg></span> Ventas hoy:<span class="resumen-label">S/. <b>450.00</b></span></li>
                 <li><span class="resumen-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="#D98C4A"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg></span> Última factura:<span class="resumen-label">24/04/2025</span></li>
@@ -98,7 +98,7 @@ export default {
             </div>
           </div>
           <div class="dashboard-card alerts">
-            <h2>Important Alerts</h2>
+            <h2>{{ $t('dashboard.important-notifications') }}</h2>
             <div class="alert-item">
               <div>Whisky Escocés Premium</div>
               <div>Current stock: <span class="danger">5</span></div>
@@ -112,7 +112,7 @@ export default {
           </div>
         </div>
         <div class="dashboard-card access">
-          <h2 class="access-title">Quick Access</h2>
+          <h2 class="access-title">{{ $t('dashboard.quick-access') }}</h2>
           <div class="access-row">
             <router-link to="/catalog" class="access-btn acceso-inventario access-btn-lg">
               <span class="access-icon"><i class="pi pi-box"></i></span>

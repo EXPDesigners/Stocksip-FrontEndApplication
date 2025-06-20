@@ -77,5 +77,48 @@
     "capacity-required": "El campo capacidad es obligatorio.",
     "max-temperature-required": "El campo temperatura máxima es 50.",
     "min-temperature-required": "El campo temperatura mínima es -50."
+  },
+  "dashboard": {
+    "general-summary": "Resumen General",
+    "important-notifications": "Notificaciones Importantes",
+    "quick-access": "Accesos Rápido"
+  },
+  "alerts": {
+    "title": "Alertas",
+    "urgent-restocking": "Reposición Urgente",
+    "no-content": "¡Todo en orden! No hay productos con stock bajo.",
+    "no-content-description": "Puedes configurar los niveles mínimos de stock usando el ícono de configuración.",
+    "next-to-expire": "Próximos a vencer",
+    "no-expired": "¡Buenas noticias! No hay productos próximos a vencer.",
+    "no-expired-description": "Puedes ajustar los días de anticipación para las alertas de vencimiento.",
+    "minimum-stock": {
+      "title": "Configurar Stock Mínimo",
+      "loading": "Cargando productos...",
+      "form": {
+        "product": "Producto",
+        "actual-stock": "Stock Actual",
+        "minimum-stock": "Stock Mínimo",
+        "actions": "Acciones"
+      }
+    }
+  },
+  "reports": {
+    "title": "Reportes"
+  },
+  "orders": {
+    "title": "Pedidos",
+    "new-order": "Nuevo Pedido"
+  },
+  "products": {
+    "card": {
+      "price": "Precio",
+        "minimum-stock": "Stock Mínimo"
+    }
+  },
+  "inventory": {
+    "title": "Inventario"
+  },
+  "profile": {
+    "title": "Perfil"
   }
 }

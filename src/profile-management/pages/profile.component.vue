@@ -88,7 +88,7 @@ export default {
 <template>
 
   <SideNavbar>
-    <ToolbarContent pageTitle="Profile" />
+    <ToolbarContent :pageTitle="$t('profile.title')" />
     <div class="profile-container">
       <div class="profile-left">
         <div class="user-card">

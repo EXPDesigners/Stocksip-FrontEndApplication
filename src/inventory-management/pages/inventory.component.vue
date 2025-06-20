@@ -14,7 +14,7 @@ export default {
     <side-navbar />
     <div class="inventory-main">
       <div class="inventory-title">
-        <toolbar-content :pageTitle="'Inventory'" />
+        <toolbar-content :pageTitle="$t('inventory.title')" />
       </div>
       <product-management/>
     </div>

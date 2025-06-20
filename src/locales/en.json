@@ -77,5 +77,48 @@
     "capacity-required": "The capacity field is required.",
     "max-temperature-required": "The max temperature is 50.",
     "min-temperature-required": "The min temperature is -50."
+  },
+  "dashboard": {
+    "general-summary": "General Summary",
+    "important-notifications": "Important Notifications",
+    "quick-access": "Quick Access"
+  },
+  "alerts": {
+    "title": "Alerts",
+    "urgent-restocking": "Urgent Restocking",
+    "no-content": "Everything in order. No products require restocking.",
+    "no-content-description": "You can add products to the inventory by clicking the button below.",
+    "no-expired": "Everything in order. No expired products.",
+    "no-expired-description": "You can adjust the days in advance for expiration alerts.",
+    "next-to-expire": "Next to Expire",
+    "minimum-stock": {
+      "title": "Configure Minimum Stock",
+      "loading": "Loading products...",
+      "form": {
+        "product": "Product",
+        "actual-stock": "Actual Stock",
+        "minimum-stock": "Minimum Stock",
+        "actions": "Actions"
+      }
+    }
+  },
+  "reports": {
+    "title": "Reports"
+  },
+  "orders": {
+    "title": "Orders",
+    "new-order": "New Order"
+  },
+  "products":{
+    "card": {
+      "price": "Price",
+      "minimum-stock": "Minimum Stock"
+    }
+  },
+  "inventory": {
+    "title": "Inventory"
+  },
+  "profile": {
+    "title": "Profile"
   }
 }
