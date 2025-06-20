@@ -21,6 +21,7 @@ export default {
       try {
         const service = new WarehouseService();
         const response = await service.getAll();
+
         this.warehouses = response.data.map(item => new Warehouse({
           warehouseId: item.warehouseId,
           name: item.name,
@@ -34,6 +35,7 @@ export default {
           capacity: item.capacity,
           imageUrl: item.imageUrl,
         }));
+
       } catch (error) {
         this.error = "Failed to load warehouses";
         console.error(error);
