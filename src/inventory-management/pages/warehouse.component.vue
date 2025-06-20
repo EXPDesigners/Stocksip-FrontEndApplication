@@ -80,9 +80,7 @@ export default {
 .warehouse-bg {
   background: #F7EDDC;
   min-height: 100vh;
-  width: 100vw;
   display: flex;
-  position: relative;
 }
 
 .warehouse-main {
@@ -93,7 +91,6 @@ export default {
 
 .warehouse-content {
     padding: 2rem;
-    gap: 2rem;
 }
 
 .floating-action-container {

@@ -8,7 +8,7 @@ import DashboardComponent from '../analytics-and-reporting/pages/dashboard.compo
 import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.component.vue'
 import WarehouseComponent from '../inventory-management/pages/warehouse.component.vue';
 import CreateAndEditWarehouse from "@/inventory-management/pages/warehouse-create-and-edit.component.vue";
-import ZonesComponent from '../inventory-management/pages/zones.component.vue'
+import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 const routes = [
     {
@@ -66,9 +66,9 @@ const routes = [
         component: CreateAndEditWarehouse,
     },
     {
-        path: '/warehouses/:warehouseId',
-        name: 'Zones',
-        component: ZonesComponent,
+        path: '/warehouses/:warehouseId/products',
+        name: 'Inventory',
+        component: InventoryComponent,
     }
 ]
 

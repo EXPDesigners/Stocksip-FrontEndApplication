@@ -12,7 +12,7 @@ export default {
     },
 
     navigateToZones() {
-      this.$router.push({name: 'Zones', params: { warehouseId: this.warehouse.warehouseId } });
+      this.$router.push({name: 'Inventory', params: { warehouseId: this.warehouse.warehouseId } });
     }
   }
 }

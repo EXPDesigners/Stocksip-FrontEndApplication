@@ -110,13 +110,6 @@ export default {
       }
     };
 
-    const showExistingImage = () => {
-      if (existingImageUrl.value) {
-        return existingImageUrl.value;
-      }
-      return null;
-    };
-
     onMounted(() => {
       warehouseId.value = route.params.warehouseId;
       isEditMode.value = Boolean(warehouseId.value);
@@ -126,21 +119,24 @@ export default {
       }
     });
 
-    const onSubmit = async ({ values }) => {
+    const onSubmit = async () => {
       submitted.value = true;
 
       const warehouseData = {
-        name: values.name,
-        street: values.street,
-        city: values.city,
-        district: values.district,
-        postalCode: values.postalCode,
-        country: values.country,
-        maxTemperature: Number(values.maxTemperature),
-        minTemperature: Number(values.minTemperature),
-        capacity: Number(values.capacity),
-        imageUrl: values.imageUrl || ''
+        name: form.value.name,
+        street: form.value.street,
+        city: form.value.city,
+        district: form.value.district,
+        postalCode: form.value.postalCode,
+        country: form.value.country,
+        maxTemperature: Number(form.value.maxTemperature),
+        minTemperature: Number(form.value.minTemperature),
+        capacity: Number(form.value.capacity),
+        imageUrl: form.value.imageUrl || '',
+        profileId: '128127128'
       };
+
+      console.log("Warehouse:", warehouseData);
 
       if (selectedFile.value) {
         const uploadResult = await cloudinaryService.uploadImage(selectedFile.value);
@@ -355,7 +351,7 @@ export default {
             <button type="button" class="cancel-button" @click="onCancel">
               {{ $t('components.cancel') }}
             </button>
-            <button type="submit" class="submit-button"  @click="onSubmit">
+            <button type="submit" class="submit-button">
               {{ isEditMode ? $t('components.update') : $t('components.save') }}
             </button>
           </div>

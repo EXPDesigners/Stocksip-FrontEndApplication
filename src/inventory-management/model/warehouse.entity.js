@@ -24,7 +24,8 @@ export class Warehouse {
         maxTemperature = 0,
         minTemperature = 0,
         capacity = 0,
-        imageUrl = ''
+        imageUrl = '',
+        profileId = ''
                 }) {
         this.warehouseId = warehouseId;
         this.name = name;
@@ -37,6 +38,7 @@ export class Warehouse {
         this.minTemperature = minTemperature;
         this.capacity = capacity;
         this.imageUrl = imageUrl;
+        this.profileId = profileId;
     }
 
     get fullAddress() {
