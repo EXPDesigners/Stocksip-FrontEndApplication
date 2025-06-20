@@ -23,17 +23,28 @@
     "profile": "Perfil"
   },
   "warehouses": {
-    "name": "Nombre",
-    "address": "Ubicación",
+    "title": "Almacenes",
+    "address": "Dirección",
     "capacity": "Capacidad",
-    "city": "Ciudad",
-    "state": "Estado",
-    "postal-code": "Código Postal",
     "create": "Crear nuevo almacén",
+    "editWarehouseTitle": "Editar Almacén",
+    "createWarehouseTitle": "Nuevo Almacén",
     "create_success": "¡Almacén creado con éxito!",
     "update_success": "¡Almacén actualizado con éxito!",
     "emptyTitle": "No se han creado almacenes",
-    "emptyDescription": "Puedes crear un nuevo almacén haciendo clic en el botón de abajo."
+    "emptyDescription": "Puedes crear un nuevo almacén haciendo clic en el botón de abajo.",
+    "form": {
+      "name": "Nombre del Almacén",
+      "street": "Calle",
+      "city": "Ciudad",
+      "district": "Distrito",
+      "postal-code": "Código Postal",
+      "country": "País",
+      "max-temperature": "Temperatura Máxima",
+      "min-temperature": "Temperatura Mínima",
+      "capacity": "Capacidad",
+      "warehouse-image": "Imagen del Almacén"
+    }
   },
   "components": {
     "save": "Guardar",
@@ -46,10 +57,25 @@
     "update": "Actualizar",
     "upload-image": "Elegir imagen",
     "upload-file": "Subir archivo",
-    "no-chosen-file": "Ningún archivo elegido"
+    "actual-image": "Imagen actual",
+    "no-chosen-file": "No se ha seleccionado ningún archivo",
+    "complete-data": "Completa todos los campos del formulario",
+    "edit-data": "Puedes editar los datos en el formulario",
+    "preview": "Vista previa"
   },
   "toast": {
     "success": "Éxito",
     "error": "Error"
+  },
+  "errors": {
+    "name-required": "El campo nombre es obligatorio.",
+    "street-required": "El campo calle es obligatorio.",
+    "city-required": "El campo ciudad es obligatorio.",
+    "district-required": "El campo distrito es obligatorio.",
+    "postal-code-required": "El campo código postal es obligatorio.",
+    "country-required": "El campo país es obligatorio.",
+    "capacity-required": "El campo capacidad es obligatorio.",
+    "max-temperature-required": "El campo temperatura máxima es 50.",
+    "min-temperature-required": "El campo temperatura mínima es -50."
   }
 }
