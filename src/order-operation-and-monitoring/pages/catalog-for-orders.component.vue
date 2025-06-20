@@ -86,7 +86,6 @@ export default {
       try {
         const items = await catalogService.getCatalogItems(catalogId);
 
-        // Forzar reactividad total
         selectedItems.value = {
           ...selectedItems.value,
           [catalogId]: items

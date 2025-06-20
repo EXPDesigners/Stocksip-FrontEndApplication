@@ -29,7 +29,7 @@
 
       <Column header="Total">
         <template #body="{ data }">
-          <span>{{ formatPrice(data.totalAmount?._amount, data.totalAmount?._currency?._code) }}</span>
+          <span>{{ formatPrice(data.totalAmount) }}</span>
         </template>
       </Column>
     </DataTable>
@@ -56,16 +56,16 @@ export default {
     console.log('Received orders:', this.orders);
   },
   methods: {
-    formatPrice(amount, currencyCode = 'PEN') {
-      if (typeof amount !== 'number') {
+    formatPrice(amount) {
+      if (typeof amount !== 'number' || !Number.isFinite(amount)) {
         console.warn('Invalid amount:', amount);
         return 'S/0.00';
       }
-      return new Intl.NumberFormat('es-PE', {
+      return amount.toLocaleString('es-PE', {
         style: 'currency',
-        currency: currencyCode,
+        currency: 'PEN',
         minimumFractionDigits: 2
-      }).format(amount);
+      });
     },
     formatDate(date) {
       const d = typeof date === 'object' ? date._date ?? date : date;

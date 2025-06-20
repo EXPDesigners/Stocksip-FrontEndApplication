@@ -109,19 +109,15 @@ export default {
     const loadCatalogItems = async () => {
       try {
         const items = await catalogService.getCatalogItems(catalog.value.id);
-        catalogItems.value = items.map(item => {
-          const raw = item.unitPrice || {};
-          const amount = raw._amount ?? raw.amount ?? 0;
-          const currency = raw._currency?._code ?? raw.currency ?? 'PEN';
-          return {
-            ...item,
-            unitPrice: new Money({ amount, currency: new Currency(currency) })
-          };
-        });
+        catalogItems.value = items.map(item => ({
+          ...item,
+          unitPrice: +item.unitPrice
+        }));
       } catch (err) {
         console.error('Error loading catalog items:', err);
       }
     };
+
 
     const loadCatalog = async () => {
       const id = Number(route.params.catalogId || 0);
@@ -192,7 +188,7 @@ export default {
           productType: newProduct.value.productType,
           brand: newProduct.value.brand,
           content: +newProduct.value.content,
-          unitPrice: new Money({ amount: +newProduct.value.price, currency: new Currency('PEN') })
+          unitPrice: +newProduct.value.price
         };
 
         try {
