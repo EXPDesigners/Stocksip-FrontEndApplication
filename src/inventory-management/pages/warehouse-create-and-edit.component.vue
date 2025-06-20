@@ -4,7 +4,7 @@ import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 import {useRoute, useRouter} from "vue-router";
 import {WarehouseService} from "@/inventory-management/services/warehouse.service.js";
 import {onMounted, ref} from "vue";
-import {InputText as PvField, InputText as PvInputText, Message as PvMessage, Toast as PvToast} from "primevue";
+import {InputText as PvField, InputText as PvInputText, Message as PvMessage} from "primevue";
 import cloudinaryService from '@/shared/services/cloudinary.service.js';
 import {useToast} from "primevue/usetoast";
 import { useI18n } from 'vue-i18n';
