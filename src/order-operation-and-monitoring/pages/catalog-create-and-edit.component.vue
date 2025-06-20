@@ -25,11 +25,23 @@
           </div>
           <div class="field">
             <label>Content (ml)</label>
-            <pv-input-number class="InputNumber" v-model="newProduct.content" :min="0" />
+            <pv-input-number
+                v-model="newProduct.content"
+                :min="0"
+                inputStyle="background-color: white; color: black; padding: 0.5rem; border: 3px solid #26021C; border-radius: 15px;"
+            />
+
           </div>
           <div class="field">
             <label>Price (S/)</label>
-            <pv-input-number class="InputNumber" v-model="newProduct.price" mode="currency" currency="PEN" locale="es-PE" :min="0" />
+            <pv-input-number
+                v-model="newProduct.price"
+                mode="currency"
+                currency="PEN"
+                locale="es-PE"
+                :min="0"
+                inputStyle="background-color: white; color: black; padding: 0.5rem; border: 3px solid #26021C; border-radius: 15px;"
+            />
           </div>
 
           <div class="buttons">
