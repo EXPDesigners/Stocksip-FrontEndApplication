@@ -53,7 +53,7 @@ export default {
   <div class="warehouse-bg">
     <side-navbar />
     <div class="warehouse-main">
-      <toolbar-content :pageTitle="'Warehouse'"/>
+      <toolbar-content :pageTitle="$t('warehouses.title')"/>
       <div class="warehouse-content">
         <warehouse-list v-if="warehouses && warehouses.length > 0" :warehouses="warehouses"></warehouse-list>
 

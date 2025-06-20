@@ -14,7 +14,7 @@
 export class Warehouse {
 
     constructor({
-        warehouseId = 0,
+        warehouseId = '',
         name = '',
         street ='',
         city = '',
