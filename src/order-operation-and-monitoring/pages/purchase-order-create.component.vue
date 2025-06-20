@@ -40,8 +40,6 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Checkbox from 'primevue/checkbox';
 import { CatalogService } from '@/order-operation-and-monitoring/services/catalog.service';
-import { Money } from '@/shared/model/money';
-import { Currency } from '@/shared/model/currency';
 import userService from '@/authentication/services/user.service';
 import { v4 as uuidv4 } from 'uuid';
 import {PurchaseOrderService} from "@/order-operation-and-monitoring/services/purchase-order.service.js";
@@ -92,38 +90,14 @@ export default {
         const items = await catalogService.getCatalogItems(catalogId);
 
         catalogItems.value = items.map(item => {
-          const rawPrice = item.unitPrice;
-
-          let amount = 0;
-          let currencyCode = 'PEN';
-          let moneyInstance = null;
-
-          try {
-            if (typeof rawPrice === 'number') {
-              amount = rawPrice;
-            } else if (rawPrice && typeof rawPrice === 'object') {
-              amount = Number(rawPrice._amount ?? rawPrice.amount);
-              currencyCode =
-                  rawPrice._currency?._code ??
-                  rawPrice._currency?.code ??
-                  rawPrice.currency ??
-                  'PEN';
-            }
-
-            if (Number.isFinite(amount) && amount >= 0) {
-              const currency = new Currency(currencyCode);
-              moneyInstance = new Money({ amount, currency });
-            } else {
-              throw new Error('Invalid amount');
-            }
-          } catch (err) {
-            console.warn(`Invalid price on item ID: ${item.id}:`, err.message);
-            moneyInstance = null;
+          const unitPrice = Number(item.unitPrice);
+          if (!Number.isFinite(unitPrice) || unitPrice < 0) {
+            console.warn(`Invalid price on item ID: ${item.id}`);
           }
 
           return {
             ...item,
-            unitPrice: moneyInstance
+            unitPrice: unitPrice >= 0 ? unitPrice : 0
           };
         });
 
@@ -132,17 +106,19 @@ export default {
           id: i.id,
           name: i.name,
           brand: i.brand,
-          price: i.unitPrice ? i.unitPrice.amount : 'INVALID'
+          price: i.unitPrice
         })));
       } catch (err) {
         console.error('Error loading catalog items:', err);
       }
     };
 
+
     const formatPrice = (unitPrice) => {
-      if (!unitPrice) return 'Precio no disponible';
-      return unitPrice.format?.('es-PE') ?? 'S/0.00';
+      if (!Number.isFinite(unitPrice)) return 'S/0.00';
+      return unitPrice.toLocaleString('es-PE', { style: 'currency', currency: 'PEN' });
     };
+
 
 
     const renderCheckbox = (rowData) => {
@@ -171,12 +147,12 @@ export default {
 
       const items = catalogItems.value.filter(item => selectedItemIds.includes(item.id));
       const totalAmount = items.reduce((sum, item) => {
-        const amount = item.unitPrice?.amount;
+        const amount = item.unitPrice;
         return Number.isFinite(amount) && amount >= 0 ? sum + amount : sum;
       }, 0);
 
       if (!Number.isFinite(totalAmount) || totalAmount < 0) {
-        console.warn('[⚠️] TotalAmount inválido:', totalAmount);
+        console.warn('Invalid Amount:', totalAmount);
         alert('Error calculating the total order amount.');
         return;
       }
@@ -208,7 +184,7 @@ export default {
           ...supplier.value
         },
         items,
-        totalAmount: new Money({ amount: totalAmount, currency: new Currency('PEN') }),
+        totalAmount: totalAmount,
         totalItems
       };
 
@@ -308,12 +284,6 @@ export default {
 
 .p-datatable .p-datatable-tbody > tr > td {
   padding: 0.75rem;
-}
-
-.create-order-btn {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: flex-end;
 }
 
 </style>

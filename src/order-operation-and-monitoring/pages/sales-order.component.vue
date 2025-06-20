@@ -14,12 +14,12 @@
             <p><strong>Date:</strong> {{ formatDate(order.date) }}</p>
             <p><strong>Buyer:</strong> {{ order.buyer.name }} - {{ order.buyer.email }}</p>
             <p><strong>Status:</strong> {{ order.status }}</p>
-            <p><strong>Total:</strong> {{ formatPrice(order.totalAmount, order.totalAmount?._currency?._code) }}</p>
+            <p><strong>Total:</strong> {{ formatPrice(order.totalAmount) }}</p>
 
             <h4>Items:</h4>
             <ul>
               <li v-for="item in order.items" :key="item.id">
-                {{ item.name }} - {{ formatPrice(item.unitPrice?._amount) }}
+                {{ item.name }} - {{ formatPrice(item.unitPrice) }}
               </li>
             </ul>
           </div>
@@ -53,10 +53,14 @@ export default {
         day: 'numeric'
       });
     },
-    formatPrice(amount = 0, currencyCode = 'PEN') {
+    formatPrice(amount = 0) {
+      if (typeof amount !== 'number' || !Number.isFinite(amount)) {
+        console.warn('Invalid amount:', amount);
+        return 'S/0.00';
+      }
       return new Intl.NumberFormat('es-PE', {
         style: 'currency',
-        currency: currencyCode,
+        currency: 'PEN',
         minimumFractionDigits: 2
       }).format(amount);
     },
@@ -69,7 +73,7 @@ export default {
             .filter(order => order.supplier?.profileId === currentSupplierId)
             .map(order => ({
               ...order,
-              totalAmount: order.totalAmount?._amount ?? 0,
+              totalAmount: typeof order.totalAmount === 'number' ? order.totalAmount : 0,
               date: order.date?._date ?? order.date
             }));
 
@@ -92,6 +96,7 @@ export default {
   gap: 1.5rem;
   padding: 1rem;
   background-color: #f7eddc;
+  min-height: 100vh;
 }
 .order-card {
   padding: 1rem;

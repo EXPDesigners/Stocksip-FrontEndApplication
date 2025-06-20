@@ -23,6 +23,9 @@ import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.com
 import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
 import PurchaseOrderCreateComponent from "@/order-operation-and-monitoring/pages/purchase-order-create.component.vue";
 import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.component.vue";
+import ProductListComponent from "@/inventory-management/components/product-list.component.vue";
+import ProductCreateAndEdit from "@/inventory-management/pages/product-create-and-edit.component.vue";
+import ProductManagementComponent from "@/inventory-management/components/product-management.component.vue";
 
 const routes = [
     {
@@ -160,6 +163,22 @@ const routes = [
         path: '/orders',
         name: 'PurchaseOrder',
         component: OrdersComponent
+    },
+    {
+        path: '/products',
+        name: 'ProductList',
+        component: ProductManagementComponent
+    },
+    {
+        path: '/products/new',
+        name: 'ProductCreate',
+        component: ProductCreateAndEdit
+    },
+    {
+        path: '/products/:productId/edit',
+        name: 'ProductEdit',
+        component: ProductCreateAndEdit,
+        props: true
     }
 ];
 

@@ -59,7 +59,7 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="$t('toolbar.storage')">
+          <router-link to="/products" v-tooltip="$t('toolbar.storage')">
             <i class="pi pi-building"></i>
             <span v-if="isExpanded">{{ $t('toolbar.storage') }}</span>
           </router-link>
