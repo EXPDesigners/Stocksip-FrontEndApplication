@@ -13,7 +13,6 @@ export default {
   },
   methods: {
     goToConfirmation() {
-      // Add your confirmation navigation logic here
     },
     goToDashboard() {
       this.$router.push('/dashboard');
@@ -33,7 +32,7 @@ export default {
         if (success) {
           const currentUser = userService.getCurrentUser();
           console.log('Usuario logueado:', currentUser);
-          this.goToDashboard(); // redirecciona
+          this.goToDashboard();
         } else {
           alert('Credenciales inválidas');
         }
@@ -59,7 +58,7 @@ export default {
               id="email"
               v-model="email"
               type="email"
-              placeholder="tucorreo@example.com"
+              placeholder="email@example.com"
               class="form-input"
           />
         </div>
@@ -71,7 +70,7 @@ export default {
                 id="password"
                 v-model="password"
                 :type="hide ? 'password' : 'text'"
-                placeholder="Ingresa tu contraseña"
+                placeholder="Enter your password"
                 class="form-input"
             />
             <button
@@ -120,16 +119,6 @@ export default {
     <div class="hello-section">
       <h2>Hello, user</h2>
       <p>Create your personal account to access all the features of the platform</p>
-
-      <div class="form-group select-group">
-        <label for="accountType" class="select-label">Account type</label>
-        <select v-model="accountType" id="accountType" class="form-select">
-          <option value="" disabled selected>Select account type</option>
-          <option value="store-owner">Liquor store owner</option>
-          <option value="supplier">Supplier</option>
-        </select>
-        <span class="select-arrow"></span>
-      </div>
 
       <button class="register-button" @click="goToRegister">
         Register
