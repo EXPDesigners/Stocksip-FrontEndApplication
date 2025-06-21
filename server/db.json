@@ -451,6 +451,36 @@
       "id": "8"
     }
   ],
+  "resupplyPlans": [
+    {
+      "licoreria": "Linda",
+      "productos": [
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "cantidad": 18,
+      "fechaInicio": "2025-06-26",
+      "fechaVencimiento": "2025-06-30",
+      "frecuencia": "Semanal",
+      "estado": "Activo",
+      "id": "1"
+    },
+    {
+      "licoreria": "Linda",
+      "productos": [
+        "1",
+        "2"
+      ],
+      "cantidad": 12,
+      "fechaInicio": "2025-06-20",
+      "fechaVencimiento": "2025-06-27",
+      "frecuencia": "Quincenal",
+      "estado": "Activo",
+      "id": "2"
+    }
+  ],
   "catalogs": [
     {
       "id": 1,
