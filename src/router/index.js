@@ -155,6 +155,7 @@ const routes = [
         name: 'resupply-plan-edit',
         component: ResupplyPlanEdit,
     },
+    {
         path: '/warehouses/:warehouseId/products',
         name: 'Inventory',
         component: InventoryComponent,
