@@ -18,8 +18,8 @@ import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-
 import CareGuideComponent from '../inventory-management/pages/care-guide-dashboard.component.vue'
 import CareGuideCreate from '../inventory-management/pages/care-guide-create-and-edit.component.vue'
 import ResupplyPlanDashboard from '../inventory-management/pages/resupply-plan-dashboard.component.vue'
-import ResupplyPlanCreatePage from '../inventory-management/pages/resupply-plan-create.page.vue'
-import ResupplyPlanEditPage from '../inventory-management/pages/resupply-plan-edit.page.vue'
+import ResupplyPlanCreate from '../inventory-management/pages/resupply-plan-create.component.vue'
+import ResupplyPlanEdit from '../inventory-management/pages/resupply-plan-edit.componet.vue'
 
 import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
 import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
@@ -147,13 +147,13 @@ const routes = [
     {
         path: '/resupplies/:id/plans/new',
         name: 'resupply-plan-create',
-        component: ResupplyPlanCreatePage,
+        component: ResupplyPlanCreate,
         props: true
     },
     {
         path: '/resupplies/:id/plans/edit',
         name: 'resupply-plan-edit',
-        component: ResupplyPlanEditPage,
+        component: ResupplyPlanEdit,
     },
         path: '/warehouses/:warehouseId/products',
         name: 'Inventory',
