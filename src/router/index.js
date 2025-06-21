@@ -21,6 +21,14 @@ import ResupplyPlanDashboard from '../inventory-management/pages/resupply-plan-d
 import ResupplyPlanCreate from '../inventory-management/pages/resupply-plan-create.component.vue'
 import ResupplyPlanEdit from '../inventory-management/pages/resupply-plan-edit.componet.vue'
 
+import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
+import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
+import PurchaseOrderCreateComponent from "@/order-operation-and-monitoring/pages/purchase-order-create.component.vue";
+import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.component.vue";
+import ProductListComponent from "@/inventory-management/components/product-list.component.vue";
+import ProductCreateAndEdit from "@/inventory-management/pages/product-create-and-edit.component.vue";
+import ProductManagementComponent from "@/inventory-management/components/product-management.component.vue";
+
 const routes = [
     {
         path: '/',
@@ -122,7 +130,7 @@ const routes = [
         component: CreateAndEditWarehouse
     },
     {
-        path: '/warehouses/edit/:id',
+        path: '/warehouses/edit/:warehouseId',
         name: 'EditWarehouse',
         component: CreateAndEditWarehouse,
     },
@@ -146,6 +154,52 @@ const routes = [
         path: '/resupplies/:id/plans/edit',
         name: 'resupply-plan-edit',
         component: ResupplyPlanEdit,
+    },
+        path: '/warehouses/:warehouseId/products',
+        name: 'Inventory',
+        component: InventoryComponent,
+    },
+    {
+        path: '/catalog',
+        name: 'Catalogs',
+        component: CatalogComponent,
+    },
+    {
+        path: '/catalog/new',
+        name: 'New Catalog',
+        component: CatalogCreateAndEditComponent,
+        props: true
+    },
+    {
+        path: '/catalog/edit/:catalogId',
+        name: 'Edit Catalog',
+        component: CatalogCreateAndEditComponent,
+        props: true
+    },
+    {
+        path: '/purchase-order/new/:catalogId',
+        name: 'PurchaseOrderCreate',
+        component: PurchaseOrderCreateComponent
+    },
+    {
+        path: '/orders',
+        name: 'PurchaseOrder',
+        component: OrdersComponent
+    },
+    {
+        path: '/products',
+        name: 'ProductList',
+        component: ProductManagementComponent
+    },
+    {
+        path: '/products/new',
+        name: 'ProductCreate',
+        component: ProductCreateAndEdit
+    },
+    {
+        path: '/products/:productId/edit',
+        name: 'ProductEdit',
+        component: ProductCreateAndEdit,
         props: true
     }
 ];
