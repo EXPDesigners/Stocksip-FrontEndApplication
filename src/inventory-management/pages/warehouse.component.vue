@@ -33,7 +33,7 @@ export default {
           maxTemperature: item.maxTemperature,
           minTemperature: item.minTemperature,
           capacity: item.capacity,
-          imageUrl: item.imageUrl,
+          imageUrl: item.imageUrl
         }));
 
       } catch (error) {

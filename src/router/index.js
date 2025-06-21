@@ -135,11 +135,6 @@ const routes = [
         component: CreateAndEditWarehouse,
     },
     {
-        path: '/warehouses/zones/:id',
-        name: 'Zones',
-        component: ZonesComponent,
-    },
-    {
         path: '/resupplies',
         name: 'Resupplies',
         component: ResupplyPlanDashboard

@@ -100,7 +100,8 @@ export default {
           maxTemperature: warehouse.maxTemperature,
           minTemperature: warehouse.minTemperature,
           capacity: warehouse.capacity,
-          imageUrl: warehouse.imageUrl
+          imageUrl: warehouse.imageUrl,
+          profileId: '128127128'
         };
 
         existingImageUrl.value = warehouse.imageUrl || null;
