@@ -280,7 +280,7 @@ export default {
             </div>
 
             <div class="form-group">
-              <label for="max-temperature">{{$t('warehouses.form.max-temperature')}} (m²) <span class="important">*</span></label>
+              <label for="max-temperature">{{$t('warehouses.form.max-temperature')}} <span class="important">*</span></label>
               <pv-input-text
                   name="maxTemperature"
                   v-model="form.maxTemperature"
@@ -294,7 +294,7 @@ export default {
             </div>
 
             <div class="form-group">
-              <label for="min-temperature">{{$t('warehouses.form.min-temperature')}} (m²) <span class="important">*</span></label>
+              <label for="min-temperature">{{$t('warehouses.form.min-temperature')}} <span class="important">*</span></label>
               <pv-input-text
                   name="minTemperature"
                   v-model="form.minTemperature"
