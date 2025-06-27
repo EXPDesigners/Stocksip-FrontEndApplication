@@ -148,7 +148,7 @@ export default {
 
         let response;
         if (isEditMode.value) {
-          response = await warehouseService.updateWarehouse(warehouseId.value, warehouseData, selectedFile.value);
+          await warehouseService.updateWarehouse(warehouseId.value, warehouseData, selectedFile.value);
           toast.add({
             severity: 'success',
             summary: t('toast.success'),
@@ -156,7 +156,7 @@ export default {
             life: 3000
           });
         } else {
-          response = await warehouseService.createWarehouse(warehouseData, selectedFile.value);
+          await warehouseService.createWarehouse(warehouseData, selectedFile.value);
           toast.add({
             severity: 'success',
             summary: t('toast.success'),
