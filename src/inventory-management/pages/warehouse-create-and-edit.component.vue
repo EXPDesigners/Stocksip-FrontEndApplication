@@ -145,8 +145,7 @@ export default {
           minTemperature: Number(form.value.minTemperature),
           capacity: Number(form.value.capacity),
         };
-
-        let response;
+        
         if (isEditMode.value) {
           await warehouseService.updateWarehouse(warehouseId.value, warehouseData, selectedFile.value);
           toast.add({
