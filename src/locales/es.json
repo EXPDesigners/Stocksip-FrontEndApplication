@@ -31,6 +31,8 @@
     "createWarehouseTitle": "Nuevo Almacén",
     "create_success": "¡Almacén creado con éxito!",
     "update_success": "¡Almacén actualizado con éxito!",
+    "delete_success": "¡Almacén eliminado con éxito!",
+    "delete_confirm": "¿Estás seguro de que deseas eliminar este almacén? Esta acción no se puede deshacer.",
     "emptyTitle": "No se han creado almacenes",
     "emptyDescription": "Puedes crear un nuevo almacén haciendo clic en el botón de abajo.",
     "form": {
@@ -51,6 +53,8 @@
     "cancel": "Cancelar",
     "delete": "Eliminar",
     "edit": "Editar",
+    "accept": "Aceptar",
+    "confirm": "Confirmar",
     "add": "Agregar",
     "search": "Buscar",
     "show": "Ver",

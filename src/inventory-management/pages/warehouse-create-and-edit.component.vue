@@ -4,14 +4,12 @@ import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 import {useRoute, useRouter} from "vue-router";
 import {WarehouseService} from "@/inventory-management/services/warehouse.service.js";
 import {onMounted, ref} from "vue";
-import {InputText as PvField, InputText as PvInputText, Message as PvMessage} from "primevue";
-import cloudinaryService from '@/shared/services/cloudinary.service.js';
 import {useToast} from "primevue/usetoast";
 import { useI18n } from 'vue-i18n';
 
 export default {
   name: "warehouse-create-and-edit",
-  components: {PvMessage, ToolbarContent, SideNavbar, PvInputText, PvField},
+  components: {ToolbarContent, SideNavbar},
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -25,6 +23,7 @@ export default {
     const selectedFile = ref(null);
     const existingImageUrl = ref(null);
     const newImagePreview = ref(null);
+    const showDeleteDialog = ref(false);
     const errors = ref({});
 
     const initialValues = ref({
@@ -34,10 +33,9 @@ export default {
       district: '',
       postalCode: '',
       country: '',
-      maxTemperature: null,
-      minTemperature: null,
-      capacity: null,
-      imageUrl: ''
+      maxTemperature: 0,
+      minTemperature: 0,
+      capacity: 0
     });
 
     const form = ref({...initialValues.value});
@@ -46,28 +44,40 @@ export default {
     const resolver = ({ values }) => {
       const errors = {};
 
-      if (!values.name?.trim()) {
-        errors.name = [{ message: t('errors.name-required') }];
+      if (!isEditMode.value || values.name !== initialValues.value.name) {
+        if (!values.name?.trim()) {
+          errors.name = [{ message: t('errors.name-required') }];
+        }
       }
 
-      if (!values.street?.trim()) {
-        errors.street = [{ message: t('errors.street-required') }];
+      if (!isEditMode.value || values.street !== initialValues.value.street) {
+        if (!values.street?.trim()) {
+          errors.street = [{ message: t('errors.street-required') }];
+        }
       }
 
-      if (!values.city?.trim()) {
-        errors.city = [{ message: t('errors.city-required') }];
+      if (!isEditMode.value || values.city !== initialValues.value.city) {
+        if (!values.city?.trim()) {
+          errors.city = [{ message: t('errors.city-required') }];
+        }
       }
 
-      if (!values.district?.trim()) {
-        errors.district = [{ message: t('errors.district-required') }];
+      if (!isEditMode.value || values.district !== initialValues.value.district) {
+        if (!values.district?.trim()) {
+          errors.district = [{ message: t('errors.district-required') }];
+        }
       }
 
-      if (!values.postalCode?.trim()) {
-        errors.postalCode = [{ message: t('errors.postal-code-required') }];
+      if (!isEditMode.value || values.postalCode !== initialValues.value.postalCode) {
+        if (!values.postalCode?.trim()) {
+          errors.postalCode = [{ message: t('errors.postal-code-required') }];
+        }
       }
 
-      if (!values.country?.trim()) {
-        errors.country = [{ message: t('errors.country-required') }];
+      if (!isEditMode.value || values.country !== initialValues.value.country) {
+        if (!values.country?.trim()) {
+          errors.country = [{ message: t('errors.country-required') }];
+        }
       }
 
       if (values.maxTemperature === null || isNaN(values.maxTemperature) || values.maxTemperature > 50 || values.maxTemperature < -50) {
@@ -100,8 +110,7 @@ export default {
           maxTemperature: warehouse.maxTemperature,
           minTemperature: warehouse.minTemperature,
           capacity: warehouse.capacity,
-          imageUrl: warehouse.imageUrl,
-          profileId: '128127128'
+          imageUrl: warehouse.imageUrl
         };
 
         existingImageUrl.value = warehouse.imageUrl || null;
@@ -121,50 +130,74 @@ export default {
     });
 
     const onSubmit = async () => {
+      if (submitted.value) return;
       submitted.value = true;
 
-      const warehouseData = {
-        name: form.value.name,
-        street: form.value.street,
-        city: form.value.city,
-        district: form.value.district,
-        postalCode: form.value.postalCode,
-        country: form.value.country,
-        maxTemperature: Number(form.value.maxTemperature),
-        minTemperature: Number(form.value.minTemperature),
-        capacity: Number(form.value.capacity),
-        imageUrl: form.value.imageUrl || '',
-        profileId: '128127128'
-      };
+      try {
+        const warehouseData = {
+          name: form.value.name,
+          street: form.value.street,
+          city: form.value.city,
+          district: form.value.district,
+          postalCode: form.value.postalCode,
+          country: form.value.country,
+          maxTemperature: Number(form.value.maxTemperature),
+          minTemperature: Number(form.value.minTemperature),
+          capacity: Number(form.value.capacity),
+        };
 
-      console.log("Warehouse:", warehouseData);
+        let response;
+        if (isEditMode.value) {
+          response = await warehouseService.updateWarehouse(warehouseId.value, warehouseData, selectedFile.value);
+          toast.add({
+            severity: 'success',
+            summary: t('toast.success'),
+            detail: t('warehouses.update_success'),
+            life: 3000
+          });
+        } else {
+          response = await warehouseService.createWarehouse(warehouseData, selectedFile.value);
+          toast.add({
+            severity: 'success',
+            summary: t('toast.success'),
+            detail: t('warehouses.create_success'),
+            life: 3000
+          });
+        }
 
-      if (selectedFile.value) {
-        const uploadResult = await cloudinaryService.uploadImage(selectedFile.value);
-        warehouseData.imageUrl = uploadResult.secure_url;
-      }
-
-      if (isEditMode.value) {
-        await warehouseService.updateWarehouse(warehouseId.value, warehouseData);
+        await router.push('/warehouses');
+      } catch (error) {
+        console.error('Error:', error);
         toast.add({
-          severity: 'success',
-          summary: t('toast.success'),
-          detail: t('warehouses.update_success'),
+          severity: 'error',
+          summary: t('toast.error'),
+          detail: error.message || t('warehouses.error_message'),
           life: 3000
         });
-      } else {
-        await warehouseService.createWarehouse(warehouseData);
-        toast.add({
-          severity: 'success',
-          summary: t('toast.success'),
-          detail: t('warehouses.create_success'),
-          life: 3000
-        });
+      } finally {
+        submitted.value = false;
       }
+    }
 
-      await router.push('/warehouses');
-      submitted.value = false;
+    const confirmDelete = () => {
+      showDeleteDialog.value = true;
     };
+
+    const onDelete = async () => {
+      showDeleteDialog.value = false;
+      try {
+        await warehouseService.deleteWarehouse(warehouseId.value);
+        toast.add({
+          severity: 'success',
+          summary: t('toast.success'),
+          detail: t('warehouses.delete_success'),
+          life: 3000
+        });
+        await router.push('/warehouses');
+      } catch(error) {
+        console.error('Error deleting warehouse:', error);
+      }
+    }
 
     const onFileSelect = (event) => {
       const file = event.target?.files?.[0];
@@ -187,10 +220,13 @@ export default {
       newImagePreview,
       selectedFile,
       initialValues,
+      showDeleteDialog,
       resolver,
       onFileSelect,
       onSubmit,
-      onCancel
+      onCancel,
+      onDelete,
+      confirmDelete,
     };
   }
 }
@@ -249,7 +285,7 @@ export default {
                   name="district"
                   v-model="form.district"
                   type="text"
-                  placeholder="Lima"
+                  placeholder="Villa El Salvador"
                   class="form-input"
               />
               <pv-message v-if="$form.district?.invalid" class="form-error">{{ $form.district.errors?.[0]?.message }}</pv-message>
@@ -338,24 +374,60 @@ export default {
 
               <div v-if="existingImageUrl && !newImagePreview" class="image-preview">
                 <p>{{ $t('components.actual-image') }}:</p>
-                <img :src="existingImageUrl" alt="Imagen actual del almacén">
+                <img :src="existingImageUrl" alt="image">
               </div>
 
               <div v-if="newImagePreview" class="image-preview">
                 <p>{{ $t('components.preview') }}:</p>
-                <img :src="newImagePreview" alt="Vista previa de la nueva imagen">
+                <img :src="newImagePreview" alt="image">
               </div>
             </div>
           </div>
 
           <div class="form-actions">
-            <button type="button" class="cancel-button" @click="onCancel">
-              {{ $t('components.cancel') }}
+            <button v-if="isEditMode" type="button" class="delete-button" @click="confirmDelete">
+              {{ $t('components.delete') }}
             </button>
-            <button type="submit" class="submit-button">
-              {{ isEditMode ? $t('components.update') : $t('components.save') }}
-            </button>
+
+            <div class="right-actions">
+              <pv-button type="button" class="cancel-button" @click="onCancel">
+                {{ $t('components.cancel') }}
+              </pv-button>
+              <button type="submit" class="submit-button">
+                {{ isEditMode ? $t('components.update') : $t('components.save') }}
+              </button>
+            </div>
           </div>
+
+          <pv-dialog
+              v-model:visible="showDeleteDialog"
+              :style="{ width: '450px' }"
+              header=" "
+              :modal="true"
+              :closable="true"
+          >
+            <div class="confirmation-content">
+              <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
+              <span>{{ $t('warehouses.delete_confirm') }}</span>
+            </div>
+
+            <template #footer>
+              <pv-button
+                  :label="$t('components.cancel')"
+                  icon="pi pi-times"
+                  @click="showDeleteDialog = false"
+                  class="p-button-danger"
+              />
+              <pv-button
+                  :label="$t('components.confirm')"
+                  icon="pi pi-check"
+                  @click="onDelete"
+                  class="confirm-button"
+                  autofocus
+              />
+            </template>
+          </pv-dialog>
+
         </pv-form>
       </div>
     </div>
@@ -478,11 +550,18 @@ label {
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #eee;
+}
+
+
+.right-actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
 }
 
 .cancel-button {
@@ -497,6 +576,10 @@ label {
 
 .cancel-button:hover {
   background-color: #e0e0e0;
+}
+
+.confirm-button {
+  background-color: #f0f0f0;
 }
 
 .submit-button {
@@ -526,6 +609,53 @@ label {
 
 .important {
   color: #ea1c18;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: auto;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.p-dialog .p-dialog-footer button {
+  margin: 0 0.5rem 0 0;
+  min-width: 6rem;
+}
+
+/* Estilo para el botón de eliminar */
+.p-button-danger {
+  background-color: #f44336;
+  border-color: #f44336;
+  margin-right: auto;
+}
+
+.p-button-danger:hover {
+  background-color: #d32f2f !important;
+  border-color: #d32f2f !important;
+}
+
+/* Ajustes para los botones existentes */
+.right-actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
 }
 
 </style>

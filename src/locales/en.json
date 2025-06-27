@@ -31,6 +31,8 @@
     "createWarehouseTitle": "New Warehouse",
     "create_success": "Warehouse created successfully!",
     "update_success": "Warehouse updated successfully!",
+    "delete_success": "Warehouse deleted successfully!",
+    "delete_confirm": "¿Estás seguro de que deseas eliminar este almacén? Esta acción no se puede deshacer.",
     "emptyTitle": "No warehouses created",
     "emptyDescription": "You can create a new warehouse by clicking the button below.",
     "form": {
@@ -51,6 +53,8 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
+    "accept": "Accept",
+    "confirm": "Confirm",
     "add": "Add",
     "search": "Search",
     "show": "Show",
