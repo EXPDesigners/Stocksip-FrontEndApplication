@@ -7,7 +7,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export class ProductService {
     async getAllByProviderId(providerId) {
         const response = await axios.get(`${apiUrl}/products`, {
-            params: { providerId }
+                params: { providerId }
         });
 
         return response.data.map(p => this._mapProduct(p));

@@ -10,6 +10,7 @@ export class WarehouseService extends BaseService {
 
     accountEndpoint = '';
     accountWarehouseEndpoint = '';
+    warehouseProductsEndpoint = '';
 
     constructor() {
         super();
@@ -17,6 +18,7 @@ export class WarehouseService extends BaseService {
         this.resourceEndpoint = import.meta.env.VITE_WAREHOUSE_ENDPOINT_PATH;
         this.accountEndpoint = import.meta.env.VITE_ACCOUNT_ENDPOINT_PATH;
         this.accountWarehouseEndpoint = import.meta.env.VITE_ACCOUNT_WAREHOUSES_ENDPOINT_PATH;
+        this.warehouseProductsEndpoint = import.meta.env.VITE_WAREHOUSE_PRODUCTS_ENDPOINT_PATH;
     }
 
     /**
@@ -91,6 +93,13 @@ export class WarehouseService extends BaseService {
             }
         })
 
+        return response.data;
+    }
+
+    async getAllProductsByWarehouseId(warehouseId) {
+        const endpoint = this.warehouseProductsEndpoint.replace('{warehouseId}', warehouseId);
+        const url = `${import.meta.env.VITE_BASE_API_URL}${endpoint}`;
+        const response = await axios.get(url);
         return response.data;
     }
 

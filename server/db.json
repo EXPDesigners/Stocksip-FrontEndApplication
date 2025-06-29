@@ -194,56 +194,6 @@
       "id": "4dc033f6-55fc-471e-872c-5e4eebcec3c3"
     }
   ],
-  "zones": [
-    {
-      "zoneId": 1,
-      "name": "Principal warehouse",
-      "type": "Wines",
-      "description": "Recommended temperature: 16 - 20 °C"
-    },
-    {
-      "zoneId": 2,
-      "name": "Cold zone",
-      "type": "Wines",
-      "description": "Recommended temperature: 1 - 15 °C"
-    },
-    {
-      "zoneId": 3,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 4,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 5,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 6,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 7,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 8,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    }
-  ],
   "reports": [
     {
       "id": 1,
@@ -369,22 +319,25 @@
       "brandName": "Tabernero",
       "liquorType": "Destilado",
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png",
-      "unitPriceAmount": 44.5,
+      "unitPriceAmount": 44.6,
       "minimumStock": 3,
       "providerId": 1,
-      "updatedUnitPriceAmount": 44.5,
+      "updatedUnitPriceAmount": 44.6,
       "updatedMinimumStock": 3,
       "updatedImageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png"
     },
     {
+      "id": 10,
       "name": "Hola",
-      "brandName": "Ya funciona esta hvda",
+      "brandName": "Ya funciona esta hvda xd",
       "liquorType": "Liquor",
-      "unitPriceAmount": 56,
-      "minimumStock": 3,
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454758/eyksx9zurvhqjttk2cyl.png",
+      "unitPriceAmount": 58,
+      "minimumStock": 3,
       "providerId": 3,
-      "id": 10
+      "updatedUnitPriceAmount": 58,
+      "updatedMinimumStock": 3,
+      "updatedImageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454758/eyksx9zurvhqjttk2cyl.png"
     }
   ],
   "settings": [

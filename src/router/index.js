@@ -150,7 +150,7 @@ const routes = [
         component: ResupplyPlanEdit,
     },
     {
-        path: '/warehouses/:warehouseId/products',
+        path: '/warehouses/:warehouseId/inventory',
         name: 'Inventory',
         component: InventoryComponent,
     },
