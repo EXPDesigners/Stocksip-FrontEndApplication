@@ -55,10 +55,11 @@
     "edit": "Editar",
     "accept": "Aceptar",
     "confirm": "Confirmar",
-    "add": "Agregar",
-    "search": "Buscar",
+    "search": "Buscar...",
+    "add": "Añadir",
     "show": "Ver",
     "update": "Actualizar",
+    "export": "Exportar",
     "upload-image": "Elegir imagen",
     "upload-file": "Subir archivo",
     "actual-image": "Imagen actual",
@@ -120,7 +121,30 @@
     }
   },
   "inventory": {
-    "title": "Inventario"
+    "title": "Inventario",
+    "manage-products": "Gestionar Productos",
+    "product-details": "Detalles del Producto",
+    "product-id": "ID del Producto",
+    "name": "Nombre",
+    "liquor-type": "Tipo de Licor",
+    "image": "Imagen",
+    "unit-price": "Precio Unitario",
+    "minimum-stock": "Stock Mínimo",
+    "current-stock": "Stock Actual",
+    "state": "Estado",
+    "best-date-before": "Fecha de Vencimiento",
+    "status": {
+      "WithStock": "En Stock",
+      "OutOfStock": "Sin Stock"
+    },
+    "valid-date": "Debe seleccionar una fecha válida",
+    "stock-added": "¡Stock añadido con éxito!",
+    "stock-reduced": "¡Stock reducido con éxito!",
+    "stock-reduced-error": "No se puede reducir el stock por debajo del stock mínimo.",
+    "stock-added-title": "Añadir Stock",
+    "stock-reduced-title": "Reducir Stock",
+    "quantity-add": "Cantidad a añadir",
+    "quantity-reduce": "Cantidad a reducir"
   },
   "profile": {
     "title": "Perfil"

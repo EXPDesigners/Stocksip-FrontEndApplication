@@ -42,7 +42,7 @@ export default {
       }
     },
     navigateToCreate() {
-      this.$router.push('/warehouses/create');
+      this.$router.push('/warehouses/new');
     },
   },
   created() {

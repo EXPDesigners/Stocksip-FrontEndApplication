@@ -55,10 +55,11 @@
     "edit": "Edit",
     "accept": "Accept",
     "confirm": "Confirm",
+    "search": "Search...",
     "add": "Add",
-    "search": "Search",
     "show": "Show",
     "update": "Update",
+    "export": "Export",
     "upload-image": "Choose image",
     "upload-file": "Upload file",
     "actual-image": "Current image",
@@ -120,7 +121,30 @@
     }
   },
   "inventory": {
-    "title": "Inventory"
+    "title": "Inventory",
+    "manage-products": "Manage Products",
+    "product-details": "Product Details",
+    "product-id": "Product ID",
+    "name": "Name",
+    "liquor-type": "Liquor Type",
+    "image": "Image",
+    "unit-price": "Unit Price",
+    "minimum-stock": "Minimum Stock",
+    "current-stock": "Current Stock",
+    "state": "State",
+    "best-date-before": "Best Date Before",
+    "status": {
+      "WithStock": "In Stock",
+      "OutOfStock": "Out of Stock"
+    },
+    "valid-date": "You must enter a valid date.",
+    "stock-added": "Stock added successfully!",
+    "stock-reduced": "Stock reduced successfully!",
+    "stock-reduced-error": "You cannot reduce stock below zero.",
+    "stock-added-title": "Add Stock",
+    "stock-reduced-title": "Reduce Stock",
+    "quantity-add": "Quantity to add",
+    "quantity-reduce": "Quantity to reduce"
   },
   "profile": {
     "title": "Profile"

@@ -124,7 +124,7 @@ const routes = [
         component: WarehouseComponent
     },
     {
-        path: '/warehouses/create',
+        path: '/warehouses/new',
         name: 'CreateWarehouse',
         component: CreateAndEditWarehouse
     },

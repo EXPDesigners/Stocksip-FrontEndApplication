@@ -21,7 +21,7 @@ import {
     Column,
     ConfirmationService,
     ConfirmDialog,
-    DataTable,
+    DataTable, DatePicker,
     Dialog,
     DialogService,
     Drawer,
@@ -85,4 +85,5 @@ createApp(App)
     .component('pv-toast', Toast)
     .component('pv-form', Form)
     .component('pv-message', Message)
+    .component('pv-date-picker', DatePicker)
     .mount('#app')
