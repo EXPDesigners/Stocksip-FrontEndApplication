@@ -70,9 +70,7 @@ export default {
     async handleAddProduct() {
       try {
         const expirationDate = this.addProductData.expirationDate;
-        const formattedDate = expirationDate.getFullYear() + '-' +
-            String(expirationDate.getMonth() + 1).padStart(2, '0') + '-' +
-            String(expirationDate.getDate()).padStart(2, '0');
+        const formattedDate = this.toDateOnlyString(this.addProductData.expirationDate);
 
         await inventoryService.addProduct(
             this.addProductData.selectedProductId,
@@ -94,7 +92,7 @@ export default {
         this.$toast.add({
           severity: 'error',
           summary: this.$t('toast.error'),
-          detail: error.response?.data?.message || 'Error al agregar producto',
+          detail: error.response?.data?.message || this.$t('inventory.error-add-duplicate-product'),
           life: 5000
         });
       }
@@ -104,6 +102,11 @@ export default {
     },
     formatCurrency(value) {
       return value ? value.toLocaleString('es-Pe', {style: 'currency', currency: 'PEN'}) : '';
+    },
+    toDateOnlyString(date) {
+      return date.getFullYear() + '-' +
+          String(date.getMonth() + 1).padStart(2, '0') + '-' +
+          String(date.getDate()).padStart(2, '0');
     },
     openStockDialog(product, operation = 'add') {
       this.product = {...product};
@@ -118,7 +121,6 @@ export default {
 
       this.stockDialog = true;
     },
-
     async handleStockOperation() {
       try {
         if (!this.stockData.expirationDate) {
@@ -141,9 +143,10 @@ export default {
           return;
         }
 
-        const formattedDate = new Date(this.stockData.expirationDate).toISOString().split('T')[0];
+        const formattedDate = this.toDateOnlyString(this.stockData.expirationDate);
 
         if (this.stockOperation === 'add') {
+          console.log(formattedDate);
           await inventoryService.addStock(
               this.product.productId,
               this.warehouseId,
@@ -174,12 +177,11 @@ export default {
         this.$toast.add({
           severity: 'error',
           summary: 'Error',
-          detail: error.response?.data?.message || 'Error al procesar la operación',
+          detail: error.response?.data?.message || 'Error processing stock operation',
           life: 5000
         });
       }
     },
-
     async handleDeleteProduct() {
       try {
         const expirationDate = this.product.bestBeforeDate;
@@ -199,39 +201,25 @@ export default {
 
         await this.refreshProducts();
         this.deleteProductDialog = false;
+
       } catch (error) {
+
         this.$toast.add({
           severity: 'error',
           summary: this.$t('toast.error'),
-          detail: this.$t('inventory.delete-product-current-stock'),
+          detail: error.response?.data?.message || this.$t('inventory.delete-product-current-stock'),
           life: 5000
         });
+
+        this.deleteProductDialog = false;
       }
     },
     confirmDeleteProduct(product) {
       this.product = product;
       this.deleteProductDialog = true;
     },
-    deleteProduct() {
-      this.products = this.products.filter(p => p.id !== this.product.id);
-      this.deleteProductDialog = false;
-      this.product = {};
-      this.$toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-    },
-    findIndexById(id) {
-      return this.products.findIndex(p => p.id === id);
-    },
     exportCSV() {
       this.$refs.dt.exportCSV();
-    },
-    confirmDeleteSelected() {
-      this.deleteProductsDialog = true;
-    },
-    deleteSelectedProducts() {
-      this.products = this.products.filter(p => !this.selectedProducts.includes(p));
-      this.deleteProductsDialog = false;
-      this.selectedProducts = null;
-      this.$toast.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
     },
     initFilters() {
       this.filters = {
@@ -261,7 +249,6 @@ export default {
         <pv-toolbar class="mb-6">
           <template #start>
             <pv-button :label="$t('components.add')" icon="pi pi-plus-circle" class="mr-2" @click="openAddProductDialog" />
-            <pv-button :label="$t('components.delete')" icon="pi pi-trash" severity="danger" outlined @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
           </template>
           <template #end>
             <pv-button :label="$t('components.export')" icon="pi pi-upload" severity="secondary" @click="exportCSV($event)"/>

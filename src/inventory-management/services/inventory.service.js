@@ -30,39 +30,41 @@ export class InventoryService extends BaseService {
         return response.data;
     }
 
-    async addStock(productId, warehouseId, addedQuantity, stockExpirationDate) {
-        try {
-            const endpoint = `warehouses/${warehouseId}/inventories${this.stockAdditionEndpoint.replace('{productId}', productId)}`;
+        async addStock(productId, warehouseId, addedQuantity, stockExpirationDate) {
+            try {
+                const endpoint = `warehouses/${warehouseId}/inventories${this.stockAdditionEndpoint.replace('{productId}', productId)}`;
 
-            const url = `${this.resourceEndpoint}${endpoint}`;
+                const url = `${this.resourceEndpoint}${endpoint}`;
 
-            const response = await httpInstance.put(url, {
-                stockExpirationDate,
-                addedQuantity
-            });
-
-            return response.data;
-        } catch (error) {
-            console.error('Error adding stock:', error);
+                console.log(stockExpirationDate);
+                const response = await httpInstance.put(url, {
+                    stockExpirationDate,
+                    addedQuantity
+                });
+                return response.data;
+            } catch (error) {
+                console.error('Error adding stock:', error);
+                throw error;
+            }
         }
-    }
 
-    async subtractStock(productId, warehouseId, removedQuantity, expirationDate) {
-        try {
-            const endpoint = `warehouses/${warehouseId}/inventories${this.stockSubtractionEndpoint.replace('{productId}', productId)}`;
+        async subtractStock(productId, warehouseId, removedQuantity, expirationDate) {
+            try {
+                const endpoint = `warehouses/${warehouseId}/inventories${this.stockSubtractionEndpoint.replace('{productId}', productId)}`;
 
-            const url = `${this.resourceEndpoint}${endpoint}`;
+                const url = `${this.resourceEndpoint}${endpoint}`;
 
-            const response = await httpInstance.put(url, {
-                expirationDate,
-                removedQuantity
-            });
+                const response = await httpInstance.put(url, {
+                    expirationDate,
+                    removedQuantity
+                });
 
-            return response.data;
-        } catch (error) {
-            console.error('Error subtracting stock:', error);
+                return response.data;
+            } catch (error) {
+                console.error('Error subtracting stock:', error);
+                throw error;
+            }
         }
-    }
 
     async addProduct(productId, warehouseId, quantity, expirationDate) {
         const inventoriesPath = this.warehouseProductsEndpoint.replace('{warehouseId}', warehouseId);
@@ -90,6 +92,7 @@ export class InventoryService extends BaseService {
             return response.data;
         } catch (error) {
             console.error('Error deleting product:', error);
+            throw error;
         }
     }
 }

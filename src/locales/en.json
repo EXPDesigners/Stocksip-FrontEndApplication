@@ -152,7 +152,8 @@
     "select-product": "Select a Product",
     "product-deleted": "Product deleted successfully!",
     "confirm-delete-product": "Are you sure you want to delete this product? This action cannot be undone.",
-    "delete-product-current-stock": "You cannot delete a product that has stock."
+    "delete-product-current-stock": "You cannot delete a product that has stock.",
+    "error-add-duplicate-product": "You cannot add a product that already exists in the inventory."
   },
   "profile": {
     "title": "Profile"
