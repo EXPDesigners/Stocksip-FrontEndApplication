@@ -9,10 +9,13 @@ import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import SideNavbar from "@/public/components/side-navbar.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
+import {InputNumber as PvInputNumber, InputText as PvInputText} from "primevue";
 
 export default {
   name: 'ProductCreateAndEdit',
   components: {
+    PvInputNumber,
+    PvInputText,
     Button, InputText, InputNumber,
     SideNavbar, ToolbarContent
   },
@@ -139,63 +142,246 @@ export default {
 </script>
 
 <template>
-  <SideNavbar>
-    <ToolbarContent :pageTitle="isEditMode ? 'Edit Product' : 'New Product'" />
-    <div class="product-form-container">
-      <div class="p-fluid">
-        <div class="field">
-          <label>Name</label>
-          <InputText v-model="product.name" />
-        </div>
-        <div class="field">
-          <label>Brand</label>
-          <InputText v-model="product.brandName" />
-        </div>
-        <div class="field">
-          <label>Liquor Type</label>
-          <InputText v-model="product.liquorType" />
-        </div>
-        <div class="field">
-          <label>Upload Image</label>
-          <input type="file" accept="image/*" @change="uploadImage" />
-          <div v-if="uploading">Uploading...</div>
-        </div>
-        <div v-if="product.imageUrl" class="preview">
-          <img :src="product.imageUrl" alt="Image preview" />
-        </div>
-        <div class="field">
-          <label>Price (S/)</label>
-          <InputNumber v-model="product.unitPriceAmount" mode="currency" currency="PEN" locale="es-PE" />
-        </div>
-        <div class="field">
-          <label>Minimum Stock</label>
-          <InputNumber v-model="product.minimumStock" :min="0" />
-        </div>
-        <div class="form-buttons">
-          <Button label="Save" class="p-button-primary" @click="onSave" />
-          <Button label="Back" class="p-button-secondary" @click="$router.push({ name: 'ProductList' })" />
+  <div class="product-bg">
+    <side-navbar />
+    <div class="product-main">
+      <toolbar-content :pageTitle="isEditMode ? $t('products.edit-title') : $t('products.new-title')" />
+      <div class="product-content">
+        <div class="form-card">
+          <h2 class="form-title">{{ isEditMode ? 'Edit Product Data' : 'Enter Product Data' }}</h2>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>{{ $t('products.name') }} <span class="important">*</span></label>
+              <pv-input-text v-model="product.name" class="form-input" placeholder="Ron Cartavio" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ $t('products.brand') }} <span class="important">*</span></label>
+              <pv-input-text v-model="product.brandName" class="form-input" placeholder="Cartavio" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ $t('products.liquor-type') }}<span class="important">*</span></label>
+              <pv-input-text v-model="product.liquorType" class="form-input" placeholder="Ron" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ $t('products.price') }} (S/)<span class="important">*</span></label>
+              <pv-input-number v-model="product.unitPriceAmount" mode="currency" currency="PEN" locale="es-PE"/>
+            </div>
+
+            <div class="form-group">
+              <label>{{ $t('products.minimum-stock') }}<span class="important">*</span></label>
+              <pv-input-number v-model="product.minimumStock" :min="0"/>
+            </div>
+
+            <div class="form-group full-width image-section">
+              <label>Product Image</label>
+              <div class="image-upload-container">
+                <label for="file-upload" class="upload-button">
+                  <span>+ Upload File</span>
+                  <input
+                      id="file-upload"
+                      type="file"
+                      accept="image/*"
+                      @change="uploadImage"
+                      style="display: none;"
+                  >
+                </label>
+                <span class="file-name">{{ uploading ? 'Uploading...' : (product.imageUrl ? 'File selected' : 'No file chosen') }}</span>
+              </div>
+
+              <div v-if="product.imageUrl" class="image-preview">
+                <p>Preview:</p>
+                <img :src="product.imageUrl" alt="Preview" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <div class="right-actions">
+              <Button label="Back" class="cancel-button" @click="$router.push({ name: 'ProductList' })" />
+              <Button label="Save" class="submit-button" @click="onSave" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </SideNavbar>
+  </div>
 </template>
 
 <style scoped>
-.product-form-container {
-  padding: 2rem;
+.product-bg {
+  background: #F7EDDC;
+  min-height: 100vh;
+  display: flex;
 }
-.field {
-  margin-bottom: 1rem;
+
+.product-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
-label {
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+
+.product-content {
+  padding: 2rem;
 }
-.form-buttons {
+
+.form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-title {
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #59033A;
+}
+
+.p-inputnumber {
+  width: 100%;
+}
+
+.p-inputnumber input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.image-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.image-upload-container {
   display: flex;
+  align-items: center;
   gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.upload-button {
+  background-color: #59033A;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #7a044d;
+}
+
+.file-name {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.image-preview {
   margin-top: 1rem;
 }
+
+.image-preview img {
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  margin-top: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.right-actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.submit-button {
+  background-color: #59033A;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #7a044d;
+}
+
+.important {
+  color: #ea1c18;
+}
 </style>
+

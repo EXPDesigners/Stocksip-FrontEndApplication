@@ -121,7 +121,14 @@
     "card": {
       "price": "Price",
       "minimum-stock": "Minimum Stock"
-    }
+    },
+    "name": "Name",
+    "brand": "Brand",
+    "liquor-type": "Liquor Type",
+    "price": "Price",
+    "minimum-stock": "Minimum Stock",
+    "new-title": "New Product",
+    "edit-title": "Edit Product"
   },
   "inventory": {
     "title": "Inventory",

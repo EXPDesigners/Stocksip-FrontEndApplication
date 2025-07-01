@@ -319,10 +319,10 @@
       "brandName": "Tabernero",
       "liquorType": "Destilado",
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png",
-      "unitPriceAmount": 44.6,
+      "unitPriceAmount": 44.5,
       "minimumStock": 3,
       "providerId": 1,
-      "updatedUnitPriceAmount": 44.6,
+      "updatedUnitPriceAmount": 44.5,
       "updatedMinimumStock": 3,
       "updatedImageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png"
     },

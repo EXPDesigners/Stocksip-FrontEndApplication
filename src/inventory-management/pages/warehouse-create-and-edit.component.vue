@@ -6,10 +6,11 @@ import {WarehouseService} from "@/inventory-management/services/warehouse.servic
 import {onMounted, ref} from "vue";
 import {useToast} from "primevue/usetoast";
 import { useI18n } from 'vue-i18n';
+import {Button as PvButton} from "primevue";
 
 export default {
   name: "warehouse-create-and-edit",
-  components: {ToolbarContent, SideNavbar},
+  components: {PvButton, ToolbarContent, SideNavbar},
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -384,17 +385,17 @@ export default {
           </div>
 
           <div class="form-actions">
-            <button v-if="isEditMode" type="button" class="delete-button" @click="confirmDelete">
+            <pv-button v-if="isEditMode" type="button" class="delete-button" @click="confirmDelete">
               {{ $t('components.delete') }}
-            </button>
+            </pv-button>
 
             <div class="right-actions">
               <pv-button type="button" class="cancel-button" @click="onCancel">
                 {{ $t('components.cancel') }}
               </pv-button>
-              <button type="submit" class="submit-button">
+              <pv-button type="submit" class="submit-button">
                 {{ isEditMode ? $t('components.update') : $t('components.save') }}
-              </button>
+              </pv-button>
             </div>
           </div>
 

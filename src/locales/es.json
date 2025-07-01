@@ -121,7 +121,14 @@
     "card": {
       "price": "Precio",
         "minimum-stock": "Stock Mínimo"
-    }
+    },
+    "name": "Nombre",
+    "brand": "Marca",
+    "liquor-type": "Tipo de Licor",
+    "price": "Precio",
+    "minimum-stock": "Stock Mínimo",
+    "new-title": "Nuevo Producto",
+    "edit-title": "Editar Producto"
   },
   "inventory": {
     "title": "Inventario",
