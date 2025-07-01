@@ -342,7 +342,7 @@
   ],
   "settings": [
     {
-      "expirationAlertMargin": 5,
+      "expirationAlertMargin": 21,
       "id": 1
     }
   ],
@@ -432,6 +432,20 @@
       "frecuencia": "Quincenal",
       "estado": "Activo",
       "id": "2"
+    },
+    {
+      "id": "3",
+      "licoreria": "trgrgyervgeyeyghhhhhhhhhh",
+      "productos": [
+        "2",
+        "1",
+        "4"
+      ],
+      "cantidad": 22,
+      "fechaInicio": "2025-03-04",
+      "fechaVencimiento": "2024-12-12",
+      "frecuencia": "Semanal",
+      "estado": "Activo"
     }
   ],
   "catalogs": [

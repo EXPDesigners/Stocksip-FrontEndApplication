@@ -46,7 +46,7 @@ export class WarehouseService extends BaseService {
      */
     async createWarehouse(warehouseData, imageFile) {
 
-        const accountId = 'TEST_ACCOUNT_123';
+        const accountId = 'test-acc';
         const endpoint = `${import.meta.env.VITE_BASE_API_URL}${this.accountWarehouseEndpoint.replace('{accountId}', accountId)}`;
 
         const formData = this.#createWarehouseFormData(warehouseData, imageFile);
