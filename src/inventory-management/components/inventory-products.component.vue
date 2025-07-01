@@ -2,13 +2,25 @@
 import { FilterMatchMode } from '@primevue/core/api';
 import { useRoute } from 'vue-router';
 import { InventoryService } from "@/inventory-management/services/inventory.service.js";
+import {ProductService} from "@/inventory-management/services/product.service.js";
+import {Select as PvSelect} from "primevue";
 
 const inventoryService = new InventoryService();
+const productService = new ProductService();
 
 export default {
   name: 'inventory-products',
+  components: {PvSelect},
   data() {
     return {
+
+      availableProducts: [],
+      addProductDialog: false,
+      addProductData: {
+        selectedProductId: null,
+        quantity: 1,
+        expirationDate: null
+      },
       products: [],
       productDialog: false,
       stockDialog: false,
@@ -41,23 +53,60 @@ export default {
     }
   },
   methods: {
+    async fetchAvailableProducts() {
+      const accountId = 'test-acc';
+      const response = await productService.getAllByAccountId(accountId);
+      this.availableProducts = response;
+    },
+    async openAddProductDialog() {
+      await this.fetchAvailableProducts();
+      this.addProductData = {
+        selectedProductId: null,
+        quantity: 1,
+        expirationDate: new Date()
+      };
+      this.addProductDialog = true;
+    },
+    async handleAddProduct() {
+      try {
+        const expirationDate = this.addProductData.expirationDate;
+        const formattedDate = expirationDate.getFullYear() + '-' +
+            String(expirationDate.getMonth() + 1).padStart(2, '0') + '-' +
+            String(expirationDate.getDate()).padStart(2, '0');
+
+        await inventoryService.addProduct(
+            this.addProductData.selectedProductId,
+            this.warehouseId,
+            this.addProductData.quantity,
+            formattedDate
+        );
+
+        this.$toast.add({
+          severity: 'success',
+          summary: this.$t('toast.success'),
+          detail: this.$t('inventory.stock-added'),
+          life: 3000
+        });
+
+        this.addProductDialog = false;
+        await this.refreshProducts();
+      } catch (error) {
+        this.$toast.add({
+          severity: 'error',
+          summary: this.$t('toast.error'),
+          detail: error.response?.data?.message || 'Error al agregar producto',
+          life: 5000
+        });
+      }
+    },
     async refreshProducts() {
       this.products = await inventoryService.getAllProductsByWarehouseId(this.warehouseId);
     },
     formatCurrency(value) {
-      return value ? value.toLocaleString('es-Pe', { style: 'currency', currency: 'PEN' }) : '';
-    },
-    openNew() {
-      this.product = {};
-      this.submitted = false;
-      this.productDialog = true;
-    },
-    hideDialog() {
-      this.productDialog = false;
-      this.submitted = false;
+      return value ? value.toLocaleString('es-Pe', {style: 'currency', currency: 'PEN'}) : '';
     },
     openStockDialog(product, operation = 'add') {
-      this.product = { ...product };
+      this.product = {...product};
       this.stockOperation = operation;
 
       this.stockData = {
@@ -69,6 +118,7 @@ export default {
 
       this.stockDialog = true;
     },
+
     async handleStockOperation() {
       try {
         if (!this.stockData.expirationDate) {
@@ -129,26 +179,34 @@ export default {
         });
       }
     },
-    saveProduct() {
-      this.submitted = true;
-      if (this.product?.name?.trim()) {
-        if (this.product.id) {
-          this.products[this.findIndexById(this.product.id)] = this.product;
-          this.$toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-        } else {
-          this.product.id = Math.random().toString(36).substring(2, 9);
-          this.product.imageUrl = 'product-placeholder.svg';
-          this.product.inventoryStatus = this.product.inventoryStatus || 'INSTOCK';
-          this.products.push(this.product);
-          this.$toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-        }
-        this.productDialog = false;
-        this.product = {};
+
+    async handleDeleteProduct() {
+      try {
+        const expirationDate = this.product.bestBeforeDate;
+
+        await inventoryService.deleteProduct(
+            this.product.productId,
+            this.warehouseId,
+            expirationDate
+        );
+
+        this.$toast.add({
+          severity: 'success',
+          summary: this.$t('toast.success'),
+          detail: this.$t('inventory.product-deleted'),
+          life: 3000
+        });
+
+        await this.refreshProducts();
+        this.deleteProductDialog = false;
+      } catch (error) {
+        this.$toast.add({
+          severity: 'error',
+          summary: this.$t('toast.error'),
+          detail: this.$t('inventory.delete-product-current-stock'),
+          life: 5000
+        });
       }
-    },
-    editProduct(product) {
-      this.product = { ...product };
-      this.productDialog = true;
     },
     confirmDeleteProduct(product) {
       this.product = product;
@@ -187,6 +245,11 @@ export default {
         default: return null;
       }
     }
+  },
+  computed: {
+    addProductMinDate() {
+      return new Date(new Date().setDate(new Date().getDate() + 1));
+    },
   }
 };
 </script>
@@ -197,7 +260,7 @@ export default {
       <div class="card">
         <pv-toolbar class="mb-6">
           <template #start>
-            <pv-button :label="$t('components.add')" icon="pi pi-plus" class="mr-2" @click="openNew" />
+            <pv-button :label="$t('components.add')" icon="pi pi-plus-circle" class="mr-2" @click="openAddProductDialog" />
             <pv-button :label="$t('components.delete')" icon="pi pi-trash" severity="danger" outlined @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
           </template>
           <template #end>
@@ -259,7 +322,7 @@ export default {
               <pv-button icon="pi pi-minus" outlined rounded severity="warning" class="mr-2"
                          @click="openStockDialog(slotProps.data, 'subtract')" />
               <pv-button icon="pi pi-trash" outlined rounded severity="danger"
-                         @click="confirmDeleteProduct(slotProps.data)" />
+                         @click="confirmDeleteProduct(slotProps.data)"/>
             </template>
           </pv-column>
         </pv-data-table>
@@ -354,16 +417,54 @@ export default {
         </template>
       </pv-dialog>
 
-      <pv-dialog v-model:visible="deleteProductsDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
-        <div class="flex items-center gap-4">
-          <i class="pi pi-exclamation-triangle !text-3xl" />
-          <span>Are you sure you want to delete the selected products?</span>
+      <pv-dialog v-model:visible="addProductDialog" :style="{ width: '450px' }" :modal="true" :header="$t('inventory.add-product')">
+        <div class="formgrid grid">
+          <div class="field col-12">
+            <label class="block mb-2">{{ $t('inventory.select-product') }}</label>
+            <pv-select
+                v-model="addProductData.selectedProductId"
+                :options="availableProducts"
+                optionLabel="name"
+                optionValue="productId"
+                :placeholder="$t('inventory.select-product')"
+                filter
+            />
+          </div>
+          <div class="field col-6">
+            <label class="block mb-2">{{ $t('inventory.quantity-add') }}</label>
+            <pv-input-number v-model="addProductData.quantity" :min="1" showButtons />
+          </div>
+          <div class="field col-6">
+            <label class="block mb-2">{{ $t('inventory.best-date-before') }}</label>
+            <pv-date-picker
+                v-model="addProductData.expirationDate"
+                dateFormat="yy-mm-dd"
+                showIcon
+                :minDate="addProductMinDate"
+                :showButtonBar="true"
+            />
+          </div>
         </div>
         <template #footer>
-          <pv-button label="No" icon="pi pi-times" text @click="deleteProductsDialog = false" />
-          <pv-button label="Yes" icon="pi pi-check" @click="deleteSelectedProducts" />
+          <pv-button :label="$t('components.cancel')" icon="pi pi-times" @click="addProductDialog = false" class="p-button-text" />
+          <pv-button :label="$t('components.save')" icon="pi pi-check" @click="handleAddProduct" class="p-button-success" :disabled="!addProductData.selectedProductId"/>
         </template>
       </pv-dialog>
+
+
+
+      <pv-dialog v-model:visible="deleteProductDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+        <div class="flex items-center gap-4">
+          <i class="pi pi-exclamation-triangle !text-3xl" />
+          <span>{{ $t('inventory.confirm-delete-product') }}</span>
+        </div>
+        <template #footer>
+          <pv-button :label="$t('components.cancel')" icon="pi pi-times" text @click="deleteProductDialog = false" />
+          <pv-button :label="$t('components.confirm')" icon="pi pi-check" severity="danger" @click="handleDeleteProduct" />
+        </template>
+      </pv-dialog>
+
+
     </div>
   </div>
 </template>

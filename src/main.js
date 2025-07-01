@@ -24,7 +24,7 @@ import {
     DataTable, DatePicker,
     Dialog,
     DialogService,
-    Drawer,
+    Drawer, Dropdown,
     FileUpload,
     FloatLabel,
     IconField,

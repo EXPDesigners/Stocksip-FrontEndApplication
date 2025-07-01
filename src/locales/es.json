@@ -144,7 +144,12 @@
     "stock-added-title": "Añadir Stock",
     "stock-reduced-title": "Reducir Stock",
     "quantity-add": "Cantidad a añadir",
-    "quantity-reduce": "Cantidad a reducir"
+    "quantity-reduce": "Cantidad a reducir",
+    "add-product": "Añadir Producto",
+    "select-product": "Selecciona un Producto",
+    "product-deleted": "¡Producto eliminado con éxito!",
+    "confirm-delete-product": "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
+    "delete-product-current-stock": "No se puede eliminar un producto que tenga stock."
   },
   "profile": {
     "title": "Perfil"

@@ -144,7 +144,12 @@
     "stock-added-title": "Add Stock",
     "stock-reduced-title": "Reduce Stock",
     "quantity-add": "Quantity to add",
-    "quantity-reduce": "Quantity to reduce"
+    "quantity-reduce": "Quantity to reduce",
+    "add-product": "Add Product",
+    "select-product": "Select a Product",
+    "product-deleted": "Product deleted successfully!",
+    "confirm-delete-product": "Are you sure you want to delete this product? This action cannot be undone.",
+    "delete-product-current-stock": "You cannot delete a product that has stock."
   },
   "profile": {
     "title": "Profile"

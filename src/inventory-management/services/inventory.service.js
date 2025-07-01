@@ -11,6 +11,7 @@ export class InventoryService extends BaseService {
     warehouseProductsEndpoint = '';
     stockAdditionEndpoint = '';
     stockSubtractionEndpoint = '';
+    productAdditionEndpoint = '';
 
     constructor() {
         super();
@@ -19,8 +20,7 @@ export class InventoryService extends BaseService {
         this.warehouseProductsEndpoint = import.meta.env.VITE_WAREHOUSE_PRODUCTS_ENDPOINT_PATH;
         this.stockAdditionEndpoint = import.meta.env.VITE_INVENTORY_PRODUCTS_ADDITION_ENDPOINT;
         this.stockSubtractionEndpoint = import.meta.env.VITE_INVENTORY_PRODUCTS_SUBSTRACTION_ENDPOINT;
-
-        console.log('✅ stockAdditionEndpoint loaded:', this.stockAdditionEndpoint);
+        this.productAdditionEndpoint = import.meta.env.VITE_WAREHOUSE_PRODUCT_ADDITION_ENDPOINT_PATH;
     }
 
     async getAllProductsByWarehouseId(warehouseId) {
@@ -44,7 +44,6 @@ export class InventoryService extends BaseService {
             return response.data;
         } catch (error) {
             console.error('Error adding stock:', error);
-            throw this.handleApiError(error);
         }
     }
 
@@ -62,20 +61,35 @@ export class InventoryService extends BaseService {
             return response.data;
         } catch (error) {
             console.error('Error subtracting stock:', error);
-            throw this.handleApiError(error);
         }
     }
 
-    /**
-     * Handle API errors consistently
-     */
-    handleApiError(error) {
-        if (error.response) {
-            return new Error(`Server error: ${error.response.status} - ${error.response.data.message}`);
-        } else if (error.request) {
-            return new Error('Network error - No se recibió respuesta del servidor');
-        } else {
-            return new Error('Request error - La solicitud no pudo ser enviada');
+    async addProduct(productId, warehouseId, quantity, expirationDate) {
+        const inventoriesPath = this.warehouseProductsEndpoint.replace('{warehouseId}', warehouseId);
+        const productPath = this.productAdditionEndpoint.replace('{productId}', productId);
+        const url = `${this.resourceEndpoint}${inventoriesPath}${productPath}`;
+
+        const payload = {
+            expirationDate,
+            quantity
+        };
+
+        const response = await axios.post(url, payload);
+        return response.data;
+    }
+
+    async deleteProduct(productId, warehouseId, expirationDate) {
+        try {
+            const endpoint = `warehouses/${warehouseId}/inventories/product/${productId}`;
+            const url = `${this.resourceEndpoint}${endpoint}`;
+
+            const response = await axios.delete(url, {
+                data: { expirationDate }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Error deleting product:', error);
         }
     }
 }
