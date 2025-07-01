@@ -115,6 +115,9 @@
     "new-order": "New Order"
   },
   "products":{
+    "title": "Products",
+    "emptyTitle": "No products created",
+    "emptyDescription": "You can create a new product by clicking the button below.",
     "card": {
       "price": "Price",
       "minimum-stock": "Minimum Stock"
