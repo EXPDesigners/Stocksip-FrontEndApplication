@@ -21,24 +21,28 @@ export default {
       try {
         const service = new WarehouseService();
         const response = await service.getAll();
+
         this.warehouses = response.data.map(item => new Warehouse({
-          id: item.id,
+          warehouseId: item.warehouseId,
           name: item.name,
-          imageUrl: item.imageUrl,
-          location: item.location,
+          street: item.street,
           city: item.city,
-          state: item.state,
+          district: item.district,
           postalCode: item.postalCode,
+          country: item.country,
+          maxTemperature: item.maxTemperature,
+          minTemperature: item.minTemperature,
           capacity: item.capacity,
-          profileId: item.profileId
+          imageUrl: item.imageUrl
         }));
+
       } catch (error) {
         this.error = "Failed to load warehouses";
         console.error(error);
       }
     },
     navigateToCreate() {
-      this.$router.push('/warehouses/create');
+      this.$router.push('/warehouses/new');
     },
   },
   created() {
@@ -51,9 +55,14 @@ export default {
   <div class="warehouse-bg">
     <side-navbar />
     <div class="warehouse-main">
-      <toolbar-content :pageTitle="'Warehouse'"/>
+      <toolbar-content :pageTitle="$t('warehouses.title')"/>
       <div class="warehouse-content">
-        <warehouse-list :warehouses="warehouses"></warehouse-list>
+        <warehouse-list v-if="warehouses && warehouses.length > 0" :warehouses="warehouses"></warehouse-list>
+
+        <div v-else class="empty-warehouses">
+          <h3 class="empty-title">{{ $t('warehouses.emptyTitle') }}</h3>
+          <p>{{ $t('warehouses.emptyDescription') }}</p>
+        </div>
 
         <div class="floating-action-container">
           <pv-button
@@ -73,9 +82,7 @@ export default {
 .warehouse-bg {
   background: #F7EDDC;
   min-height: 100vh;
-  width: 100vw;
   display: flex;
-  position: relative;
 }
 
 .warehouse-main {
@@ -86,7 +93,6 @@ export default {
 
 .warehouse-content {
     padding: 2rem;
-    gap: 2rem;
 }
 
 .floating-action-container {
@@ -113,6 +119,16 @@ export default {
   color: white !important;
   filter: brightness(1.1);
   box-shadow: 0 3px 5px rgba(89, 3, 58, 0.3);
+}
+
+.empty-warehouses {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.empty-title {
+  font-size: 2.5rem;
+  color: #790b38;
 }
 
 </style>

@@ -194,56 +194,6 @@
       "id": "4dc033f6-55fc-471e-872c-5e4eebcec3c3"
     }
   ],
-  "zones": [
-    {
-      "zoneId": 1,
-      "name": "Principal warehouse",
-      "type": "Wines",
-      "description": "Recommended temperature: 16 - 20 °C"
-    },
-    {
-      "zoneId": 2,
-      "name": "Cold zone",
-      "type": "Wines",
-      "description": "Recommended temperature: 1 - 15 °C"
-    },
-    {
-      "zoneId": 3,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 4,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 5,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 6,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 7,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    },
-    {
-      "zoneId": 8,
-      "name": "Exhibition zone",
-      "type": "Whiskeys",
-      "description": "Recommended temperature: 8 - 10 °C"
-    }
-  ],
   "reports": [
     {
       "id": 1,
@@ -349,7 +299,8 @@
       "unitPriceAmount": 135,
       "minimumStock": 25,
       "updatedUnitPriceAmount": 135,
-      "updatedMinimumStock": 25
+      "updatedMinimumStock": 25,
+      "min": 12
     },
     {
       "name": "Product 1",
@@ -360,27 +311,33 @@
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750453644/ujair1z0nz3czriix2xg.png",
       "providerId": 3,
       "id": 8,
-      "min": 23
+      "min": 21
     },
     {
+      "id": 9,
       "name": "Vino Tinto Del Valle",
       "brandName": "Tabernero",
       "liquorType": "Destilado",
-      "unitPriceAmount": 44.5,
-      "minimumStock": 3,
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png",
+      "unitPriceAmount": 44.6,
+      "minimumStock": 3,
       "providerId": 1,
-      "id": 9
+      "updatedUnitPriceAmount": 44.6,
+      "updatedMinimumStock": 3,
+      "updatedImageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454188/pca4x8ab8wqqtfopr7k6.png"
     },
     {
+      "id": 10,
       "name": "Hola",
-      "brandName": "Ya funciona esta hvda",
+      "brandName": "Ya funciona esta hvda xd",
       "liquorType": "Liquor",
-      "unitPriceAmount": 56,
-      "minimumStock": 3,
       "imageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454758/eyksx9zurvhqjttk2cyl.png",
+      "unitPriceAmount": 58,
+      "minimumStock": 3,
       "providerId": 3,
-      "id": 10
+      "updatedUnitPriceAmount": 58,
+      "updatedMinimumStock": 3,
+      "updatedImageUrl": "https://res.cloudinary.com/dshxmkd1v/image/upload/v1750454758/eyksx9zurvhqjttk2cyl.png"
     }
   ],
   "settings": [
@@ -445,6 +402,36 @@
       "imageUrl": "https://res.cloudinary.com/dmhlgoedk/image/upload/v1750143806/og8bwurxprzp7oxkrlbz.jpg",
       "description": "Temperatura recomendada: 15 - 16°C. Almacenar en Lugar fresco. Duración después de abierto: 12 meses. Comentarios: Pose.",
       "id": "8"
+    }
+  ],
+  "resupplyPlans": [
+    {
+      "licoreria": "Linda",
+      "productos": [
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "cantidad": 18,
+      "fechaInicio": "2025-06-26",
+      "fechaVencimiento": "2025-06-30",
+      "frecuencia": "Semanal",
+      "estado": "Activo",
+      "id": "1"
+    },
+    {
+      "licoreria": "Linda",
+      "productos": [
+        "1",
+        "2"
+      ],
+      "cantidad": 12,
+      "fechaInicio": "2025-06-20",
+      "fechaVencimiento": "2025-06-27",
+      "frecuencia": "Quincenal",
+      "estado": "Activo",
+      "id": "2"
     }
   ],
   "catalogs": [
@@ -583,6 +570,24 @@
       ],
       "totalAmount": 35,
       "totalItems": 1
+    }
+  ],
+  "accounts": [
+    {
+      "id": "a1",
+      "userOwnerId": 1,
+      "role": "Liquor Store Owner",
+      "businessName": "Business 1",
+      "name": "Farid",
+      "email": "farid@example.com"
+    },
+    {
+      "id": "a3",
+      "userOwnerId": 3,
+      "role": "Supplier",
+      "businessName": "Business 2",
+      "name": "Camila",
+      "email": "camila@example.com"
     }
   ]
 }

@@ -123,7 +123,7 @@ export default {
     <SideNavbar />
     <div class="main-content">
       <div class="header">
-        <h1>Guías de Conservación</h1>
+        <h1>Conservation Guides</h1>
       </div>
 
       <div class="card-search">
@@ -132,11 +132,11 @@ export default {
             <input
                 type="text"
                 v-model="searchQuery"
-                placeholder="Buscar por nombre..."
+                placeholder="Search by name..."
                 @input="handleSearch"
             />
             <select v-model="selectedType" @change="handleTypeFilter">
-              <option value="all">Todos</option>
+              <option value="all">All</option>
               <option value="Ron">Ron</option>
               <option value="Whisky">Whisky</option>
               <option value="Vodka">Vodka</option>
@@ -145,20 +145,20 @@ export default {
             </select>
           </div>
           <button class="btn-primary create-btn" @click="createGuide">
-            <i class="fas fa-plus"></i> Nueva Guía
+            <i class="fas fa-plus"></i> New Guide
           </button>
         </div>
       </div>
 
       <div v-if="loading" class="loading-container">
         <div class="loading-spinner"></div>
-        <p>Cargando guías...</p>
+        <p>Loading guides...</p>
       </div>
 
       <div v-else-if="error" class="error-container">
         <i class="fas fa-exclamation-circle"></i>
         <p>{{ error }}</p>
-        <button class="btn-secondary" @click="loadGuides">Reintentar</button>
+        <button class="btn-secondary" @click="loadGuides">Retry</button>
       </div>
 
       <div v-else class="content-container">

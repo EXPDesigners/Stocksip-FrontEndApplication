@@ -11,8 +11,8 @@
     <template #subtitle>{{ displayBrand }} - {{ displayLiquorType }}</template>
     <template #content>
       <div class="product-content">
-        <p><strong>Price:</strong> {{ displayPrice }}</p>
-        <p><strong>Min Stock:</strong> {{ displayMinimumStock }}</p>
+        <p><strong>{{ $t('products.card.price') }}</strong> {{ displayPrice }}</p>
+        <p><strong>{{ $t('products.card.minimum-stock') }}</strong> {{ displayMinimumStock }}</p>
       </div>
     </template>
     <template #footer>

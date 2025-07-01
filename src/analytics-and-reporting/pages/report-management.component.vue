@@ -3,10 +3,12 @@ import SideNavbar from '@/public/components/side-navbar.vue'
 import ReportList from '/src/analytics-and-reporting/components/report-list.component.vue'
 import { Report } from '/src/analytics-and-reporting/model/report.entity.js'
 import { ReportService } from '/src/analytics-and-reporting/services/report.service.js'
+import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 
 export default {
   name: 'report-management',
   components: {
+    ToolbarContent,
     SideNavbar,
     ReportList
   },
@@ -55,6 +57,9 @@ export default {
     },
     goToCareGuide() {
       this.$router.push({ name: 'care-guide' })
+    },
+    goToResupplies() {
+      this.$router.push({ name: 'Resupplies' })
     }
   }
 }
@@ -64,12 +69,12 @@ export default {
   <div class="report-bg">
     <side-navbar />
     <div class="report-main">
-      <h1 class="title">Reports</h1>
+      <toolbar-content :pageTitle="$t('reports.title')"/>
 
       <div class="report-nav">
         <button class="nav-btn">Internal referral</button>
         <button class="nav-btn active">Loss reporting</button>
-        <button class="nav-btn">Resupplies</button>
+        <button class="nav-btn" @click="goToResupplies">Resupplies</button>
         <button class="nav-btn" @click="goToCareGuide">Conservation</button>
       </div>
 

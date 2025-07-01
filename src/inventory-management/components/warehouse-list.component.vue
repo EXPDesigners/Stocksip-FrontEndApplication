@@ -12,7 +12,7 @@ export default {
 <template>
   <div class="grid-container">
     <div class="grid">
-      <div v-for="warehouse in warehouses" :key="warehouse.id" class="grid-item">
+      <div v-for="warehouse in warehouses" :key="warehouse.warehouseId" class="grid-item">
         <warehouse-item :warehouse="warehouse"/>
       </div>
     </div>

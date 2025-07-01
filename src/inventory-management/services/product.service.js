@@ -2,12 +2,15 @@ import axios from 'axios';
 import { Money } from '@/shared/model/money.js';
 import { Currency } from '@/shared/model/currency.js';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL; // Fake Api
+const baseApiUrl = import.meta.env.VITE_BASE_API_URL; // Backend Api
+const accountProducts = import.meta.env.VITE_ACCOUNT_PRODUCTS_ENDPOINT_PATH;
 
 export class ProductService {
+
     async getAllByProviderId(providerId) {
         const response = await axios.get(`${apiUrl}/products`, {
-            params: { providerId }
+                params: { providerId }
         });
 
         return response.data.map(p => this._mapProduct(p));
@@ -73,5 +76,13 @@ export class ProductService {
             ...product,
             unitPrice: new Money({ amount, currency: new Currency(currencyCode) })
         };
+    }
+
+    // Backend API methods
+    async getAllByAccountId(accountId) {
+        const endpoint = accountProducts.replace('{accountId}', accountId);
+        const url = `${baseApiUrl}${endpoint}`;
+        const response = await axios.get(url);
+        return response.data;
     }
 }

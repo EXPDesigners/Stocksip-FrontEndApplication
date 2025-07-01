@@ -1,11 +1,11 @@
 <template>
   <SideNavbar>
-    <ToolbarContent pageTitle="Orders" />
+    <ToolbarContent :pageTitle="$t('orders.title')" />
     <div class="order-container-page">
       <div class="purchase-order-wrapper">
         <div class="actions">
           <router-link to="/catalog" class="new-order-button">
-            Nueva Orden
+            {{ $t('orders.new-order') }}
           </router-link>
         </div>
         <PurchaseOrderListComponent :orders="orders" />

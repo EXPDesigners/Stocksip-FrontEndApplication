@@ -61,21 +61,21 @@ export default {
   <div v-if="show" class="modal-overlay" @click="closeModal">
     <div class="modal-content" @click.stop>
       <div class="modal-header">
-        <h2>Configurar Stock Mínimo</h2>
+        <h2>{{ $t('alerts.minimum-stock.title') }}</h2>
         <button class="close-button" @click="closeModal">×</button>
       </div>
       
       <div class="modal-body">
-        <div v-if="loading" class="loading">Cargando productos...</div>
+        <div v-if="loading" class="loading">{{ $t('alerts.minimum-stock.loading') }}</div>
         <div v-else-if="error" class="error">{{ error }}</div>
         
         <table v-else class="products-table">
           <thead>
             <tr>
-              <th>Producto</th>
-              <th>Stock Actual</th>
-              <th>Stock Mínimo</th>
-              <th>Acciones</th>
+              <th>{{ $t('alerts.minimum-stock.form.product') }}</th>
+              <th>{{ $t('alerts.minimum-stock.form.actual-stock') }}</th>
+              <th>{{ $t('alerts.minimum-stock.form.minimum-stock') }}</th>
+              <th>{{ $t('alerts.minimum-stock.form.actions') }}</th>
             </tr>
           </thead>
           <tbody>

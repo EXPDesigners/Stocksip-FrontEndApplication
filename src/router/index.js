@@ -9,21 +9,22 @@ import AlertComponent from '../alerts-and-notifications/pages/alert-dashboard.co
 
 import WarehouseComponent from '../inventory-management/pages/warehouse.component.vue';
 import CreateAndEditWarehouse from "@/inventory-management/pages/warehouse-create-and-edit.component.vue";
-import ZonesComponent from '../inventory-management/pages/zones.component.vue'
+import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 import ProductCreateAndEditComponent from "@/inventory-management/pages/product-create-and-edit.component.vue";
-import InventoryComponent from "@/inventory-management/pages/inventory.component.vue";
 
 import ReportsComponent from '../analytics-and-reporting/pages/report-management.component.vue'
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
 import CareGuideComponent from '../inventory-management/pages/care-guide-dashboard.component.vue'
 import CareGuideCreate from '../inventory-management/pages/care-guide-create-and-edit.component.vue'
+import ResupplyPlanDashboard from '../inventory-management/pages/resupply-plan-dashboard.component.vue'
+import ResupplyPlanCreate from '../inventory-management/pages/resupply-plan-create.component.vue'
+import ResupplyPlanEdit from '../inventory-management/pages/resupply-plan-edit.componet.vue'
 
 import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
 import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
 import PurchaseOrderCreateComponent from "@/order-operation-and-monitoring/pages/purchase-order-create.component.vue";
 import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.component.vue";
-import ProductListComponent from "@/inventory-management/components/product-list.component.vue";
 import ProductCreateAndEdit from "@/inventory-management/pages/product-create-and-edit.component.vue";
 import ProductManagementComponent from "@/inventory-management/components/product-management.component.vue";
 
@@ -123,19 +124,35 @@ const routes = [
         component: WarehouseComponent
     },
     {
-        path: '/warehouses/create',
+        path: '/warehouses/new',
         name: 'CreateWarehouse',
         component: CreateAndEditWarehouse
     },
     {
-        path: '/warehouses/edit/:id',
+        path: '/warehouses/edit/:warehouseId',
         name: 'EditWarehouse',
         component: CreateAndEditWarehouse,
     },
     {
-        path: '/warehouses/zones/:id',
-        name: 'Zones',
-        component: ZonesComponent,
+        path: '/resupplies',
+        name: 'Resupplies',
+        component: ResupplyPlanDashboard
+    },
+    {
+        path: '/resupplies/:id/plans/new',
+        name: 'resupply-plan-create',
+        component: ResupplyPlanCreate,
+        props: true
+    },
+    {
+        path: '/resupplies/:id/plans/edit',
+        name: 'resupply-plan-edit',
+        component: ResupplyPlanEdit,
+    },
+    {
+        path: '/warehouses/:warehouseId/inventory',
+        name: 'Inventory',
+        component: InventoryComponent,
     },
     {
         path: '/catalog',

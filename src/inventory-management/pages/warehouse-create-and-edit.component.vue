@@ -1,97 +1,114 @@
 <script>
 import SideNavbar from "@/public/components/side-navbar.vue";
-import WarehouseList from "@/inventory-management/components/warehouse-list.component.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 import {useRoute, useRouter} from "vue-router";
 import {WarehouseService} from "@/inventory-management/services/warehouse.service.js";
 import {onMounted, ref} from "vue";
-import {Button as PvButton, Toast as PvToast} from "primevue";
-import cloudinaryService from '@/shared/services/cloudinary.service.js';
 import {useToast} from "primevue/usetoast";
 import { useI18n } from 'vue-i18n';
 
 export default {
   name: "warehouse-create-and-edit",
-  components: {PvToast, PvButton, ToolbarContent, WarehouseList, SideNavbar},
+  components: {ToolbarContent, SideNavbar},
   setup() {
     const router = useRouter();
     const route = useRoute();
     const warehouseService = new WarehouseService();
-    const { t } = useI18n();
+    const {t} = useI18n();
     const toast = useToast();
 
     const isEditMode = ref(false);
-    const id = ref(null);
+    const warehouseId = ref(null);
     const submitted = ref(false);
     const selectedFile = ref(null);
     const existingImageUrl = ref(null);
     const newImagePreview = ref(null);
+    const showDeleteDialog = ref(false);
     const errors = ref({});
 
-    const form = ref({
+    const initialValues = ref({
       name: '',
-      location: '',
+      street: '',
       city: '',
-      state: '',
+      district: '',
       postalCode: '',
-      capacity: null,
-      imageUrl: null
+      country: '',
+      maxTemperature: 0,
+      minTemperature: 0,
+      capacity: 0
     });
 
-    const validateForm = () => {
-      errors.value = {};
-      let isValid = true;
+    const form = ref({...initialValues.value});
 
-      if (!form.value.name.trim()) {
-        errors.value.name = 'Name is required';
-        isValid = false;
+
+    const resolver = ({ values }) => {
+      const errors = {};
+
+      if (!isEditMode.value || values.name !== initialValues.value.name) {
+        if (!values.name?.trim()) {
+          errors.name = [{ message: t('errors.name-required') }];
+        }
       }
 
-      if (!form.value.location.trim()) {
-        errors.value.location = 'Location is required';
-        isValid = false;
+      if (!isEditMode.value || values.street !== initialValues.value.street) {
+        if (!values.street?.trim()) {
+          errors.street = [{ message: t('errors.street-required') }];
+        }
       }
 
-      if (!form.value.city.trim()) {
-        errors.value.city = 'City is required';
-        isValid = false;
+      if (!isEditMode.value || values.city !== initialValues.value.city) {
+        if (!values.city?.trim()) {
+          errors.city = [{ message: t('errors.city-required') }];
+        }
       }
 
-      if (!form.value.state.trim()) {
-        errors.value.state = 'State is required';
-        isValid = false;
+      if (!isEditMode.value || values.district !== initialValues.value.district) {
+        if (!values.district?.trim()) {
+          errors.district = [{ message: t('errors.district-required') }];
+        }
       }
 
-      if (!form.value.postalCode) {
-        errors.value.postalCode = 'Postal code is required';
-        isValid = false;
-      } else if (!/^\d{5}$/.test(form.value.postalCode)) {
-        errors.value.postalCode = 'Enter a valid 5-digit postal code';
-        isValid = false;
+      if (!isEditMode.value || values.postalCode !== initialValues.value.postalCode) {
+        if (!values.postalCode?.trim()) {
+          errors.postalCode = [{ message: t('errors.postal-code-required') }];
+        }
       }
 
-      if (form.value.capacity === null || form.value.capacity === '') {
-        errors.value.capacity = 'Capacity is required';
-        isValid = false;
-      } else if (Number(form.value.capacity) < 1) {
-        errors.value.capacity = 'Must be greater than 0';
-        isValid = false;
+      if (!isEditMode.value || values.country !== initialValues.value.country) {
+        if (!values.country?.trim()) {
+          errors.country = [{ message: t('errors.country-required') }];
+        }
       }
 
-      return isValid;
+      if (values.maxTemperature === null || isNaN(values.maxTemperature) || values.maxTemperature > 50 || values.maxTemperature < -50) {
+        errors.maxTemperature = [{ message: t('errors.max-temperature-required') }];
+      }
+
+      if (values.minTemperature === null || isNaN(values.minTemperature) || values.minTemperature > 50 || values.minTemperature < -50) {
+        errors.minTemperature = [{ message: t('errors.min-temperature-required') }];
+      }
+
+      if (values.capacity === null || isNaN(values.capacity) || values.capacity < 0) {
+        errors.capacity = [{ message: t('errors.capacity-required') }];
+      }
+
+      return { values, errors };
     };
 
     const loadWarehouseData = async () => {
       try {
 
-        const warehouse = await warehouseService.getWarehouseById(id.value);
+        const warehouse = await warehouseService.getWarehouseById(warehouseId.value);
 
         form.value = {
           name: warehouse.name,
-          location: warehouse.location,
+          street: warehouse.street,
           city: warehouse.city,
-          state: warehouse.state,
+          district: warehouse.district,
           postalCode: warehouse.postalCode,
+          country: warehouse.country,
+          maxTemperature: warehouse.maxTemperature,
+          minTemperature: warehouse.minTemperature,
           capacity: warehouse.capacity,
           imageUrl: warehouse.imageUrl
         };
@@ -103,16 +120,9 @@ export default {
       }
     };
 
-    const showExistingImage = () => {
-      if (existingImageUrl.value) {
-        return existingImageUrl.value;
-      }
-      return null;
-    };
-
     onMounted(() => {
-      id.value = route.params.id;
-      isEditMode.value = Boolean(id.value);
+      warehouseId.value = route.params.warehouseId;
+      isEditMode.value = Boolean(warehouseId.value);
 
       if (isEditMode.value) {
         loadWarehouseData();
@@ -120,50 +130,80 @@ export default {
     });
 
     const onSubmit = async () => {
+      if (submitted.value) return;
       submitted.value = true;
-
-      if (!validateForm()) {
-        submitted.value = false;
-        return;
-      }
 
       try {
         const warehouseData = {
           name: form.value.name,
-          location: form.value.location,
+          street: form.value.street,
           city: form.value.city,
-          state: form.value.state,
+          district: form.value.district,
           postalCode: form.value.postalCode,
+          country: form.value.country,
+          maxTemperature: Number(form.value.maxTemperature),
+          minTemperature: Number(form.value.minTemperature),
           capacity: Number(form.value.capacity),
-          imageUrl: form.value.imageUrl || ''
         };
 
-        if (selectedFile.value) {
-          const uploadResult = await cloudinaryService.uploadImage(selectedFile.value);
-          warehouseData.imageUrl = uploadResult.secure_url;
-        }
-
-        let response;
-
         if (isEditMode.value) {
-          response = await warehouseService.updateWarehouse(id.value, warehouseData);
-          toast.add({ severity: 'success', summary: t('toast.success'), detail: t('warehouses.update_success'), life: 3000 })
+          await warehouseService.updateWarehouse(warehouseId.value, warehouseData, selectedFile.value);
+          toast.add({
+            severity: 'success',
+            summary: t('toast.success'),
+            detail: t('warehouses.update_success'),
+            life: 3000
+          });
         } else {
-          response = await warehouseService.createWarehouse(warehouseData);
-          toast.add({ severity: 'success', summary: t('toast.success'), detail: t('warehouses.create_success'), life: 3000 });
+          await warehouseService.createWarehouse(warehouseData, selectedFile.value);
+          toast.add({
+            severity: 'success',
+            summary: t('toast.success'),
+            detail: t('warehouses.create_success'),
+            life: 3000
+          });
         }
 
         await router.push('/warehouses');
+      } catch (error) {
+        console.error('Error:', error);
+        toast.add({
+          severity: 'error',
+          summary: t('toast.error'),
+          detail: error.message || t('warehouses.error_message'),
+          life: 3000
+        });
       } finally {
         submitted.value = false;
       }
+    }
+
+    const confirmDelete = () => {
+      showDeleteDialog.value = true;
     };
 
-    const onFileSelect = (event) => {
-      selectedFile.value = event.files[0];
-      if (selectedFile.value) {
-        newImagePreview.value = URL.createObjectURL(selectedFile.value);
+    const onDelete = async () => {
+      showDeleteDialog.value = false;
+      try {
+        await warehouseService.deleteWarehouse(warehouseId.value);
+        toast.add({
+          severity: 'success',
+          summary: t('toast.success'),
+          detail: t('warehouses.delete_success'),
+          life: 3000
+        });
+        await router.push('/warehouses');
+      } catch(error) {
+        console.error('Error deleting warehouse:', error);
       }
+    }
+
+    const onFileSelect = (event) => {
+      const file = event.target?.files?.[0];
+      if (!file) return;
+
+      selectedFile.value = file;
+      newImagePreview.value = URL.createObjectURL(file);
     };
 
     const onCancel = () => {
@@ -177,148 +217,217 @@ export default {
       isEditMode,
       existingImageUrl,
       newImagePreview,
+      selectedFile,
+      initialValues,
+      showDeleteDialog,
+      resolver,
       onFileSelect,
       onSubmit,
-      onCancel
+      onCancel,
+      onDelete,
+      confirmDelete,
     };
   }
 }
+
 </script>
 
 <template>
   <div class="warehouse-bg">
     <side-navbar />
     <div class="warehouse-main">
-      <toolbar-content :pageTitle="isEditMode ? 'Edit Warehouse' : 'Create Warehouse'" />
+      <toolbar-content :pageTitle="isEditMode ? $t('warehouses.editWarehouseTitle') : $t('warehouses.createWarehouseTitle')" />
       <div class="warehouse-content">
-        <pv-card class="form-container">
-          <template #content>
-            <form @submit.prevent="onSubmit">
-              <div class="p-fluid grid">
+        <pv-form :initialValues="initialValues" :resolver="resolver" @submit="onSubmit" v-slot="$form" class="form-card">
+          <h2 class="form-title">{{ isEditMode ? $t('components.edit-data') : $t('components.complete-data') }}</h2>
+          <div class="form-grid">
 
-                <div class="field col-12 md:col-6">
-                  <label for="name">{{ $t('warehouses.name') }}</label>
-                  <pv-input-text
-                      id="name"
-                      v-model="form.name"
-                      placeholder="Principal Warehouse"
-                      :class="{ 'p-invalid': submitted && errors.name }"
-                  />
-                  <small v-if="submitted && errors.name" class="p-error">
-                    {{ errors.name }}
-                  </small>
-                </div>
+            <div class="form-group">
+              <label>{{$t('warehouses.form.name')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="name"
+                  v-model="form.name"
+                  placeholder="Principal Warehouse"
+                  class="form-input"
+                  :class="{ 'input-error': errors.name }"
+              />
+              <pv-message v-if="$form.name?.invalid" class="form-error">{{ $form.name.errors?.[0]?.message }}</pv-message>
+            </div>
 
-                <div class="field col-12 md:col-6">
-                  <label for="location">{{ $t('warehouses.location') }}</label>
-                  <pv-input-text
-                      id="location"
-                      v-model="form.location"
-                      placeholder="Av. Sol"
-                      :class="{ 'p-invalid': submitted && errors.location }"
-                  />
-                  <small v-if="submitted && errors.location" class="p-error">
-                    {{ errors.location }}
-                  </small>
-                </div>
+            <div class="form-group">
+              <label for="street">{{$t('warehouses.form.street')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="street"
+                  v-model="form.street"
+                  type="text"
+                  placeholder="Av. Sol"
+                  class="form-input"
+              />
+              <pv-message v-if="$form.street?.invalid" class="form-error">{{ $form.street.errors?.[0]?.message }}</pv-message>
+            </div>
 
-                <div class="field col-12 md:col-6">
-                  <label for="city">{{ $t('warehouses.city') }}</label>
-                  <pv-input-text
-                      id="city"
-                      v-model="form.city"
-                      placeholder="Lima"
-                      :class="{ 'p-invalid': submitted && errors.city }"
-                  />
-                  <small v-if="submitted && errors.city" class="p-error">
-                    {{ errors.city }}
-                  </small>
-                </div>
+            <div class="form-group">
+              <label for="city">{{$t('warehouses.form.city')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="city"
+                  v-model="form.city"
+                  type="text"
+                  placeholder="Lima"
+                  class="form-input"
+              />
+              <pv-message v-if="$form.city?.invalid" class="form-error">{{ $form.city.errors?.[0]?.message }}</pv-message>
+            </div>
 
-                <div class="field col-12 md:col-6">
-                  <label for="state">{{ $t('warehouses.state') }}</label>
-                  <pv-input-text
-                      id="state"
-                      v-model="form.state"
-                      placeholder="Cusco"
-                      :class="{ 'p-invalid': submitted && errors.state }"
-                  />
-                  <small v-if="submitted && errors.state" class="p-error">
-                    {{ errors.state }}
-                  </small>
-                </div>
+            <div class="form-group">
+              <label for="district">{{$t('warehouses.form.district')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="district"
+                  v-model="form.district"
+                  type="text"
+                  placeholder="Villa El Salvador"
+                  class="form-input"
+              />
+              <pv-message v-if="$form.district?.invalid" class="form-error">{{ $form.district.errors?.[0]?.message }}</pv-message>
+            </div>
 
-                <div class="field col-12 md:col-6">
-                  <label for="postalCode">{{ $t('warehouses.postal-code') }}</label>
-                  <pv-input-text
-                      id="postalCode"
-                      v-model="form.postalCode"
-                      placeholder="08000"
-                      :class="{ 'p-invalid': submitted && errors.postalCode }"
-                  />
-                  <small v-if="submitted && errors.postalCode" class="p-error">
-                    {{ errors.postalCode }}
-                  </small>
-                </div>
+            <div class="form-group">
+              <label for="postalCode">{{$t('warehouses.form.postal-code')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="postalCode"
+                  v-model="form.postalCode"
+                  type="text"
+                  placeholder="12345"
+                  class="form-input"
+              />
+              <pv-message v-if="$form.postalCode?.invalid" class="form-error">{{ $form.postalCode.errors?.[0]?.message }}</pv-message>
+            </div>
 
-                <div class="field col-12 md:col-6">
-                  <label for="capacity">{{ $t('warehouses.capacity') }} (m²)</label>
-                  <pv-input-number
-                      id="capacity"
-                      v-model="form.capacity"
-                      placeholder="1000"
-                      :class="{ 'p-invalid': submitted && errors.capacity }"
-                      :min="1"
-                  />
-                  <small v-if="submitted && errors.capacity" class="p-error">
-                    {{ errors.capacity }}
-                  </small>
-                </div>
+            <div class="form-group">
+              <label for="country">{{$t('warehouses.form.country')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="country"
+                  v-model="form.country"
+                  type="text"
+                  placeholder="Perú"
+                  class="form-input"
+              />
+              <pv-message v-if="$form.country?.invalid" class="form-error">{{ $form.country.errors?.[0]?.message }}</pv-message>
+            </div>
 
-                <div class="field col-12 image-upload-section">
-                  <h3>{{ $t('components.upload-image') }}</h3>
-                  <pv-file-upload
-                      mode="basic"
-                      name="warehouseImage"
+            <div class="form-group">
+              <label for="max-temperature">{{$t('warehouses.form.max-temperature')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="maxTemperature"
+                  v-model="form.maxTemperature"
+                  type="number"
+                  placeholder="10"
+                  class="form-input"
+                  min="0"
+                  max="50"
+              />
+              <pv-message v-if="$form.maxTemperature?.invalid" class="form-error">{{ $form.maxTemperature.errors?.[0]?.message }}</pv-message>
+            </div>
+
+            <div class="form-group">
+              <label for="min-temperature">{{$t('warehouses.form.min-temperature')}} <span class="important">*</span></label>
+              <pv-input-text
+                  name="minTemperature"
+                  v-model="form.minTemperature"
+                  type="number"
+                  placeholder="-10"
+                  class="form-input"
+                  min="-50"
+                  max="50"
+              />
+              <pv-message v-if="$form.minTemperature?.invalid" class="form-error">{{ $form.minTemperature.errors?.[0]?.message }}</pv-message>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="capacity">{{$t('warehouses.form.capacity')}} (m²) <span class="important">*</span></label>
+              <pv-input-text
+                  name="capacity"
+                  v-model="form.capacity"
+                  type="number"
+                  placeholder="1000"
+                  class="form-input"
+                  min="1"
+              />
+              <pv-message v-if="$form.capacity?.invalid" class="form-error">{{ $form.capacity.errors?.[0]?.message }}</pv-message>
+            </div>
+
+            <div class="form-group full-width image-section">
+              <label>{{ $t('warehouses.form.warehouse-image') }}</label>
+              <div class="image-upload-container">
+                <label for="file-upload" class="upload-button">
+                  <span>+ {{ $t('components.upload-file') }}</span>
+                  <input
+                      id="file-upload"
+                      type="file"
                       accept="image/*"
-                      :maxFileSize="1000000"
-                      :chooseLabel="$t('components.upload-file')"
-
-                      @select="onFileSelect"
+                      @change="onFileSelect"
+                      style="display: none;"
                   >
-                  </pv-file-upload>
-                  <div v-if="newImagePreview" class="new-image-preview">
-                    <p>New Image Preview:</p>
-                    <img :src="newImagePreview" alt="New Image Preview" style="max-width: 200px; margin-top: 10px;"/>
-                  </div>
-
-
-                  <div v-if="isEditMode && existingImageUrl && !newImagePreview" class="existing-image-preview">
-                    <p>Current Image:</p>
-                    <img :src="existingImageUrl" alt="Current Warehouse Image" style="max-width: 200px; margin-top: 10px;"/>
-                    <p class="image-change-note">Select a new file to change the image</p>
-                  </div>
-                </div>
-
-                <div class="field col-12 form-actions">
-                  <pv-button
-                      :label="$t('components.cancel')"
-                      icon="pi pi-times"
-                      class="cancel-button"
-                      @click="onCancel"
-                  />
-                  <pv-button
-                      :label="isEditMode ? $t('components.update') : $t('components.save')"
-                      icon="pi pi-check"
-                      type="submit"
-                      class="create-update-button"
-                      :disabled="submitted && Object.keys(errors).length > 0"
-                  />
-                </div>
+                </label>
+                <span class="file-name">{{ selectedFile ? selectedFile.name : $t('components.no-chosen-file') }}</span>
               </div>
-            </form>
-          </template>
-        </pv-card>
+
+              <div v-if="existingImageUrl && !newImagePreview" class="image-preview">
+                <p>{{ $t('components.actual-image') }}:</p>
+                <img :src="existingImageUrl" alt="image">
+              </div>
+
+              <div v-if="newImagePreview" class="image-preview">
+                <p>{{ $t('components.preview') }}:</p>
+                <img :src="newImagePreview" alt="image">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button v-if="isEditMode" type="button" class="delete-button" @click="confirmDelete">
+              {{ $t('components.delete') }}
+            </button>
+
+            <div class="right-actions">
+              <pv-button type="button" class="cancel-button" @click="onCancel">
+                {{ $t('components.cancel') }}
+              </pv-button>
+              <button type="submit" class="submit-button">
+                {{ isEditMode ? $t('components.update') : $t('components.save') }}
+              </button>
+            </div>
+          </div>
+
+          <pv-dialog
+              v-model:visible="showDeleteDialog"
+              :style="{ width: '450px' }"
+              header=" "
+              :modal="true"
+              :closable="true"
+          >
+            <div class="confirmation-content">
+              <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
+              <span>{{ $t('warehouses.delete_confirm') }}</span>
+            </div>
+
+            <template #footer>
+              <pv-button
+                  :label="$t('components.cancel')"
+                  icon="pi pi-times"
+                  @click="showDeleteDialog = false"
+                  class="p-button-danger"
+              />
+              <pv-button
+                  :label="$t('components.confirm')"
+                  icon="pi pi-check"
+                  @click="onDelete"
+                  class="confirm-button"
+                  autofocus
+              />
+            </template>
+          </pv-dialog>
+
+        </pv-form>
       </div>
     </div>
   </div>
@@ -328,9 +437,7 @@ export default {
 .warehouse-bg {
   background: #F7EDDC;
   min-height: 100vh;
-  width: 100vw;
   display: flex;
-  position: relative;
 }
 
 .warehouse-main {
@@ -339,85 +446,215 @@ export default {
   flex-direction: column;
 }
 
-.form-container {
-  max-width: 800px;
-  margin: 2rem auto;
+.warehouse-content {
   padding: 2rem;
 }
 
-.image-upload-section {
-  margin: 1.5rem 0;
+.form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-title {
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #59033A;
+}
+
+.image-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.image-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.upload-button {
+  background-color: #59033A;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #7a044d;
+}
+
+.file-name {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.image-preview {
+  margin-top: 1rem;
+}
+
+.image-preview img {
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  margin-top: 0.5rem;
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
 }
 
-.field {
-  margin-bottom: 1.5rem;
-}
 
-.upload-image-button  {
-  background-color: #59033A !important;
-  color: white;
-  border: none;
-}
-
-.upload-image-button:hover {
-  background-color: #7a044d !important;
-  border-color: #46062c !important;
-  transform: translateY(-1px);
-  color: white !important;
-  filter: brightness(1.1);
-  box-shadow: 0 3px 5px rgba(89, 3, 58, 0.3);
-}
-
-.create-update-button {
-  background-color: #59033A;
-  color: white;
-  border: none;
-}
-
-.create-update-button:hover {
-  background-color: #7a044d !important;
-  border-color: #46062c !important;
-  transform: translateY(-1px);
-  color: white !important;
-  filter: brightness(1.1);
-  box-shadow: 0 3px 5px rgba(89, 3, 58, 0.3);
+.right-actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
 }
 
 .cancel-button {
-  background-color: #790b38;
-  color: white;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 0.75rem 1.5rem;
   border: none;
-  transition: all 0.3s ease;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .cancel-button:hover {
-  background-color: #7a044d !important;
-  border-color: #46062c !important;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 5px rgba(121, 11, 56, 0.3);
-  color: white !important;
-  filter: brightness(1.1);
-}
-.existing-image-preview {
-  margin-top: 15px;
-  padding: 10px;
-  border: 1px dashed #ccc;
-  border-radius: 4px;
+  background-color: #e0e0e0;
 }
 
-.image-change-note {
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 5px;
+.confirm-button {
+  background-color: #f0f0f0;
 }
 
+.submit-button {
+  background-color: #59033A;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #7a044d;
+}
+
+.input-error {
+  border-color: #e53935 !important;
+}
+
+.form-error {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.important {
+  color: #ea1c18;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: auto;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.p-dialog .p-dialog-footer button {
+  margin: 0 0.5rem 0 0;
+  min-width: 6rem;
+}
+
+/* Estilo para el botón de eliminar */
+.p-button-danger {
+  background-color: #f44336;
+  border-color: #f44336;
+  margin-right: auto;
+}
+
+.p-button-danger:hover {
+  background-color: #d32f2f !important;
+  border-color: #d32f2f !important;
+}
+
+/* Ajustes para los botones existentes */
+.right-actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
 
 </style>

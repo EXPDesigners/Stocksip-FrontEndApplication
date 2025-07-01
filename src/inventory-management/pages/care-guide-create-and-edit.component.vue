@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     tituloFormulario() {
-      return this.isEdit ? 'Editar Guía' : 'Nueva Guía';
+      return this.isEdit ? 'Edit Guide' : 'New Guide';
     },
     descripcionGenerada() {
       return `Temperatura recomendada: ${this.form.tempMin} - ${this.form.tempMax}°C. Almacenar en ${this.form.storage}. Duración después de abierto: ${this.form.duration}. Comentarios: ${this.form.comments}.`;
@@ -152,53 +152,53 @@ export default {
       <form @submit.prevent="guardar" class="form">
         <div v-if="loading" class="loading-container">
           <div class="loading-spinner"></div>
-          <p>Cargando datos...</p>
+          <p>Loading data...</p>
         </div>
         <template v-else>
           <div class="form-row">
             <div class="form-group">
-              <label>Nombre del producto</label>
+              <label>Product Name</label>
               <input v-model="form.name" type="text" required />
             </div>
 
             <div class="form-group image-group">
-              <label>Insertar imagen</label>
+              <label>Insert image</label>
               <input type="file" accept="image/*" @change="cargarImagen" :disabled="uploading" />
               <img v-if="form.imageUrl" :src="form.imageUrl" class="preview" />
-              <div v-if="uploading" class="uploading">Subiendo imagen...</div>
+              <div v-if="uploading" class="uploading">Uploading image...</div>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Tipo</label>
+            <label>Type</label>
             <input v-model="form.type" type="text" required />
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Temperatura mínima (°C)</label>
+              <label>Minimum temperature (°C)</label>
               <input v-model="form.tempMin" type="number" step="0.1" min="-100" max="100" required />
             </div>
             <div class="form-group">
-              <label>Temperatura máxima (°C)</label>
+              <label>Maximum temperature (°C)</label>
               <input v-model="form.tempMax" type="number" step="0.1" min="-100" max="100" required />
             </div>
           </div>
           <div class="form-group">
-            <label>Almacenamiento</label>
+            <label>Stock</label>
             <input v-model="form.storage" type="text" required placeholder="Ej: lugar fresco y seco" />
           </div>
           <div class="form-group">
-            <label>Duración después de abierto</label>
+            <label>Duration after opening</label>
             <input v-model="form.duration" type="text" required placeholder="Ej: 6 meses" />
           </div>
           <div class="form-group">
-            <label>Comentarios</label>
+            <label>Comments</label>
             <input v-model="form.comments" type="text" required placeholder="Ej: Mantener la botella en posición vertical" />
           </div>
 
           <div class="form-group">
-            <label>Vista previa de la descripción generada</label>
+            <label>Preview of the generated description</label>
             <textarea :value="descripcionGenerada" rows="3" readonly style="background:#f5f5f5; color:#333;" />
           </div>
 
@@ -211,9 +211,9 @@ export default {
 
           <div class="form-actions">
             <button type="submit" class="btn save" :disabled="loading || uploading">
-              {{ loading ? (isEdit ? 'Actualizando...' : 'Guardando...') : (isEdit ? 'Actualizar' : 'Guardar') }}
+              {{ loading ? (isEdit ? 'Updating...' : 'Saving...') : (isEdit ? 'UPDATE' : 'SAVE') }}
             </button>
-            <button type="button" class="btn cancel" @click="cancelar">Cancelar</button>
+            <button type="button" class="btn cancel" @click="cancelar">CANCEL</button>
           </div>
         </template>
       </form>

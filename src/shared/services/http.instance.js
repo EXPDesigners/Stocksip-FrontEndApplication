@@ -14,7 +14,7 @@ import axios from "axios";
  * @property {string} headers.Access-Control-Allow-Origin - CORS header to allow all origins
  */
 const httpInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_BASE_API_URL,
     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
 });
 

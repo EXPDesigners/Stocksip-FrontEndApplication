@@ -1,6 +1,6 @@
-import {generateUuid} from "../../shared/model/uuid.js";
+import {generateUuid} from "@/shared/model/uuid.js";
 import {Product} from "./product.entity.js";
-import {ValidationError} from "../../shared/model/errors.js";
+import {ValidationError} from "@/shared/model/errors.js";
 
 /**
  * @constructor

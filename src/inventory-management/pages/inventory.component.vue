@@ -2,10 +2,11 @@
 import ProductManagement from "@/inventory-management/components/product-management.component.vue";
 import SideNavbar from "@/public/components/side-navbar.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
+import InventoryProductsComponent from "@/inventory-management/components/inventory-products.component.vue";
 
 export default {
   name: "Inventory",
-  components: {ToolbarContent, SideNavbar, ProductManagement}
+  components: {InventoryProduct: InventoryProductsComponent, ToolbarContent, SideNavbar, ProductManagement}
 }
 </script>
 
@@ -14,9 +15,9 @@ export default {
     <side-navbar />
     <div class="inventory-main">
       <div class="inventory-title">
-        <toolbar-content :pageTitle="'Inventory'" />
+        <toolbar-content :pageTitle="$t('inventory.title')" />
       </div>
-      <product-management/>
+      <inventory-product/>
     </div>
   </div>
 </template>
