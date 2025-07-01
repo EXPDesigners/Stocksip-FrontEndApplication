@@ -61,6 +61,20 @@ class UserService extends BaseService {
         }
     }
 
+    async getAccountByEmail(email) {
+        try {
+            const response = await axios.get(`${this.apiUrl}${this.resourceEndpoint}`, {
+                params: { username: email }
+            });
+
+            const users = response.data;
+            return users.length > 0 ? users[0] : null;
+        } catch (error) {
+            console.error('Error al obtener cuenta por email:', error);
+            return null;
+        }
+    }
+
     async register({ name, email, password, role }) {
         try {
             const newUserRes = await axios.post(`${this.apiUrl}/users`, {

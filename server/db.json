@@ -571,5 +571,23 @@
       "totalAmount": 35,
       "totalItems": 1
     }
+  ],
+  "accounts": [
+    {
+      "id": "a1",
+      "userOwnerId": 1,
+      "role": "Liquor Store Owner",
+      "businessName": "Business 1",
+      "name": "Farid",
+      "email": "farid@example.com"
+    },
+    {
+      "id": "a3",
+      "userOwnerId": 3,
+      "role": "Supplier",
+      "businessName": "Business 2",
+      "name": "Camila",
+      "email": "camila@example.com"
+    }
   ]
 }
