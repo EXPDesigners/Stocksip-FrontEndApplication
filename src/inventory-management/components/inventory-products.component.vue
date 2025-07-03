@@ -95,6 +95,18 @@ export default {
         });
       }
     },
+    async moveProductToWare() {
+      try {
+
+      } catch(error) {
+        this.$toast.add({
+          severity: 'error',
+          summary: this.$t('toast.error'),
+          detail: error.response?.data?.message || this.$t('inventory.error-move-product'),
+          life: 5000
+        });
+      }
+    },
     async refreshProducts() {
       this.products = await inventoryService.getAllProductsByWarehouseId(this.warehouseId);
     },
@@ -247,6 +259,7 @@ export default {
         <pv-toolbar class="mb-6">
           <template #start>
             <pv-button :label="$t('components.add')" icon="pi pi-plus-circle" class="mr-2" @click="openAddProductDialog" />
+            <pv-button :label="$t('inventory.transfer-product')" icon="pi pi-arrow-right" class="mr-2"/>
           </template>
           <template #end>
             <pv-button :label="$t('components.export')" icon="pi pi-upload" severity="secondary" @click="exportCSV($event)"/>
@@ -435,8 +448,6 @@ export default {
           <pv-button :label="$t('components.save')" icon="pi pi-check" @click="handleAddProduct" class="p-button-success" :disabled="!addProductData.selectedProductId"/>
         </template>
       </pv-dialog>
-
-
 
       <pv-dialog v-model:visible="deleteProductDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
         <div class="flex items-center gap-4">
