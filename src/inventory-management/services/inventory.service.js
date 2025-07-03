@@ -82,8 +82,9 @@ export class InventoryService extends BaseService {
 
     async deleteProduct(productId, warehouseId, expirationDate) {
         try {
-            const endpoint = `warehouses/${warehouseId}/inventories/product/${productId}`;
-            const url = `${this.resourceEndpoint}${endpoint}`;
+            const inventoriesPath = this.warehouseProductsEndpoint.replace('{warehouseId}', warehouseId);
+            const productPath = this.productAdditionEndpoint.replace('{productId}', productId);
+            const url = `${this.resourceEndpoint}${inventoriesPath}${productPath}`;
 
             const response = await axios.delete(url, {
                 data: { expirationDate }

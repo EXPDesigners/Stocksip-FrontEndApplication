@@ -90,7 +90,7 @@ export default {
         this.$toast.add({
           severity: 'error',
           summary: this.$t('toast.error'),
-          detail: error.response?.data?.message || this.$t('inventory.error-add-duplicate-product'),
+          detail: error.response?.data?.message || this.$t('inventory.error-past-date'),
           life: 5000
         });
       }

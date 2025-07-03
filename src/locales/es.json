@@ -170,7 +170,8 @@
     "product-deleted": "¡Producto eliminado con éxito!",
     "confirm-delete-product": "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
     "delete-product-current-stock": "No se puede eliminar un producto que tenga stock.",
-    "error-add-duplicate-product": "No se puede añadir un producto que ya existe en este inventario."
+    "error-add-duplicate-product": "No se puede añadir un producto que ya existe en este inventario.",
+    "error-past-date": "No se puede añadir stock con una fecha pasada."
   },
   "profile": {
     "title": "Perfil"
