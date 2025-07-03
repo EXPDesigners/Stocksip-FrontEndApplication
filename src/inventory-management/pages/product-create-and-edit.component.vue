@@ -1,145 +1,160 @@
 <script>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { ProductService} from "@/inventory-management/services/product.service.js";
-import userService from '@/authentication/services/user.service.js';
+import { ProductService } from '@/inventory-management/services/product.service.js';
 
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
-import SideNavbar from "@/public/components/side-navbar.vue";
-import ToolbarContent from "@/public/components/toolbar-content.component.vue";
-import {InputNumber as PvInputNumber, InputText as PvInputText} from "primevue";
+import SideNavbar from '@/public/components/side-navbar.vue';
+import ToolbarContent from '@/public/components/toolbar-content.component.vue';
+import { InputNumber as PvInputNumber, InputText as PvInputText, Select as PvSelect } from 'primevue';
 
+const productService = new ProductService();
 export default {
   name: 'ProductCreateAndEdit',
   components: {
+    PvSelect,
     PvInputNumber,
     PvInputText,
-    Button, InputText, InputNumber,
-    SideNavbar, ToolbarContent
+    Button,
+    InputText,
+    InputNumber,
+    SideNavbar,
+    ToolbarContent
   },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const productService = new ProductService();
-
-    const product = ref({
-      name: '',
-      brandName: '',
-      liquorType: '',
-      imageUrl: '',
-      unitPriceAmount: 0,
-      minimumStock: 0,
-      providerId: ''
-    });
-
-    const isEditMode = ref(false);
-    const uploading = ref(false);
-
-    const loadProduct = async () => {
-      const { productId } = route.params;
+  data() {
+    return {
+      product: {
+        name: '',
+        brandName: '',
+        liquorType: '',
+        unitPriceAmount: 0,
+        minimumStock: 1,
+        imageUrl: ''
+      },
+      liquorTypes: [
+        { label: 'Rum', value: 'Rum' },
+        { label: 'Whisky', value: 'Whisky' },
+        { label: 'Gin', value: 'Gin' },
+        { label: 'Vodka', value: 'Vodka' },
+        { label: 'Tequila', value: 'Tequila' },
+        { label: 'Brandy', value: 'Brandy' },
+        { label: 'Wine', value: 'Wine' },
+        { label: 'Beer', value: 'Beer' },
+        { label: 'Creamy', value: 'Creamy' },
+        { label: 'Herbal', value: 'Herbal' },
+        { label: 'Fruity', value: 'Fruity' },
+        { label: 'Special', value: 'Special' },
+        { label: 'No Liquor Type', value: 'NoLiquorType' }
+      ],
+      brandNames: [
+        { label: 'Tabernero', value: 'Tabernero' },
+        { label: 'Santiago Queirolo', value: 'SantiagoQueirolo' },
+        { label: 'Porton', value: 'Porton' },
+        { label: 'Cristal', value: 'Cristal' },
+        { label: 'Johnnie Walker', value: 'JohnnieWalker' },
+        { label: 'Jack Daniels', value: 'JackDaniels' },
+        { label: 'Budweiser', value: 'Budweiser' },
+        { label: 'Heineken', value: 'Heineken' },
+        { label: 'Corona', value: 'Corona' },
+        { label: 'Pilsen Callao', value: 'PilsenCallao' },
+        { label: 'Cusqueña', value: 'Cusqueña' },
+        { label: 'Cartavio', value: 'Cartavio' },
+        { label: 'No Brand', value: 'NoBrand' }
+      ],
+      isEditMode: false,
+      selectedFile: null,
+      submitting: false,
+      existingImageUrl: null,
+      newImagePreview: null
+    };
+  },
+  created() {
+    this.loadProduct();
+  },
+  methods: {
+    async loadProduct() {
+      const { productId } = this.$route.params;
       if (productId) {
-        isEditMode.value = true;
+        this.isEditMode = true;
         try {
           const data = await productService.getById(productId);
-          product.value = {
+          this.product = {
             name: data.name,
             brandName: data.brandName,
             liquorType: data.liquorType,
-            imageUrl: data.imageUrl,
             unitPriceAmount: data.unitPriceAmount,
             minimumStock: data.minimumStock,
-            providerId: data.providerId
+            imageUrl: data.imageUrl
           };
+          this.existingImageUrl = data.imageUrl || null;
         } catch (err) {
           console.error('Error loading product:', err);
         }
       }
-    };
-
-    const uploadImage = async (event) => {
+    },
+    uploadImage(event) {
       const file = event.target.files[0];
       if (!file) return;
+      this.selectedFile = file;
 
-      uploading.value = true;
-
-      const cloudName = 'dshxmkd1v';
-      const uploadPreset = 'unsigned_preset';
-
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', uploadPreset);
-
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.newImagePreview = e.target.result;
+        this.product.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    async onSave() {
+      this.submitting = true;
+      const toast = this.$toast;
       try {
-        const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await response.json();
-        product.value.imageUrl = data.secure_url;
-      } catch (error) {
-        console.error('Upload failed:', error);
-        alert('Image upload failed');
-      } finally {
-        uploading.value = false;
-      }
-    };
-
-    const onSave = async () => {
-      const currentUser = userService.getCurrentUser();
-      if (!currentUser) {
-        alert('No user found.');
-        return;
-      }
-
-      try {
-        if (isEditMode.value) {
-          const updatedPayload = {
-            id: route.params.productId,
-            name: product.value.name,
-            brandName: product.value.brandName,
-            liquorType: product.value.liquorType,
-            imageUrl: product.value.imageUrl,
-            unitPriceAmount: product.value.unitPriceAmount,
-            minimumStock: product.value.minimumStock,
-            providerId: product.value.providerId,
-            updatedUnitPriceAmount: product.value.unitPriceAmount,
-            updatedMinimumStock: product.value.minimumStock,
-            updatedImageUrl: product.value.imageUrl
-          };
-
-          await productService.update(route.params.productId, updatedPayload);
-          alert('Product updated!');
-        } else {
-          await productService.create({
-            ...product.value,
-            providerId: currentUser.profileId
+        if (this.isEditMode) {
+          await productService.updateProduct(
+              this.$route.params.productId,
+              this.product,
+              this.selectedFile
+          );
+          toast.add({
+            severity: 'success',
+            summary: this.$t('toast.success'),
+            detail: this.$t('products.success-updated'),
+            life: 3000
           });
-          alert('Product created!');
+        } else {
+          await productService.createProduct(this.product, this.selectedFile);
+          toast.add({
+            severity: 'success',
+            summary: this.$t('toast.success'),
+            detail: this.$t('products.success-created'),
+            life: 3000
+          });
         }
-
-        router.push({ name: 'ProductList' });
-      } catch (err) {
-        console.error('Error saving product:', err);
-        alert('Error saving product.');
+        this.$router.push({ name: 'ProductList' });
+      } catch (error) {
+        console.error('Error saving product:', error);
+      } finally {
+        this.submitting = false;
       }
-    };
-
-    onMounted(loadProduct);
-
-    return {
-      product,
-      isEditMode,
-      onSave,
-      uploading,
-      uploadImage
-    };
+    },
+    async onDelete() {
+      const toast = this.$toast;
+      try {
+        await productService.delete(this.$route.params.productId);
+        toast.add({
+          severity: 'success',
+          summary: this.$t('toast.success'),
+          detail: this.$t('products.success-deleted'),
+          life: 3000
+        });
+        this.$router.push({ name: 'ProductList' });
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
+    }
   }
-
 };
 </script>
+
 
 <template>
   <div class="product-bg">
@@ -158,12 +173,26 @@ export default {
 
             <div class="form-group">
               <label>{{ $t('products.brand') }} <span class="important">*</span></label>
-              <pv-input-text v-model="product.brandName" class="form-input" placeholder="Cartavio" />
+              <pv-select
+                  v-model="product.brandName"
+                  :options="brandNames"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select a brand"
+                  class="p-select"
+              />
             </div>
 
             <div class="form-group">
               <label>{{ $t('products.liquor-type') }}<span class="important">*</span></label>
-              <pv-input-text v-model="product.liquorType" class="form-input" placeholder="Ron" />
+              <pv-select
+                  v-model="product.liquorType"
+                  :options="liquorTypes"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select a liquor type"
+                  class="p-select"
+              />
             </div>
 
             <div class="form-group">
@@ -177,10 +206,10 @@ export default {
             </div>
 
             <div class="form-group full-width image-section">
-              <label>Product Image</label>
+              <label>{{ $t('products.products-image') }}</label>
               <div class="image-upload-container">
                 <label for="file-upload" class="upload-button">
-                  <span>+ Upload File</span>
+                  <span>+ {{ $t('components.upload-file') }}</span>
                   <input
                       id="file-upload"
                       type="file"
@@ -189,12 +218,17 @@ export default {
                       style="display: none;"
                   >
                 </label>
-                <span class="file-name">{{ uploading ? 'Uploading...' : (product.imageUrl ? 'File selected' : 'No file chosen') }}</span>
+                <span class="file-name">{{ selectedFile ? selectedFile.name : $t('components.no-chosen-file') }}</span>
               </div>
 
-              <div v-if="product.imageUrl" class="image-preview">
-                <p>Preview:</p>
-                <img :src="product.imageUrl" alt="Preview" />
+              <div v-if="product.imageUrl && !newImagePreview" class="image-preview">
+                <p>{{ $t('components.actual-image') }}:</p>
+                <img :src="product.imageUrl" :alt="product.name" />
+              </div>
+
+              <div v-if="newImagePreview" class="image-preview">
+                <p>{{ $t('components.preview') }}:</p>
+                <img :src="newImagePreview" :alt="product.name" />
               </div>
             </div>
           </div>
@@ -267,16 +301,14 @@ label {
 
 .form-input {
   width: 100%;
-  padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
   transition: border-color 0.3s;
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: #59033A;
+.p-select {
+  width: 100%;
 }
 
 .p-inputnumber {
@@ -384,4 +416,3 @@ label {
   color: #ea1c18;
 }
 </style>
-

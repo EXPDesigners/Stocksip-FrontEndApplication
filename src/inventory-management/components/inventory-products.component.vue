@@ -13,7 +13,6 @@ export default {
   components: {PvSelect},
   data() {
     return {
-
       availableProducts: [],
       addProductDialog: false,
       addProductData: {
@@ -56,7 +55,7 @@ export default {
     async fetchAvailableProducts() {
       const accountId = 'test-acc';
       const response = await productService.getAllByAccountId(accountId);
-      this.availableProducts = response;
+      this.availableProducts = response.data;
     },
     async openAddProductDialog() {
       await this.fetchAvailableProducts();
@@ -69,7 +68,6 @@ export default {
     },
     async handleAddProduct() {
       try {
-        const expirationDate = this.addProductData.expirationDate;
         const formattedDate = this.toDateOnlyString(this.addProductData.expirationDate);
 
         await inventoryService.addProduct(

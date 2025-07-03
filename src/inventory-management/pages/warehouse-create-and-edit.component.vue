@@ -1,236 +1,163 @@
 <script>
 import SideNavbar from "@/public/components/side-navbar.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
-import {useRoute, useRouter} from "vue-router";
-import {WarehouseService} from "@/inventory-management/services/warehouse.service.js";
-import {onMounted, ref} from "vue";
-import {useToast} from "primevue/usetoast";
-import { useI18n } from 'vue-i18n';
-import {Button as PvButton} from "primevue";
+import { WarehouseService } from "@/inventory-management/services/warehouse.service.js";
+import { useRoute, useRouter } from "vue-router";
+import { useToast } from "primevue/usetoast";
+
+const warehouseService = new WarehouseService();
 
 export default {
   name: "warehouse-create-and-edit",
-  components: {PvButton, ToolbarContent, SideNavbar},
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const warehouseService = new WarehouseService();
-    const {t} = useI18n();
-    const toast = useToast();
-
-    const isEditMode = ref(false);
-    const warehouseId = ref(null);
-    const submitted = ref(false);
-    const selectedFile = ref(null);
-    const existingImageUrl = ref(null);
-    const newImagePreview = ref(null);
-    const showDeleteDialog = ref(false);
-    const errors = ref({});
-
-    const initialValues = ref({
-      name: '',
-      street: '',
-      city: '',
-      district: '',
-      postalCode: '',
-      country: '',
-      maxTemperature: 0,
-      minTemperature: 0,
-      capacity: 0
-    });
-
-    const form = ref({...initialValues.value});
-
-
-    const resolver = ({ values }) => {
-      const errors = {};
-
-      if (!isEditMode.value || values.name !== initialValues.value.name) {
-        if (!values.name?.trim()) {
-          errors.name = [{ message: t('errors.name-required') }];
-        }
+  components: {
+    SideNavbar,
+    ToolbarContent,
+  },
+  data() {
+    return {
+      toast: useToast(),
+      router: useRouter(),
+      route: useRoute(),
+      isEditMode: false,
+      warehouseId: null,
+      submitted: false,
+      selectedFile: null,
+      existingImageUrl: null,
+      newImagePreview: null,
+      showDeleteDialog: false,
+      errors: {},
+      initialValues: {
+        name: '',
+        street: '',
+        city: '',
+        district: '',
+        postalCode: '',
+        country: '',
+        maxTemperature: 0,
+        minTemperature: 0,
+        capacity: 0
+      },
+      form: {
+        name: '',
+        street: '',
+        city: '',
+        district: '',
+        postalCode: '',
+        country: '',
+        maxTemperature: 0,
+        minTemperature: 0,
+        capacity: 0
       }
-
-      if (!isEditMode.value || values.street !== initialValues.value.street) {
-        if (!values.street?.trim()) {
-          errors.street = [{ message: t('errors.street-required') }];
-        }
-      }
-
-      if (!isEditMode.value || values.city !== initialValues.value.city) {
-        if (!values.city?.trim()) {
-          errors.city = [{ message: t('errors.city-required') }];
-        }
-      }
-
-      if (!isEditMode.value || values.district !== initialValues.value.district) {
-        if (!values.district?.trim()) {
-          errors.district = [{ message: t('errors.district-required') }];
-        }
-      }
-
-      if (!isEditMode.value || values.postalCode !== initialValues.value.postalCode) {
-        if (!values.postalCode?.trim()) {
-          errors.postalCode = [{ message: t('errors.postal-code-required') }];
-        }
-      }
-
-      if (!isEditMode.value || values.country !== initialValues.value.country) {
-        if (!values.country?.trim()) {
-          errors.country = [{ message: t('errors.country-required') }];
-        }
-      }
-
-      if (values.maxTemperature === null || isNaN(values.maxTemperature) || values.maxTemperature > 50 || values.maxTemperature < -50) {
-        errors.maxTemperature = [{ message: t('errors.max-temperature-required') }];
-      }
-
-      if (values.minTemperature === null || isNaN(values.minTemperature) || values.minTemperature > 50 || values.minTemperature < -50) {
-        errors.minTemperature = [{ message: t('errors.min-temperature-required') }];
-      }
-
-      if (values.capacity === null || isNaN(values.capacity) || values.capacity < 0) {
-        errors.capacity = [{ message: t('errors.capacity-required') }];
-      }
-
-      return { values, errors };
     };
-
-    const loadWarehouseData = async () => {
+  },
+  created() {
+    this.warehouseId = this.route.params.warehouseId;
+    this.isEditMode = Boolean(this.warehouseId);
+    if (this.isEditMode) {
+      this.loadWarehouseData();
+    }
+  },
+  methods: {
+    async loadWarehouseData() {
       try {
-
-        const warehouse = await warehouseService.getWarehouseById(warehouseId.value);
-
-        form.value = {
-          name: warehouse.name,
-          street: warehouse.street,
-          city: warehouse.city,
-          district: warehouse.district,
-          postalCode: warehouse.postalCode,
-          country: warehouse.country,
-          maxTemperature: warehouse.maxTemperature,
-          minTemperature: warehouse.minTemperature,
-          capacity: warehouse.capacity,
-          imageUrl: warehouse.imageUrl
-        };
-
-        existingImageUrl.value = warehouse.imageUrl || null;
-
+        const warehouse = await warehouseService.getWarehouseById(this.warehouseId);
+        this.form = { ...warehouse };
+        this.existingImageUrl = warehouse.imageUrl || null;
       } catch (error) {
-        setTimeout(() => router.push('/warehouses'), 2000);
+        setTimeout(() => this.router.push('/warehouses'), 2000);
       }
-    };
+    },
+    validateForm() {
+      const errors = {};
+      const t = this.$t;
+      const v = this.form;
 
-    onMounted(() => {
-      warehouseId.value = route.params.warehouseId;
-      isEditMode.value = Boolean(warehouseId.value);
+      if (!v.name?.trim()) errors.name = [{ message: t('errors.name-required') }];
+      if (!v.street?.trim()) errors.street = [{ message: t('errors.street-required') }];
+      if (!v.city?.trim()) errors.city = [{ message: t('errors.city-required') }];
+      if (!v.district?.trim()) errors.district = [{ message: t('errors.district-required') }];
+      if (!v.postalCode?.trim()) errors.postalCode = [{ message: t('errors.postal-code-required') }];
+      if (!v.country?.trim()) errors.country = [{ message: t('errors.country-required') }];
+      if (v.maxTemperature === null || isNaN(v.maxTemperature) || v.maxTemperature > 50 || v.maxTemperature < -50)
+        errors.maxTemperature = [{ message: t('errors.max-temperature-required') }];
+      if (v.minTemperature === null || isNaN(v.minTemperature) || v.minTemperature > 50 || v.minTemperature < -50)
+        errors.minTemperature = [{ message: t('errors.min-temperature-required') }];
+      if (v.capacity === null || isNaN(v.capacity) || v.capacity < 0)
+        errors.capacity = [{ message: t('errors.capacity-required') }];
 
-      if (isEditMode.value) {
-        loadWarehouseData();
+      this.errors = errors;
+      return Object.keys(errors).length === 0;
+    },
+    async onSubmit() {
+      if (this.submitted) return;
+      this.submitted = true;
+
+      if (!this.validateForm()) {
+        this.submitted = false;
+        return;
       }
-    });
-
-    const onSubmit = async () => {
-      if (submitted.value) return;
-      submitted.value = true;
 
       try {
-        const warehouseData = {
-          name: form.value.name,
-          street: form.value.street,
-          city: form.value.city,
-          district: form.value.district,
-          postalCode: form.value.postalCode,
-          country: form.value.country,
-          maxTemperature: Number(form.value.maxTemperature),
-          minTemperature: Number(form.value.minTemperature),
-          capacity: Number(form.value.capacity),
-        };
-
-        if (isEditMode.value) {
-          await warehouseService.updateWarehouse(warehouseId.value, warehouseData, selectedFile.value);
-          toast.add({
+        const warehouseData = { ...this.form };
+        if (this.isEditMode) {
+          await warehouseService.updateWarehouse(this.warehouseId, warehouseData, this.selectedFile);
+          this.toast.add({
             severity: 'success',
-            summary: t('toast.success'),
-            detail: t('warehouses.update_success'),
+            summary: this.$t('toast.success'),
+            detail: this.$t('warehouses.update_success'),
             life: 3000
           });
         } else {
-          await warehouseService.createWarehouse(warehouseData, selectedFile.value);
-          toast.add({
+          await warehouseService.createWarehouse(warehouseData, this.selectedFile);
+          this.toast.add({
             severity: 'success',
-            summary: t('toast.success'),
-            detail: t('warehouses.create_success'),
+            summary: this.$t('toast.success'),
+            detail: this.$t('warehouses.create_success'),
             life: 3000
           });
         }
-
-        await router.push('/warehouses');
+        await this.router.push('/warehouses');
       } catch (error) {
         console.error('Error:', error);
-        toast.add({
+        this.toast.add({
           severity: 'error',
-          summary: t('toast.error'),
-          detail: error.message || t('warehouses.error_message'),
+          summary: this.$t('toast.error'),
+          detail: error.message || this.$t('warehouses.error_message'),
           life: 3000
         });
       } finally {
-        submitted.value = false;
+        this.submitted = false;
       }
-    }
-
-    const confirmDelete = () => {
-      showDeleteDialog.value = true;
-    };
-
-    const onDelete = async () => {
-      showDeleteDialog.value = false;
+    },
+    onFileSelect(event) {
+      const file = event.target?.files?.[0];
+      if (!file) return;
+      this.selectedFile = file;
+      this.newImagePreview = URL.createObjectURL(file);
+    },
+    onCancel() {
+      this.router.push('/warehouses');
+    },
+    confirmDelete() {
+      this.showDeleteDialog = true;
+    },
+    async onDelete() {
+      this.showDeleteDialog = false;
       try {
-        await warehouseService.deleteWarehouse(warehouseId.value);
-        toast.add({
+        await warehouseService.deleteWarehouse(this.warehouseId);
+        this.toast.add({
           severity: 'success',
-          summary: t('toast.success'),
-          detail: t('warehouses.delete_success'),
+          summary: this.$t('toast.success'),
+          detail: this.$t('warehouses.delete_success'),
           life: 3000
         });
-        await router.push('/warehouses');
-      } catch(error) {
+        await this.router.push('/warehouses');
+      } catch (error) {
         console.error('Error deleting warehouse:', error);
       }
     }
-
-    const onFileSelect = (event) => {
-      const file = event.target?.files?.[0];
-      if (!file) return;
-
-      selectedFile.value = file;
-      newImagePreview.value = URL.createObjectURL(file);
-    };
-
-    const onCancel = () => {
-      router.push('/warehouses');
-    };
-
-    return {
-      form,
-      errors,
-      submitted,
-      isEditMode,
-      existingImageUrl,
-      newImagePreview,
-      selectedFile,
-      initialValues,
-      showDeleteDialog,
-      resolver,
-      onFileSelect,
-      onSubmit,
-      onCancel,
-      onDelete,
-      confirmDelete,
-    };
   }
-}
-
+};
 </script>
 
 <template>
