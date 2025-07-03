@@ -50,7 +50,7 @@ export default {
           try {
             const productService = new ProductService();
             await productService.delete(productId);
-            toast.add({ severity: 'success', summary: this.$t('toast.delete-success'), detail: this.$t('products.success-deleted'), life: 3000 });
+            toast.add({ severity: 'success', summary: this.$t('toast.deleted-success'), detail: this.$t('products.success-deleted'), life: 3000 });
             this.$emit('deleted');
           } catch (err) {
             console.error('Error deleting product:', err);

@@ -137,7 +137,8 @@
     "products-image": "Product Image",
     "success-deleted": "Product deleted successfully!",
     "success-created": "Product created successfully!",
-    "success-updated": "Product updated successfully!"
+    "success-updated": "Product updated successfully!",
+    "duplicate-product": "A product with this name already exists."
   },
   "inventory": {
     "title": "Inventory",

@@ -131,6 +131,12 @@ export default {
         }
         this.$router.push({ name: 'ProductList' });
       } catch (error) {
+        toast.add({
+          severity: 'error',
+          summary: this.$t('toast.error'),
+          detail: this.$t('products.duplicate-product'),
+          life: 3000
+        });
         console.error('Error saving product:', error);
       } finally {
         this.submitting = false;

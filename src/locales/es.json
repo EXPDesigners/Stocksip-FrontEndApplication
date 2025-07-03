@@ -138,7 +138,8 @@
     "products-image": "Imagen del Producto",
     "success-deleted": "¡Producto eliminado con éxito!",
     "success-created": "¡Producto creado con éxito!",
-    "success-updated": "¡Producto actualizado con éxito!"
+    "success-updated": "¡Producto actualizado con éxito!",
+    "duplicate-product": "No se puede crear un producto con el mismo nombre."
   },
   "inventory": {
     "title": "Inventario",
