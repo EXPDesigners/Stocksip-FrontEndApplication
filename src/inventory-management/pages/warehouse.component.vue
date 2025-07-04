@@ -12,30 +12,14 @@ export default {
   data() {
     return {
       warehouses: [],
-      warehouseApi: new WarehouseService()
     };
   },
   methods: {
     async getWarehouses() {
       this.error = null;
       try {
-        const service = new WarehouseService();
-        const response = await service.getAll();
-
-        this.warehouses = response.data.map(item => new Warehouse({
-          warehouseId: item.warehouseId,
-          name: item.name,
-          street: item.street,
-          city: item.city,
-          district: item.district,
-          postalCode: item.postalCode,
-          country: item.country,
-          maxTemperature: item.maxTemperature,
-          minTemperature: item.minTemperature,
-          capacity: item.capacity,
-          imageUrl: item.imageUrl
-        }));
-
+        const warehouseService = new WarehouseService();
+        this.warehouses = await warehouseService.getWarehousesByAccountId();
       } catch (error) {
         this.error = "Failed to load warehouses";
         console.error(error);

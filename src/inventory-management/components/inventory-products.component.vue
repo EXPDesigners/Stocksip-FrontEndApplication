@@ -47,8 +47,10 @@ export default {
     this.warehouseId = route.params.warehouseId;
   },
   async mounted() {
-    if (this.warehouseId) {
+    try {
       await this.refreshProducts();
+    } catch (error) {
+      console.error(error);
     }
   },
   methods: {

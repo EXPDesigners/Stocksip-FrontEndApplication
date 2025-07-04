@@ -3,6 +3,7 @@
  * @module httpInstance
  */
 import axios from "axios";
+import {authenticationInterceptor} from "@/authentication/services/authentication.interceptor.js";
 
 /**
  * Configured axios instance for making HTTP requests
@@ -17,5 +18,8 @@ const httpInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_API_URL,
     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
 });
+
+// Add request interceptor to add authentication token
+httpInstance.interceptors.request.use(authenticationInterceptor);
 
 export default httpInstance;

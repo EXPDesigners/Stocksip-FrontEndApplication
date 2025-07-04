@@ -1,22 +1,29 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
 
 export default {
   name: 'side-navbar',
   setup() {
     const isExpanded = ref(false);
     const router = useRouter();
+    const authStore = useAuthenticationStore();
 
     const toggleSidebar = () => {
       isExpanded.value = !isExpanded.value;
     };
 
+    const handleSignOut = async () => {
+      await authStore.signOut(router);
+    };
+
     return {
       isExpanded,
-      toggleSidebar
+      toggleSidebar,
+      handleSignOut,
     };
-  }
+  },
 };
 </script>
 
@@ -75,6 +82,12 @@ export default {
             <i class="pi pi-user"></i>
             <span v-if="isExpanded">{{ $t('toolbar.profile') }}</span>
           </router-link>
+        </li>
+        <li>
+          <button @click="handleSignOut" class="sign-out-btn" v-tooltip="$t('toolbar.sign-out')">
+            <i class="pi pi-sign-out"></i>
+            <span v-if="isExpanded">{{ $t('toolbar.sign-out') }}</span>
+          </button>
         </li>
       </ul>
     </aside>
@@ -175,5 +188,32 @@ export default {
 
 .sidenav.expanded + .content {
   margin-left: 200px;
+}
+
+.sign-out-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px 16px;
+  color: #fff;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sign-out-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sign-out-btn i {
+  font-size: 1.5rem;
+  margin-right: 16px;
+  transition: color 0.3s ease;
+}
+
+.sign-out-btn:hover i {
+  color: #880E4F;
 }
 </style>
