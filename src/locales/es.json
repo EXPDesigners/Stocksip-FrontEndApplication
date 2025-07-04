@@ -26,7 +26,7 @@
     "title": "Almacenes",
     "address": "Dirección",
     "capacity": "Capacidad",
-    "create": "Crear nuevo almacén",
+    "create": "Nuevo almacén",
     "editWarehouseTitle": "Editar Almacén",
     "createWarehouseTitle": "Nuevo Almacén",
     "create_success": "¡Almacén creado con éxito!",
@@ -66,11 +66,13 @@
     "no-chosen-file": "No se ha seleccionado ningún archivo",
     "complete-data": "Completa todos los campos del formulario",
     "edit-data": "Puedes editar los datos en el formulario",
-    "preview": "Vista previa"
+    "preview": "Vista previa",
+    "confirm-delete": "Confirmación de eliminación"
   },
   "toast": {
     "success": "Éxito",
-    "error": "Error"
+    "error": "Error",
+    "delete-success": "¡Eliminación exitosa!"
   },
   "errors": {
     "name-required": "El campo nombre es obligatorio.",
@@ -121,7 +123,23 @@
     "card": {
       "price": "Precio",
         "minimum-stock": "Stock Mínimo"
-    }
+    },
+    "name": "Nombre",
+    "brand": "Marca",
+    "liquor-type": "Tipo de Licor",
+    "price": "Precio",
+    "minimum-stock": "Stock Mínimo",
+    "new-title": "Nuevo Producto",
+    "edit-title": "Editar Producto",
+    "confirm-delete": "¿Estás seguro de que deseas eliminar este producto?",
+    "new-product": "Nuevo Producto",
+    "empty-title": "No hay productos",
+    "empty-description": "Puedes crear un nuevo producto haciendo clic en el botón de abajo.",
+    "products-image": "Imagen del Producto",
+    "success-deleted": "¡Producto eliminado con éxito!",
+    "success-created": "¡Producto creado con éxito!",
+    "success-updated": "¡Producto actualizado con éxito!",
+    "duplicate-product": "No se puede crear un producto con el mismo nombre."
   },
   "inventory": {
     "title": "Inventario",
@@ -153,7 +171,8 @@
     "product-deleted": "¡Producto eliminado con éxito!",
     "confirm-delete-product": "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
     "delete-product-current-stock": "No se puede eliminar un producto que tenga stock.",
-    "error-add-duplicate-product": "No se puede añadir un producto que ya existe en este inventario."
+    "error-add-duplicate-product": "No se puede añadir un producto que ya existe en este inventario.",
+    "error-past-date": "No se puede añadir stock con una fecha pasada."
   },
   "profile": {
     "title": "Perfil"

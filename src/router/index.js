@@ -26,7 +26,7 @@ import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/page
 import PurchaseOrderCreateComponent from "@/order-operation-and-monitoring/pages/purchase-order-create.component.vue";
 import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.component.vue";
 import ProductCreateAndEdit from "@/inventory-management/pages/product-create-and-edit.component.vue";
-import ProductManagementComponent from "@/inventory-management/components/product-management.component.vue";
+import ProductManagementComponent from "@/inventory-management/pages/product-management.component.vue";
 
 const routes = [
     {

@@ -1,5 +1,5 @@
 <script>
-import ProductManagement from "@/inventory-management/components/product-management.component.vue";
+import ProductManagement from "@/inventory-management/pages/product-management.component.vue";
 import SideNavbar from "@/public/components/side-navbar.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 import InventoryProductsComponent from "@/inventory-management/components/inventory-products.component.vue";

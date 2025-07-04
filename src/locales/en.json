@@ -26,7 +26,7 @@
     "title": "Warehouses",
     "address": "Address",
     "capacity": "Capacity",
-    "create": "Create new warehouse",
+    "create": "New warehouse",
     "editWarehouseTitle": "Edit Warehouse",
     "createWarehouseTitle": "New Warehouse",
     "create_success": "Warehouse created successfully!",
@@ -66,7 +66,8 @@
     "no-chosen-file": "No file chosen",
     "complete-data": "Complete all fields in the form",
     "edit-data": "You can edit the data in the form",
-    "preview": "Preview"
+    "preview": "Preview",
+    "confirm-delete": "Delete confirmation"
   },
   "toast": {
     "success": "Success",
@@ -121,7 +122,23 @@
     "card": {
       "price": "Price",
       "minimum-stock": "Minimum Stock"
-    }
+    },
+    "name": "Name",
+    "brand": "Brand",
+    "liquor-type": "Liquor Type",
+    "price": "Price",
+    "minimum-stock": "Minimum Stock",
+    "new-title": "New Product",
+    "edit-title": "Edit Product",
+    "confirm-delete": "Are you sure you want to delete this product?",
+    "new-product": "New Product",
+    "empty-title": "No products available",
+    "empty-description": "You can create a new product by clicking the button below.",
+    "products-image": "Product Image",
+    "success-deleted": "Product deleted successfully!",
+    "success-created": "Product created successfully!",
+    "success-updated": "Product updated successfully!",
+    "duplicate-product": "A product with this name already exists."
   },
   "inventory": {
     "title": "Inventory",
@@ -153,7 +170,7 @@
     "product-deleted": "Product deleted successfully!",
     "confirm-delete-product": "Are you sure you want to delete this product? This action cannot be undone.",
     "delete-product-current-stock": "You cannot delete a product that has stock.",
-    "error-add-duplicate-product": "You cannot add a product that already exists in the inventory."
+    "error-past-date": "You cannot add stock with a past date."
   },
   "profile": {
     "title": "Profile"

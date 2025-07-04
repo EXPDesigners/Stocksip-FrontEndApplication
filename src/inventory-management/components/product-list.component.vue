@@ -2,68 +2,63 @@
   <div class="product-grid">
     <div
         v-for="product in products"
-        :key="product.id"
+        :key="product.productId"
         class="product-grid-tile"
     >
-      <ProductItem
+      <product-item
           :product="product"
           @edit="goToEditProduct"
-          @delete="onDeleteProduct"
+          @delete="() => confirmDelete(product.productId)"
       />
     </div>
+
+    <pv-confirm-dialog/>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import ProductItem from "@/inventory-management/components/product-item.component.vue";
 import { ProductService } from "@/inventory-management/services/product.service.js";
-import userService from "@/authentication/services/user.service.js";
+
+import ProductItem from "@/inventory-management/components/product-item.component.vue";
+import {Product} from "@/inventory-management/model/product.entity.js";
 
 export default {
   name: 'ProductListComponent',
-  components: {
-    ProductItem
+  components: {ProductItem},
+  props: {
+    products: {
+      type: Array[Product],
+      required: true
+    }
   },
-  setup() {
-    const products = ref([]);
-    const router = useRouter();
-    const productService = new ProductService();
+  methods: {
+    goToEditProduct(productId) {
+      this.$router.push({ name: 'ProductEdit', params: { productId } });
+    },
+    confirmDelete(productId) {
+      const confirm = this.$confirm;
+      const toast = this.$toast;
 
-    const loadProducts = async () => {
-      const currentUser = userService.getCurrentUser();
-      if (!currentUser) return;
-
-      try {
-        products.value = await productService.getAllByProviderId(currentUser.profileId);
-      } catch (err) {
-        console.error('Error fetching products:', err);
-      }
-    };
-
-    const goToEditProduct = (productId) => {
-      router.push({ name: 'ProductEdit', params: { productId } });
-    };
-
-    const onDeleteProduct = async (productId) => {
-      if (confirm('Are you sure you want to delete this product?')) {
-        try {
-          await productService.delete(productId);
-          await loadProducts();
-        } catch (err) {
-          console.error('Error deleting product:', err);
-        }
-      }
-    };
-
-    onMounted(loadProducts);
-
-    return {
-      products,
-      goToEditProduct,
-      onDeleteProduct
-    };
+      confirm.require({
+        message: this.$t('products.confirm-delete'),
+        header: this.$t('components.confirm-delete'),
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: this.$t('components.accept'),
+        rejectLabel: this.$t('components.cancel'),
+        acceptClass: 'p-button-danger',
+        accept: async () => {
+          try {
+            const productService = new ProductService();
+            await productService.delete(productId);
+            toast.add({ severity: 'success', summary: this.$t('toast.deleted-success'), detail: this.$t('products.success-deleted'), life: 3000 });
+            this.$emit('deleted');
+          } catch (err) {
+            console.error('Error deleting product:', err);
+            toast.add({ severity: 'error', summary: this.$t('toast.error'), detail: 'Failed to delete product', life: 3000 });
+          }
+        },
+      });
+    }
   }
 };
 </script>
@@ -71,11 +66,16 @@ export default {
 <style scoped>
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
   padding: 1rem;
 }
 .product-grid-tile {
   display: flex;
+  transition: transform 0.3s ease;
+}
+
+.product-grid-tile:hover {
+  transform: translateY(-10px);
 }
 </style>

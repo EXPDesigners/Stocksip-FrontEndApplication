@@ -1,7 +1,7 @@
 <template>
-  <Card class="product-card">
+  <pv-card class="product-card">
     <template #header>
-      <img :src="displayImageUrl" alt="Product Image" class="product-img" />
+      <img :src="product.imageUrl" alt="Product Image" class="product-img" />
     </template>
     <template #title>
       <div class="product-name">
@@ -17,34 +17,29 @@
     </template>
     <template #footer>
       <div class="footer-buttons">
-        <Button
+        <pv-button
             icon="pi pi-pencil"
             class="p-button-sm p-button-secondary"
-            @click="$emit('edit', product.id)"
+            @click="$emit('edit', product.productId)"
         />
-        <Button
+        <pv-button
             icon="pi pi-trash"
             class="p-button-sm p-button-danger"
-            @click="$emit('delete', product.id)"
+            @click="$emit('delete', product.productId)"
         />
       </div>
     </template>
-  </Card>
+  </pv-card>
 </template>
 
 
 <script>
-import Card from 'primevue/card';
-import Button from 'primevue/button';
+import {Product} from "@/inventory-management/model/product.entity.js";
 
 export default {
   name: 'ProductItem',
-  components: { Card, Button },
   props: {
-    product: {
-      type: Object,
-      required: true
-    }
+    product: { type: Product, required: true }
   },
   computed: {
     displayName() {
@@ -57,7 +52,7 @@ export default {
       return this.product.liquorType;
     },
     displayPrice() {
-      const amount = this.product.updatedUnitPriceAmount ?? this.product.unitPriceAmount ?? 0;
+      const amount = this.product.unitPriceAmount ?? 0;
       return new Intl.NumberFormat('es-PE', {
         style: 'currency',
         currency: 'PEN'
@@ -65,15 +60,10 @@ export default {
     },
     displayMinimumStock() {
       return this.product.updatedMinimumStock ?? this.product.minimumStock ?? 0;
-    },
-    displayImageUrl() {
-      return (this.product.updatedImageUrl ?? this.product.imageUrl) || 'https://via.placeholder.com/400x200?text=No+Image';
     }
   }
 };
 </script>
-
-
 
 <style scoped>
 .product-card {
@@ -83,11 +73,20 @@ export default {
   width: 100%;
   background-color: #fff;
 }
+
+.product-card:hover {
+  box-shadow: 0 5px 15px rgba(90, 3, 58, 0.2);
+  border-color: #d8b4e2;
+}
+
 .product-img {
   width: 100%;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f9f9f9;
+  padding: 1rem;
 }
+
 .footer-buttons {
   display: flex;
   justify-content: flex-end;
