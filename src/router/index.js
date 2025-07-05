@@ -32,6 +32,9 @@ import PageNotFoundComponent from "@/public/pages/page-not-found.component.vue";
 
 import {authenticationGuard} from "../authentication/services/authentication.guard.js";
 
+import PaymentSuccessComponent from "@/payment-and-subscriptions/pages/payment-success.component.vue";
+import PaymentCancelComponent from "@/payment-and-subscriptions/pages/payment-cancel.component.vue";
+
 const routes = [
     {
         path: '/',
@@ -205,6 +208,16 @@ const routes = [
         path: '/:pathMatch(.*)*',
         name: 'PageNotFound',
         component: PageNotFoundComponent
+    },
+    {
+        path: '/payments-success',
+        name: 'PaymentSuccess',
+        component: PaymentSuccessComponent
+    },
+    {
+        path: '/payments-cancel',
+        name: 'PaymentCancel',
+        component: PaymentCancelComponent
     }
 ];
 
