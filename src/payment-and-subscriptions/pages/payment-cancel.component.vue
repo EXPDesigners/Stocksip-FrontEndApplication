@@ -1,5 +1,4 @@
 <script>
-import {defineComponent} from 'vue'
 
 export default {
   name: "payment-cancel"
