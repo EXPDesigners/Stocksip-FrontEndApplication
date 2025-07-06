@@ -14,7 +14,7 @@
 import { ref, onMounted } from 'vue';
 import CatalogItem from "@/order-operation-and-monitoring/components/catalog-item.component.vue";
 import { CatalogService } from '@/order-operation-and-monitoring/services/catalog.service.js';
-import userService from "@/authentication/services/user.service.js";
+import { useAuthenticationStore } from '@/authentication/services/authentication.store.js';
 
 export default {
   name: 'CatalogListComponent',
@@ -24,16 +24,21 @@ export default {
   setup() {
     const catalogs = ref([]);
     const catalogService = new CatalogService();
+    const authStore = useAuthenticationStore();
 
-    onMounted(async () => {
-      const currentUser = userService.getCurrentUser();
-      if (!currentUser) return;
+    const loadCatalogs = async () => {
+      const accountId = authStore.currentAccountId;
+      if (!accountId) return;
 
       try {
-        catalogs.value = await catalogService.getCatalogByProfile(currentUser.profileId);
+        catalogs.value = await catalogService.getCatalogsByAccount(accountId);
       } catch (err) {
         console.error('Error fetching catalogs:', err);
       }
+    };
+
+    onMounted(() => {
+      loadCatalogs();
     });
 
     return {
