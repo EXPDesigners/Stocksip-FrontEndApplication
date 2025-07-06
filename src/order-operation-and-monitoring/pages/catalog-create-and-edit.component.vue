@@ -93,7 +93,7 @@ export default {
     const catalog = ref({
       id: 0,
       name: '',
-      profileId: 0,
+      accountId: '',
       dateCreated: '',
       isPublished: false
     });
@@ -140,9 +140,9 @@ export default {
 
       showError.value = false;
 
-      const currentProfile = userService.getCurrentUserProfile();
-      if (!currentProfile) {
-        console.error('Could not get the current profile');
+      const currentAccount = userService.getCurrentUserAccount();
+      if (!currentAccount) {
+        console.error('Could not get the current account');
         showError.value = true;
         return;
       }
@@ -150,7 +150,7 @@ export default {
       const payload = {
         ...catalog.value,
         name: catalog.value.name.trim(),
-        profileId: currentProfile.profileId,
+        accountId: currentAccount.accountId,
         dateCreated: new Date().toISOString(),
         isPublished: false
       };

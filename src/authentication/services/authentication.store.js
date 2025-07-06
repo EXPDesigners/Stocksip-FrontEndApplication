@@ -43,7 +43,19 @@ export const useAuthenticationStore = defineStore('authentication',{
          * Getter to get the current account ID
          * @returns {string} - Current account ID from local storage
          */
-        currentAccountId: () => localStorage.getItem('accountId')
+        currentAccountId: () => localStorage.getItem('accountId'),
+
+        account: () => {
+            const accountId = localStorage.getItem('accountId');
+            const accountRole = localStorage.getItem('accountRole');
+            if (accountId && accountRole) {
+                return {
+                    accountId,
+                    accountRole
+                };
+            }
+            return null;
+        }
     },
     actions: {
         /**
@@ -77,19 +89,27 @@ export const useAuthenticationStore = defineStore('authentication',{
         async signIn(signInRequest, router) {
             authenticationService.signIn(signInRequest)
                 .then(response => {
-                    let signInResponse = new SignInResponse(response.data.id, response.data.username, response.data.token, response.data.accountId);
+                    const { id, username, token, accountId, accountRole } = response.data;
+
                     this.signedIn = true;
-                    this.userId = signInResponse.id;
-                    this.username = signInResponse.username;
-                    localStorage.setItem('token', signInResponse.token);
-                    localStorage.setItem('accountId', signInResponse.accountId);
-                    localStorage.setItem('userId', signInResponse.id);
-                    localStorage.setItem('username', signInResponse.username);
-                    console.log(signInResponse);
+                    this.userId   = id;
+                    this.username = username;
+
+                    localStorage.setItem('token',       token);
+                    localStorage.setItem('accountId',   accountId);
+                    localStorage.setItem('accountRole', accountRole);
+
+                    const currentAccount = {
+                        accountId,
+                        accountRole,
+                        username
+                    };
+                    localStorage.setItem('currentAccount', JSON.stringify(currentAccount));
+
                     router.push({ name: 'Dashboard' });
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                     router.push({ name: 'sign-in' });
                 });
         },
