@@ -1,6 +1,5 @@
 import httpInstance from "../../shared/services/http.instance.js";
 import {BaseService} from "@/shared/services/base.service.js";
-import axios from "axios";
 
 /**
  * @class InventoryService
@@ -26,7 +25,7 @@ export class InventoryService extends BaseService {
     async getAllProductsByWarehouseId(warehouseId) {
         const endpoint = this.warehouseProductsEndpoint.replace('{warehouseId}', warehouseId);
         const url = `${import.meta.env.VITE_BASE_API_URL}${endpoint}`;
-        const response = await axios.get(url);
+        const response = await httpInstance.get(url);
         return response.data;
     }
 
@@ -76,7 +75,7 @@ export class InventoryService extends BaseService {
             quantity
         };
 
-        const response = await axios.post(url, payload);
+        const response = await httpInstance.post(url, payload);
         return response.data;
     }
 
@@ -86,7 +85,7 @@ export class InventoryService extends BaseService {
             const productPath = this.productAdditionEndpoint.replace('{productId}', productId);
             const url = `${this.resourceEndpoint}${inventoriesPath}${productPath}`;
 
-            const response = await axios.delete(url, {
+            const response = await httpInstance.delete(url, {
                 data: { expirationDate }
             });
 

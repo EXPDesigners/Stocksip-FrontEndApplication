@@ -1,6 +1,7 @@
 import {WarehouseAssembler} from "@/inventory-management/services/warehouse.assembler.js";
 import {BaseService} from "@/shared/services/base.service.js";
-import axios from "axios";
+import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
+import httpInstance from "@/shared/services/http.instance.js";
 
 /**
  * @class WarehouseService
@@ -30,14 +31,25 @@ export class WarehouseService extends BaseService {
     }
 
     /**
+     * Get all warehouses for the current account
+     * @returns {Promise<*>} - A promise that resolves to an array of Warehouse entities
+     */
+    async getWarehousesByAccountId() {
+        const accountId =  this.getAccountId();
+        const endpoint = `${import.meta.env.VITE_BASE_API_URL}${this.accountWarehouseEndpoint.replace('{accountId}', accountId)}`;
+
+        const response = await httpInstance.get(endpoint);
+        return response.data.map(resource => WarehouseAssembler.toEntityFromResource(resource));
+    }
+
+    /**
      * Update a warehouse
      * @returns {Promise<Object>} Created warehouse data
      * @param warehouseData
      * @param imageFile
      */
     async createWarehouse(warehouseData, imageFile) {
-
-        const accountId = 'test-acc';
+        let accountId = this.getAccountId();
         const endpoint = `${import.meta.env.VITE_BASE_API_URL}${this.accountWarehouseEndpoint.replace('{accountId}', accountId)}`;
 
         const formData = this.#createWarehouseFormData(warehouseData, imageFile);
@@ -46,7 +58,7 @@ export class WarehouseService extends BaseService {
             formData.append('Image', imageFile);
         }
 
-        const response = await axios.post(endpoint, formData, {
+        const response = await httpInstance.post(endpoint, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -72,11 +84,10 @@ export class WarehouseService extends BaseService {
      * @returns {Promise<Object>} The updated warehouse data
      */
     async updateWarehouse(warehouseId, warehouseData, imageFile) {
-
         const endpoint = `${import.meta.env.VITE_BASE_API_URL}${this.resourceEndpoint}/${warehouseId}`;
         const formData = this.#createWarehouseFormData(warehouseData, imageFile);
 
-        const response = await axios.put(endpoint, formData, {
+        const response = await httpInstance.put(endpoint, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -102,5 +113,10 @@ export class WarehouseService extends BaseService {
         }
 
         return formData;
+    }
+
+    getAccountId() {
+        const authenticationStore = useAuthenticationStore();
+        return authenticationStore.currentAccountId;
     }
 }

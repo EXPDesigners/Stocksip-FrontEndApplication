@@ -4,29 +4,54 @@ import axios from 'axios';
 class UserService extends BaseService {
     constructor() {
         super();
-        this.resourceEndpoint = import.meta.env.VITE_USER_ENDPOINT_PATH;
-        this.apiUrl = import.meta.env.VITE_API_URL;
-        this.profileEndpoint = import.meta.env.VITE_PROFILE_ENDPOINT_PATH;
+        this.apiUrl            = import.meta.env.VITE_API_URL;
+
+        // Rutas específicas del micro‑frontend JSON‑server o API real
+        this.resourceEndpoint  = import.meta.env.VITE_USER_ENDPOINT_PATH;      // '/users'
+        this.profileEndpoint   = import.meta.env.VITE_PROFILE_ENDPOINT_PATH;   // '/profiles'
+        this.accountEndpoint   = import.meta.env.VITE_ACCOUNT_ENDPOINT_PATH;   // '/api/v1/accounts'
     }
 
+    /* ───────────────────────────────  AUTH  ─────────────────────────────── */
+
+    /**
+     * Inicia sesión: guarda user, profile y account en localStorage.
+     * @param {string} username
+     * @param {string} password
+     * @returns {Promise<boolean>}
+     */
     async login(username, password) {
         try {
-            const res = await axios.get(`${this.apiUrl}${this.resourceEndpoint}?username=${username}&password=${password}`);
-            const users = res.data;
-
+            // 1) Buscar usuario
+            const { data: users } = await axios.get(
+                `${this.apiUrl}${this.resourceEndpoint}`,
+                { params: { username, password } }
+            );
             if (users.length === 0) return false;
 
             const user = users[0];
 
-            const profileRes = await axios.get(`${this.apiUrl}${this.profileEndpoint}/${user.profileId}`);
-            const profile = profileRes.data;
-
+            // 2) Obtener perfil
+            const { data: profile } = await axios.get(
+                `${this.apiUrl}${this.profileEndpoint}/${user.profileId}`
+            );
             if (!profile) throw new Error('Profile not found');
 
+            // 3) Obtener cuenta (vía e‑mail)
+            const { data: accountList } = await axios.get(
+                `${this.apiUrl}${this.accountEndpoint}`,
+                { params: { email: username } }
+            );
+            const account = accountList?.length ? accountList[0] : null;
+            if (!account) console.warn('No se encontró cuenta para', username);
+
+            // 4) Consolidar y persistir
             const currentUser = {
                 ...user,
-                profileId: profile.profileId,
-                profile
+                profileId:   profile.profileId,
+                profile,
+                accountId:   account?.accountId ?? null,
+                account      // objeto completo o null
             };
 
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -37,51 +62,57 @@ class UserService extends BaseService {
         }
     }
 
+    /* ─────────────────────────────  HELPERS  ────────────────────────────── */
+
     getCurrentUser() {
-        const savedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
-        return savedUser ? JSON.parse(savedUser) : null;
+        const saved = localStorage.getItem('currentUser') ?? sessionStorage.getItem('currentUser');
+        return saved ? JSON.parse(saved) : null;
     }
 
     getCurrentUserProfile() {
-        const user = this.getCurrentUser();
-        return user && user.profile ? user.profile : null;
+        return this.getCurrentUser()?.profile ?? null;
     }
+
+    /** Nuevo: devuelve la cuenta actual o null */
+    getCurrentUserAccount() {
+        return this.getCurrentUser()?.account ?? null;
+    }
+
+    /* ───────────────────────────  SEARCH BY EMAIL  ──────────────────────── */
 
     async getProfileByEmail(email) {
         try {
-            const response = await axios.get(`${this.apiUrl}/profiles`, {
+            const { data: profiles } = await axios.get(`${this.apiUrl}${this.profileEndpoint}`, {
                 params: { email }
             });
-
-            const profiles = response.data;
-            return profiles.length > 0 ? profiles[0] : null;
-        } catch (error) {
-            console.error('Error al obtener perfil por email:', error);
+            return profiles.length ? profiles[0] : null;
+        } catch (e) {
+            console.error('Error al obtener perfil por email:', e);
             return null;
         }
     }
 
     async getAccountByEmail(email) {
         try {
-            const response = await axios.get(`${this.apiUrl}${this.resourceEndpoint}`, {
-                params: { username: email }
+            const { data: accounts } = await axios.get(`${this.apiUrl}${this.accountEndpoint}`, {
+                params: { email }
             });
-
-            const users = response.data;
-            return users.length > 0 ? users[0] : null;
-        } catch (error) {
-            console.error('Error al obtener cuenta por email:', error);
+            return accounts.length ? accounts[0] : null;
+        } catch (e) {
+            console.error('Error al obtener cuenta por email:', e);
             return null;
         }
     }
 
+    /* ──────────────────────────────  REGISTER  ──────────────────────────── */
+
     async register({ name, email, password, role }) {
         try {
-            const newUserRes = await axios.post(`${this.apiUrl}/users`, {
+            // lógica mock con JSON‑server
+            const { data: newUser } = await axios.post(`${this.apiUrl}/users`, {
                 username: email,
                 password
             });
-            const newUser = newUserRes.data;
 
             const profile = {
                 id: newUser.id,
@@ -93,10 +124,7 @@ class UserService extends BaseService {
             };
 
             await axios.post(`${this.apiUrl}/profiles`, profile);
-
-            await axios.patch(`${this.apiUrl}/users/${newUser.id}`, {
-                profileId: newUser.id
-            });
+            await axios.patch(`${this.apiUrl}/users/${newUser.id}`, { profileId: newUser.id });
 
             return newUser;
         } catch (error) {

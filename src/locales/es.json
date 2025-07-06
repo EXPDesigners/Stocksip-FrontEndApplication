@@ -1,5 +1,5 @@
 {
-  "login": {
+  "sign-in": {
     "title": "Iniciar Sesión",
     "email": "Correo electrónico",
     "password": "Contraseña",
@@ -9,7 +9,15 @@
     "or": "o",
     "hello": "Hola, usuario",
     "createAccount": "Crea tu cuenta personal para acceder a todas las funciones de la plataforma",
-    "register": "Registrarse"
+    "register": "Registrarse",
+    "invalid-credentials": "Credenciales inválidas. Por favor, verifica tu correo electrónico y contraseña."
+  },
+  "sign-up": {
+    "invalid-email-title": "Correo inválido",
+    "invalid-email": "Por favor, introduce una dirección de correo electrónico válida.",
+    "validate-password-title": "Las contraseñas no coinciden",
+    "validate-password": "Las contraseñas no coinciden.",
+    "account-created": "¡Cuenta creada con éxito!"
   },
   "toolbar": {
     "expand-contract": "Expandir/Contraer",
@@ -20,7 +28,8 @@
     "order": "Compras",
     "storage": "Almacenamiento",
     "settings": "Configuración",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "sign-out": "Cerrar Sesión"
   },
   "warehouses": {
     "title": "Almacenes",
@@ -46,7 +55,8 @@
       "min-temperature": "Temperatura Mínima",
       "capacity": "Capacidad",
       "warehouse-image": "Imagen del Almacén"
-    }
+    },
+    "error-message": "Ya has creado un almacén con el mismo nombre o dirección."
   },
   "components": {
     "save": "Guardar",
@@ -172,7 +182,8 @@
     "confirm-delete-product": "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
     "delete-product-current-stock": "No se puede eliminar un producto que tenga stock.",
     "error-add-duplicate-product": "No se puede añadir un producto que ya existe en este inventario.",
-    "error-past-date": "No se puede añadir stock con una fecha pasada."
+    "error-past-date": "No se puede añadir stock con una fecha pasada.",
+    "transfer-product": "Transferir Producto"
   },
   "profile": {
     "title": "Perfil"

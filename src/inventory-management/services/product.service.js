@@ -1,6 +1,7 @@
-import axios from 'axios';
+import httpInstance from "@/shared/services/http.instance.js";
+import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
 
-const baseApiUrl = import.meta.env.VITE_BASE_API_URL; // Backend Api
+const baseApiUrl = import.meta.env.VITE_BASE_API_URL;
 const accountProducts = import.meta.env.VITE_ACCOUNT_PRODUCTS_ENDPOINT_PATH;
 const productsEndpoint = import.meta.env.VITE_PRODUCTS_ENDPOINT_PATH;
 
@@ -8,17 +9,17 @@ export class ProductService {
 
     async getById(productId) {
         const endpoint = `${baseApiUrl}${productsEndpoint}/${productId}`;
-        const response = await axios.get(endpoint);
+        const response = await httpInstance.get(endpoint);
         return response.data;
     }
 
     async createProduct(productData, imageFile) {
-        const accountId = 'test-acc';
+        let accountId = this.getAccountId();
         const endpoint = `${baseApiUrl}${accountProducts.replace('{accountId}', accountId)}`;
 
         const formData = this.#createProductFormData(productData, imageFile);
 
-        const response = await axios.post(endpoint, formData, {
+        const response = await httpInstance.post(endpoint, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -31,7 +32,7 @@ export class ProductService {
             const endpoint = `${baseApiUrl}${productsEndpoint}/${productId}`;
             const formData = this.#createProductFormData(productData, imageFile);
 
-            const response = await axios.put(endpoint, formData, {
+            const response = await httpInstance.put(endpoint, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -45,15 +46,16 @@ export class ProductService {
     }
 
     async delete(productId) {
-        const response = await axios.delete(`${baseApiUrl}${productsEndpoint}/${productId}`);
+        const response = await httpInstance.delete(`${baseApiUrl}${productsEndpoint}/${productId}`);
         return response.data;
     }
 
     // Backend API methods
-    async getAllByAccountId(accountId) {
+    async getAllByAccountId() {
+        const accountId = this.getAccountId();
         const endpoint = accountProducts.replace('{accountId}', accountId);
         const url = `${baseApiUrl}${endpoint}`;
-        return await axios.get(url);
+        return await httpInstance.get(url);
     }
 
     #createProductFormData(productData, imageFile) {
@@ -68,5 +70,10 @@ export class ProductService {
         }
 
         return formData;
+    }
+
+    getAccountId() {
+        const authenticationStore = useAuthenticationStore();
+        return authenticationStore.currentAccountId;
     }
 }

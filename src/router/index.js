@@ -28,19 +28,26 @@ import OrdersComponent from "@/order-operation-and-monitoring/pages/orders.compo
 import ProductCreateAndEdit from "@/inventory-management/pages/product-create-and-edit.component.vue";
 import ProductManagementComponent from "@/inventory-management/pages/product-management.component.vue";
 
+import PageNotFoundComponent from "@/public/pages/page-not-found.component.vue";
+
+import {authenticationGuard} from "../authentication/services/authentication.guard.js";
+
+import PaymentSuccessComponent from "@/payment-and-subscriptions/pages/payment-success.component.vue";
+import PaymentCancelComponent from "@/payment-and-subscriptions/pages/payment-cancel.component.vue";
+
 const routes = [
     {
         path: '/',
-        redirect: '/login'
+        redirect: '/sign-in'
     },
     {
-        path: '/login',
-        name: 'Login',
+        path: '/sign-in',
+        name: 'sign-in',
         component: LoginComponent
     },
     {
-        path: '/register',
-        name: 'Register',
+        path: '/sign-up',
+        name: 'sing-up',
         component: RegisterComponent
     },
     {
@@ -196,6 +203,21 @@ const routes = [
         name: 'ProductEdit',
         component: ProductCreateAndEdit,
         props: true
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'PageNotFound',
+        component: PageNotFoundComponent
+    },
+    {
+        path: '/payments-success',
+        name: 'PaymentSuccess',
+        component: PaymentSuccessComponent
+    },
+    {
+        path: '/payments-cancel',
+        name: 'PaymentCancel',
+        component: PaymentCancelComponent
     }
 ];
 
@@ -203,5 +225,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 })
+
+router.beforeEach(authenticationGuard);
 
 export default router

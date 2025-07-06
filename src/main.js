@@ -5,6 +5,9 @@ import { PrimeVue } from '@primevue/core';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import Material from '@primeuix/themes/material';
+import {createPinia} from "pinia";
+
+const pinia = createPinia();
 
 // Vuetify
 import 'vuetify/styles'
@@ -45,6 +48,7 @@ import {
 } from "primevue";
 import i18n from "./i18n/index.js";
 import router from "./router/index.js";
+import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
 
 const vuetify = createVuetify({
     components,
@@ -55,6 +59,7 @@ createApp(App)
     .use(i18n)
     .use(router)
     .use(vuetify)
+    .use(pinia)
     .use(PrimeVue, { theme: { preset: Material }, ripple: true })
     .use(ConfirmationService)
     .use(DialogService)
@@ -87,3 +92,6 @@ createApp(App)
     .component('pv-message', Message)
     .component('pv-date-picker', DatePicker)
     .mount('#app')
+
+const authenticationStore = useAuthenticationStore();
+authenticationStore.initializeFromStorage();

@@ -1,24 +1,29 @@
 <script>
-import userService from "@/authentication/services/user.service.js";
+
+import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
+import {SignInRequest} from "@/authentication/model/sign-in.request.js";
+import {Toast as PvToast} from "primevue";
+import {useToast} from "primevue/usetoast";
+
 export default {
   name: "login",
+  components: {PvToast},
   data() {
     return {
       hide: true,
-      email: '',
-      password: '',
+      username: "",
+      password: "",
+      authenticationStore: useAuthenticationStore(),
       rememberMe: false,
-      accountType: ''
+      accountType: '',
+      toast: useToast(),
     }
   },
   methods: {
     goToConfirmation() {
     },
-    goToDashboard() {
-      this.$router.push('/dashboard');
-    },
     goToRegister() {
-      this.$router.push('/register');
+      this.$router.push('/sign-up');
     },
     goToPasswordRecovery() {
       this.$router.push('/password-recovery');
@@ -26,19 +31,18 @@ export default {
     togglePassword() {
       this.hide = !this.hide;
     },
-    async loginUser() {
+    onSignIn() {
+      let signUpRequest = new SignInRequest(this.username, this.password);
       try {
-        const success = await userService.login(this.email, this.password);
-        if (success) {
-          const currentUser = userService.getCurrentUser();
-          console.log('Usuario logueado:', currentUser);
-          this.goToDashboard();
-        } else {
-          alert('Credenciales inválidas');
-        }
+        this.authenticationStore.signIn(signUpRequest, this.$router);
       } catch (error) {
-        console.error('Error al iniciar sesión:', error);
-        alert('Error al iniciar sesión');
+        this.toast.add({
+          severity: 'error',
+          summary: this.$t('toast.error'),
+          detail: this.$t('sign-in.invalid-credentials'),
+          life: 3000
+        });
+        console.error('Error to enter the system:', error);
       }
     }
 
@@ -53,10 +57,10 @@ export default {
       <h2>Sign In</h2>
       <form @submit.prevent="goToConfirmation">
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="username">Email</label>
           <input
-              id="email"
-              v-model="email"
+              id="username"
+              v-model="username"
               type="email"
               placeholder="email@example.com"
               class="form-input"
@@ -94,7 +98,7 @@ export default {
           </label>
         </div>
 
-        <button type="submit" class="sign-in-button" @click="loginUser">
+        <button type="submit" class="sign-in-button" @click="onSignIn">
           Sign In
         </button>
 
@@ -120,7 +124,7 @@ export default {
       <h2>Hello, user</h2>
       <p>Create your personal account to access all the features of the platform</p>
 
-      <button class="register-button" @click="goToRegister">
+      <button class="register-button" @click="goToRegister" type="submit">
         Register
       </button>
 

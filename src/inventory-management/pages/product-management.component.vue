@@ -70,8 +70,7 @@ export default {
     async getProducts() {
       this.error = null;
       try {
-        const accountId = 'test-acc'
-        const response = await this.productsApi.getAllByAccountId(accountId);
+        const response = await this.productsApi.getAllByAccountId();
         this.products = response.data.map(item => new Product(
           {
             productId: item.productId,

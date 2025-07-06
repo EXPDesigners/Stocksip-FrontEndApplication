@@ -9,7 +9,15 @@
     "or": "or",
     "hello": "Hello, user",
     "createAccount": "Create your personal account to access all the features of the platform",
-    "register": "Register"
+    "register": "Register",
+    "invalid-credentials": "Invalid credentials. Please check your email and password."
+  },
+  "sign-up": {
+    "invalid-email-title": "Invalid Email",
+    "invalid-email": "Please enter a valid email address.",
+    "validate-password-title": "Password Mismatch",
+    "validate-password": "Passwords do not match.",
+    "account-created": "Account created successfully!"
   },
   "toolbar": {
     "expand-contract": "Expand/Contract",
@@ -20,7 +28,8 @@
     "order": "Orders",
     "storage": "Storage",
     "settings": "Settings",
-    "profile": "Profile"
+    "profile": "Profile",
+    "sign-out": "Sign Out"
   },
   "warehouses": {
     "title": "Warehouses",
@@ -46,7 +55,8 @@
       "max-temperature": "Max Temperature",
       "min-temperature": "Min Temperature",
       "warehouse-image": "Warehouse Image"
-    }
+    },
+    "error-message": "You have already created a warehouse with the same name or address."
   },
   "components": {
     "save": "Save",
@@ -170,7 +180,8 @@
     "product-deleted": "Product deleted successfully!",
     "confirm-delete-product": "Are you sure you want to delete this product? This action cannot be undone.",
     "delete-product-current-stock": "You cannot delete a product that has stock.",
-    "error-past-date": "You cannot add stock with a past date."
+    "error-past-date": "You cannot add stock with a past date.",
+    "transfer-product": "Transfer Product"
   },
   "profile": {
     "title": "Profile"

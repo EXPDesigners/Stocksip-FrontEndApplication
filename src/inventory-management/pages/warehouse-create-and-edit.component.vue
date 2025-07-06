@@ -122,8 +122,8 @@ export default {
         this.toast.add({
           severity: 'error',
           summary: this.$t('toast.error'),
-          detail: error.message || this.$t('warehouses.error_message'),
-          life: 3000
+          detail: this.$t('warehouses.error-message'),
+          life: 5000
         });
       } finally {
         this.submitted = false;
@@ -166,7 +166,7 @@ export default {
     <div class="warehouse-main">
       <toolbar-content :pageTitle="isEditMode ? $t('warehouses.editWarehouseTitle') : $t('warehouses.createWarehouseTitle')" />
       <div class="warehouse-content">
-        <pv-form :initialValues="initialValues" :resolver="resolver" @submit="onSubmit" v-slot="$form" class="form-card">
+        <pv-form :initialValues="initialValues" @submit="onSubmit" v-slot="$form" class="form-card">
           <h2 class="form-title">{{ isEditMode ? $t('components.edit-data') : $t('components.complete-data') }}</h2>
           <div class="form-grid">
 

@@ -1,0 +1,156 @@
+import {AuthenticationService} from "./authentication.service.js";
+import {defineStore} from "pinia";
+import {SignInResponse} from "../model/sign-in.response.js";
+import {SignUpResponse} from "../model/sign-up.response.js";
+
+const authenticationService = new AuthenticationService();
+
+/**
+ * Store definition for authentication
+ * @summary
+ * This store is responsible to manage the authentication state.
+ * It contains state for signed-in status, user ID, and username.
+ * It contains actions to sign-in, sign-up, and sign-out.
+ */
+export const useAuthenticationStore = defineStore('authentication',{
+    state: () => ({ signedIn: false, userId: '', username: '' }),
+    getters: {
+        /**
+         * Getter to check if user is signed in
+         * @param state - Current state of the store
+         * @returns {boolean} - True if user is signed in, false otherwise
+         */
+        isSignedIn: (state) => state['signedIn'],
+        /**
+         * Getter to get the current user ID
+         * @param state - Current state of the store
+         * @returns {number} - Current user ID
+         */
+        currentUserId: (state) => state['userId'],
+        /**
+         * Getter to get the current username
+         * @param state - Current state of the store
+         * @returns {string} - Current username
+         */
+        currentUsername: (state) => state['username'],
+        /**
+         * Getter to get the current token
+         * @returns {string} - Current token
+         */
+        currentToken: () => localStorage.getItem('token'),
+
+        /**
+         * Getter to get the current account ID
+         * @returns {string} - Current account ID from local storage
+         */
+        currentAccountId: () => localStorage.getItem('accountId'),
+
+        account: () => {
+            const accountId = localStorage.getItem('accountId');
+            const accountRole = localStorage.getItem('accountRole');
+            if (accountId && accountRole) {
+                return {
+                    accountId,
+                    accountRole
+                };
+            }
+            return null;
+        }
+    },
+    actions: {
+        /**
+         * Initialize the store from local storage
+         * @summary
+         * This action checks local storage for a token and sets the signed-in status accordingly.
+         * It also retrieves the user ID and username from local storage.
+         * @description
+         * This action is called when the application starts to restore the authentication state.
+         */
+        initializeFromStorage() {
+            const token = localStorage.getItem('token');
+            const accountId = localStorage.getItem('accountId');
+            const userId = localStorage.getItem('userId');
+            const username = localStorage.getItem('username');
+
+            this.signedIn = !!token;
+            this.userId = userId || '';
+            this.username = username || '';
+        },
+        /**
+         * Action to sign-in
+         * @summary
+         * This action calls the sign-in API and updates the store state.
+         * If sign-in is successful, it sets the signed-in status, user ID, and username.
+         * It also saves the token in local storage.
+         * If sign-in fails, it redirects to the sign-in page.
+         * @param signInRequest - The {@link SignInRequest} object to sign-in
+         * @param router - Vue router instance
+         */
+        async signIn(signInRequest, router) {
+            authenticationService.signIn(signInRequest)
+                .then(response => {
+                    const { id, username, token, accountId, accountRole } = response.data;
+
+                    this.signedIn = true;
+                    this.userId   = id;
+                    this.username = username;
+
+                    localStorage.setItem('token',       token);
+                    localStorage.setItem('accountId',   accountId);
+                    localStorage.setItem('accountRole', accountRole);
+
+                    const currentAccount = {
+                        accountId,
+                        accountRole,
+                        username
+                    };
+                    localStorage.setItem('currentAccount', JSON.stringify(currentAccount));
+
+                    router.push({ name: 'Dashboard' });
+                })
+                .catch(error => {
+                    console.error(error);
+                    router.push({ name: 'sign-in' });
+                });
+        },
+        async signUp(signUpdRequest, router) {
+            /**
+             * Action to sign-up
+             * @summary
+             * This action calls the sign-up API.
+             * If sign-up is successful, it redirects to the sign-in page.
+             * If sign-up fails, it redirects to the sign-up page.
+             * @param signUpdRequest - The {@link SignUpRequest} object to sign-up
+             * @param router - Vue router instance
+             */
+            authenticationService.signUp(signUpdRequest)
+                .then(response => {
+                    let signUpResponse = new SignUpResponse(response.data.message);
+                    router.push({ name: 'sign-in' });
+                    console.log(signUpResponse);
+                })
+                .catch(error => {
+                    console.log(error);
+                    router.push({ name: 'sign-up' });
+                });
+        },
+        /**
+         * Action to sign-out
+         * @summary
+         * This action signs out the user.
+         * It sets the signed-in status to false, user ID to 0, and username to empty string.
+         * It also removes the token from local storage.
+         * It redirects to the sign-in page.
+         * @param router - Vue router instance
+         */
+        async signOut(router) {
+            this.signedIn = false;
+            this.userId = '';
+            this.username = '';
+            localStorage.removeItem('token');
+            localStorage.removeItem('accountId');
+            console.log('Signed out');
+            router.push({ name: 'sign-in' });
+        }
+    }
+});

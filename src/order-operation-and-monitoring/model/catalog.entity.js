@@ -1,6 +1,6 @@
 export const Catalog = {
     id: 0,
-    profileId: 0,
+    accountId: '',
     name: '',
     dateCreated: '',
     isPublished: false

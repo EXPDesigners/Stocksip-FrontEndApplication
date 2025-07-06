@@ -1,55 +1,70 @@
 <script>
-import UserService from "@/authentication/services/user.service.js";
+import {useAuthenticationStore} from "../services/authentication.store.js";
+import {SignUpRequest} from "../model/sign-up.request.js";
+import { useToast } from 'primevue/usetoast';
+import {Toast as PvToast} from "primevue";
 
 export default {
   name: "register",
+  components: {PvToast},
   data() {
     return {
       hide: true,
       hideConfirm: true,
       loading: false,
       error: '',
+      authenticationStore: useAuthenticationStore(),
       formData: {
-        fullName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        role: ''
-      }
+        fullName: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+        role: ""
+      },
+      toast: useToast(),
     }
   },
   methods: {
     goToSignIn() {
-      this.$router.push('/login');
+      this.$router.push('/sign-in');
     },
     togglePassword(field) {
       if (field === 'password') {
         this.hide = !this.hide;
-      } else {
+      } else if (field === 'confirm') {
         this.hideConfirm = !this.hideConfirm;
       }
     },
-    async onSubmit() {
+    onSignUp() {
       this.error = '';
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(this.formData.username)) {
+        this.toast.add({ severity: 'error', summary: this.$t('sign-up.invalid-email-title'), detail: this.$t('sign-up.invalid-email'), life: 3000 });
+        return;
+      }
 
       if (this.formData.password !== this.formData.confirmPassword) {
-        this.error = "Passwords don't match";
+        this.toast.add({ severity: 'warn', summary: this.$t('sign-up.validate-password-title') , detail: this.$t('sign-up.validate-password'), life: 3000 });
         return;
       }
 
       this.loading = true;
 
       try {
-        await UserService.register({
-          name: this.formData.fullName,
-          email: this.formData.email,
-          password: this.formData.password,
-          role: this.formData.role
-        });
+        let signUpRequest = new SignUpRequest(
+            this.formData.username,
+            this.formData.password,
+            this.formData.confirmPassword,
+            this.formData.fullName,
+            this.formData.role
+        );
+        this.authenticationStore.signUp(signUpRequest, this.$router);
 
-        alert('User registered successfully!');
+        this.toast.add({ severity: 'success', summary: this.$t('toast.success'), detail: this.$t('sign-up.account-created'), life: 3000 });
+
       } catch (err) {
-        this.error = 'Registration failed. ' + (err.message || '');
+        console.error(err);
       } finally {
         this.loading = false;
       }
@@ -79,13 +94,13 @@ export default {
     <!-- Right section: Registration form -->
     <div class="registration-form">
       <h2>Create Account</h2>
-      <form @submit.prevent="onSubmit">
+      <form @submit.prevent="onSignUp">
 
         <div class="form-group select-group">
           <label for="role" class="select-label">Select Your Role</label>
           <select v-model="formData.role" id="role" class="form-select">
             <option value="" class="select-role" disabled selected>Select role</option>
-            <option value="Liquor Store Owner">Liquor Store Owner</option>
+            <option value="LiquorStoreOwner">Liquor Store Owner</option>
             <option value="Supplier">Supplier</option>
           </select>
           <span class="select-arrow"></span>
@@ -103,10 +118,10 @@ export default {
         </div>
 
         <div class="form-group">
-          <label for="email">Email address</label>
+          <label for="username">Email address</label>
           <input
-              id="email"
-              v-model="formData.email"
+              id="username"
+              v-model="formData.username"
               type="email"
               class="form-input"
               placeholder="Enter your email"
@@ -144,7 +159,7 @@ export default {
                 placeholder="Confirm your password"
             />
             <button
-                type="button"
+                type="submit"
                 class="toggle-password"
                 @click="togglePassword('confirm')"
             >

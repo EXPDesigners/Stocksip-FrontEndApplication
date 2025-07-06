@@ -4,7 +4,7 @@ import { Warehouse } from "@/inventory-management/model/warehouse.entity.js";
 export default {
   name: "warehouse-item",
   props: {
-    warehouse: { type: Warehouse, required: true }
+    warehouse: { type: Object, required: true }
   },
   methods: {
     navigateToEdit() {
