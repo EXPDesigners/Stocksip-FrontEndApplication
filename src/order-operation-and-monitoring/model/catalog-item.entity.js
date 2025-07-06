@@ -1,4 +1,4 @@
-import { Money } from '../../shared/model/money.js';
+
 
 export const CatalogItem = {
     id: '',
@@ -8,5 +8,5 @@ export const CatalogItem = {
     productType: '',
     content: 0,
     brand: '',
-    unitPrice: Money
+    unitPrice: 0
 };
