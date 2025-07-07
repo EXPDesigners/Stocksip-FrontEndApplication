@@ -59,7 +59,7 @@ export default {
 
       <div class="warehouse-content">
         <div class="warehouse-management-content">
-          <div class="limits-info">
+          <div v-if="warehouses && warehouses.length > 0" class="limits-info">
             <p>
               {{ $t('warehouses.limitMessage', { current: warehousesCount, max: maxWarehouses }) }}
             </p>

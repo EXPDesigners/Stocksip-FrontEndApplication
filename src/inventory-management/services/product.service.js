@@ -4,6 +4,7 @@ import {useAuthenticationStore} from "@/authentication/services/authentication.s
 const baseApiUrl = import.meta.env.VITE_BASE_API_URL;
 const accountProducts = import.meta.env.VITE_ACCOUNT_PRODUCTS_ENDPOINT_PATH;
 const productsEndpoint = import.meta.env.VITE_PRODUCTS_ENDPOINT_PATH;
+const accountProductsCountEndpoint = import.meta.env.VITE_PRODUCTS_COUNT_ENDPOINT_PATH;
 
 export class ProductService {
 
@@ -75,5 +76,12 @@ export class ProductService {
     getAccountId() {
         const authenticationStore = useAuthenticationStore();
         return authenticationStore.currentAccountId;
+    }
+
+    async getProductsCount() {
+        const accountId = this.getAccountId();
+        const endpoint = `${baseApiUrl}${accountProductsCountEndpoint.replace('{accountId}', accountId)}`;
+        const response = await httpInstance.get(endpoint);
+        return response.data;
     }
 }
