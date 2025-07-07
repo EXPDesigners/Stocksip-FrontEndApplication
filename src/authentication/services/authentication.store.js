@@ -2,6 +2,7 @@ import {AuthenticationService} from "./authentication.service.js";
 import {defineStore} from "pinia";
 import {SignInResponse} from "../model/sign-in.response.js";
 import {SignUpResponse} from "../model/sign-up.response.js";
+import {AccountService} from "@/payment-and-subscriptions/services/account.service.js";
 
 const authenticationService = new AuthenticationService();
 
@@ -76,7 +77,7 @@ export const useAuthenticationStore = defineStore('authentication',{
          */
         async signIn(signInRequest, router) {
             authenticationService.signIn(signInRequest)
-                .then(response => {
+                .then(async response => {
                     let signInResponse = new SignInResponse(response.data.id, response.data.username, response.data.token, response.data.accountId);
                     this.signedIn = true;
                     this.userId = signInResponse.id;
@@ -86,7 +87,17 @@ export const useAuthenticationStore = defineStore('authentication',{
                     localStorage.setItem('userId', signInResponse.id);
                     localStorage.setItem('username', signInResponse.username);
                     console.log(signInResponse);
-                    router.push({ name: 'Dashboard' });
+
+                    const accountService = new AccountService();
+                    const { accountStatus } = await accountService.getAccountStatus(response.data.accountId);
+                    console.log("✅ Status is:", accountStatus);
+
+                    if (accountStatus === "INACTIVE") {
+                        router.push({name: "PlanChoose"});
+                    } else {
+                        router.push({name: "Dashboard"});
+                    }
+
                 })
                 .catch(error => {
                     console.log(error);

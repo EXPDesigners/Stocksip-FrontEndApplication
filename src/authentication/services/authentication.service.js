@@ -15,6 +15,7 @@ export class AuthenticationService
      *
      */
     signIn(signInRequest) {
+        console.log("🚀 signInRequest", signInRequest);
         return httpInstance.post(import.meta.env.VITE_AUTH_SIGNIN_ENDPOINT, signInRequest);
     }
 

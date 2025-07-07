@@ -99,11 +99,12 @@ export default {
 
 
     onMounted(async () => {
-      const currentUser = userService.getCurrentUser();
+      /*
       if (!currentUser || !currentUser.profileId) {
         console.error('No profileId found in currentUser');
         return;
       }
+
 
       try {
         const profile = await profileService.getProfileById(currentUser.profileId);
@@ -111,6 +112,7 @@ export default {
       } catch (error) {
         console.error('Error al cargar perfil:', error);
       }
+      */
     });
 
     return {
