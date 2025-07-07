@@ -16,8 +16,13 @@ export class CatalogService {
         return data;
     }
 
+    async publishCatalog(catalogId) {
+        const { data } = await http.post(`/catalogs/${catalogId}/publish`);
+        return data;               // el backend devuelve el catálogo actualizado
+    }
+
     async getCatalogById(catalogId) {
-        const { data } = await http.get(`/api/v1/catalogs/${catalogId}`);
+        const { data } = await http.get(`/catalogs/${catalogId}`);
         return data;
     }
 
@@ -32,16 +37,25 @@ export class CatalogService {
     }
 
     async getCatalogItems(catalogId) {
-        const { data } = await http.get('/catalogs/catalogitems', {
+        const { data } = await http.get('catalogs/catalogitems', {
             params: { catalogId }
         });
         return data;
     }
+
     async addCatalogItem(item) {
         const { data } = await http.post('/catalogs/catalogitems', item);
         return data;
     }
     async deleteCatalogItem(itemId) {
+        console.log('[DELETE] Enviando ID:', itemId);
+
+        if (!itemId || typeof itemId !== 'string' || itemId.length < 36) {
+            console.warn('[DELETE] ID no válido:', itemId);
+            return;
+        }
+        // aquí **NO** concatenamos /catalogId
+        //   y nos aseguramos de usar exactamente la ruta del backend
         await http.delete(`/catalogs/catalogitems/${itemId}`);
     }
 }
