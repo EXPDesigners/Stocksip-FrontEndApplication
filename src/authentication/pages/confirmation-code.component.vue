@@ -1,11 +1,18 @@
 <script>
+import { useAuthenticationStore} from "@/authentication/services/authentication.store.js";
+import { AuthenticationService } from "@/authentication/services/authentication.service.js";
+import { useToast } from "primevue/usetoast";
+
+const authenticationService = new AuthenticationService();
+
 export default {
   name: "confirmation-code",
   data() {
     return {
       code: ['', '', '', '', '', ''],
       error: '',
-      isVerifying: false
+      isVerifying: false,
+      toast: useToast()
     }
   },
   methods: {
@@ -60,17 +67,32 @@ export default {
         return;
       }
 
+      const authStore = useAuthenticationStore();
+      const email = authStore.getRecoveryEmail();
+
+      if (!email) {
+        this.error = 'Email not found. Please restart the recovery process.';
+        return;
+      }
+
       this.isVerifying = true;
       try {
-        // Here you would add the API call to verify the code
-        console.log('Verifying code:', fullCode);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        // On success, navigate to password reset or appropriate page
-        this.$router.push('/login');
+        await authenticationService.verifyRecoveryCode(email, fullCode);
+        this.toast.add({
+          severity: 'success',
+          summary: 'Verification Successful',
+          detail: 'Your account has been verified successfully.',
+          life: 3000
+        });
+        this.$router.push('/reset-password');
       } catch (err) {
-        this.error = 'Invalid verification code';
+        console.error(err);
+        this.toast.add({
+          severity: 'error',
+          summary: 'Verification Failed',
+          detail: 'Invalid verification code. Please try again.',
+          life: 3000
+        });
       } finally {
         this.isVerifying = false;
       }

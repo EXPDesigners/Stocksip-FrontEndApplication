@@ -38,6 +38,8 @@ import PaymentUpgradeSuccess from "@/payment-and-subscriptions/pages/payment-upg
 
 import PlanChooseComponent from "@/payment-and-subscriptions/pages/plan-choose.component.vue";
 
+import ResetPasswordComponent from "@/authentication/pages/reset-password.component.vue";
+
 const routes = [
     {
         path: '/',
@@ -231,6 +233,11 @@ const routes = [
         path: '/plan-choose',
         name: 'PlanChoose',
         component: PlanChooseComponent
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ResetPasswordComponent
     }
 ];
 
