@@ -12,13 +12,28 @@ export class CatalogService {
         return data;
     }
     async getPublishedCatalogs() {
-        const { data } = await http.get('/api/v1/catalogs?published=true');
+        const { data } = await http.get('/catalogs?published=true');
         return data;
     }
 
     async publishCatalog(catalogId) {
         const { data } = await http.post(`/catalogs/${catalogId}/publish`);
-        return data;               // el backend devuelve el catálogo actualizado
+        return data;
+    }
+
+    async getPublishedCatalogsByAccount(accountId) {
+        const { data } = await http.get(
+            `/api/v1/accounts/${accountId}/catalogs`,
+            { params: { published: true } }
+        );
+        return data;
+    }
+
+    async getPublishedCatalogsByEmail(email) {
+        const response = await http.get('/catalogs/published', {
+            params: { providerEmail: email }
+        });
+        return response.data;
     }
 
     async getCatalogById(catalogId) {
