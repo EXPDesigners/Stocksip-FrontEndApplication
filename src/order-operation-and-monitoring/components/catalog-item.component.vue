@@ -32,6 +32,7 @@
           <template #body="{ data }">{{ formatPrice(data.unitPrice) }}</template>
         </Column>
         <Column header="Actions" style="width: 100px;">
+          console.log('[CatalogItem] data en botón eliminar:', data);
           <template #body="{ data }">
             <Button icon="pi pi-trash" severity="danger" text @click="deleteItem(data.id)" />
           </template>
@@ -42,17 +43,16 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
+
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { CatalogService } from "@/order-operation-and-monitoring/services/catalog.service.js";
-import { Money } from '@/shared/model/money';
-import { Currency } from '@/shared/model/currency';
 
+import {CatalogService} from '@/order-operation-and-monitoring/services/catalog.service.js';
 export default {
   name: 'CatalogItem',
   props: {
@@ -71,112 +71,61 @@ export default {
 
     const catalogItems = ref([]);
 
-    const loadCatalogItems = async () => {
-      if (!props.catalog) return;
-
+    async function loadCatalogItems(catalogId) {
+      if (!catalogId) return;
       try {
-        const items = await catalogService.getCatalogItems(props.catalog.id);
-
-        catalogItems.value = items.map(item => {
-          const rawPrice = item.unitPrice;
-
-          let amount = 0;
-          let currencyCode = 'PEN';
-
-          if (typeof rawPrice === 'number') {
-            amount = rawPrice;
-          } else if (rawPrice && typeof rawPrice === 'object') {
-            amount = rawPrice._amount ?? rawPrice.amount ?? 0;
-            currencyCode =
-                rawPrice._currency?._code ??
-                rawPrice._currency?.code ??
-                rawPrice.currency ??
-                'PEN';
-          }
-
-          if (typeof amount !== 'number' || isNaN(amount) || amount < 0) {
-            amount = 0;
-          }
-
-          const money = new Money({
-            amount,
-            currency: new Currency(currencyCode)
-          });
-
-          return {
-            ...item,
-            unitPrice: money
-          };
-        });
-      } catch (err) {
-        console.error('Error loading catalog items:', err);
+        catalogItems.value = await catalogService.getCatalogItems(catalogId);
+      } catch (e) {
+        console.error('Error cargando ítems:', e);
       }
-    };
+    }
 
     watch(
-        () => props.catalog,
-        (newCatalog) => {
-          if (newCatalog?.id) loadCatalogItems();
-        },
+        () => props.catalog?.catalogId,   // ← aquí el cambio importante
+        (catalogId) => loadCatalogItems(catalogId),
         { immediate: true }
     );
 
-    const deleteItem = async (id) => {
-      const confirmed = confirm('Are you sure you want to remove this product from the catalog?');
-      if (!confirmed) return;
+    async function deleteItem(itemId) {
+      console.log('[CatalogItem] intento de eliminar →', itemId);   // ①
 
-      const itemToDelete = catalogItems.value.find(item => item.id === id);
-      if (!itemToDelete) return;
-
+      if (!confirm('¿Eliminar este producto del catálogo?')) return;
       try {
-        await catalogService.deleteCatalogItem(id);
-        catalogItems.value = catalogItems.value.filter(item => item.id !== id);
-        toast.add({ severity: 'info', summary: 'Removed product', life: 3000 });
+        await catalogService.deleteCatalogItem(itemId);
+        catalogItems.value = catalogItems.value.filter(i => i.id !== itemId);
+        toast.add({ severity: 'info', summary: 'Producto eliminado', life: 2200 });
       } catch (err) {
-        console.error('Error al eliminar del backend:', err);
-        toast.add({ severity: 'error', summary: 'Error deleting product', life: 3000 });
+        console.error('[CatalogItem] error al eliminar:', err);     // ②
+        toast.add({ severity: 'error', summary: 'No se pudo eliminar', life: 3000 });
       }
-    };
+    }
 
     const goToEdit = () => {
-      if (props.catalog) {
-        router.push(`/catalog/edit/${props.catalog.id}`);
+      if (props.catalog?.catalogId) {
+        router.push(`/catalog/edit/${props.catalog.catalogId}`);
       }
     };
 
-    const onPublish = async () => {
-      const c = props.catalog;
-      if (!c?.id || !c.profileId || !c.name || !c.dateCreated) {
-        toast.add({ severity: 'warn', summary: 'Incomplete catalog', detail: 'No se puede publicar.', life: 4000 });
-        return;
-      }
+    async function onPublish () {
+      if (!props.catalog?.catalogId) return;
+
+      const ok = confirm('¿Deseas publicar este catálogo?');
+      if (!ok) return;
 
       try {
-        await catalogService.updateCatalog({ ...c, isPublished: true });
-        toast.add({ severity: 'success', summary: 'Published catalog', life: 3000 });
+        const updated = await catalogService.publishCatalog(props.catalog.catalogId);
+        toast.add({ severity: 'success', summary: 'Catálogo publicado', life: 2500 });
+        emits('published', updated);
       } catch (err) {
-        console.error('Error al publicar catálogo:', err);
-        toast.add({ severity: 'error', summary: 'Error publishing', life: 3000 });
+        console.error('[CatalogItem] error al publicar:', err);
       }
-    };
+    }
 
-    const formatPrice = (unitPrice) => {
-      if (!unitPrice) return 'No valid price';
-      return unitPrice.format?.('es-PE') ?? 'S/0.00';
-    };
-
-
-    const formatDate = (dateStr) => {
-      return new Date(dateStr).toLocaleDateString('es-PE', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    };
+    const formatDate = (d) => new Date(d).toLocaleDateString('es-PE');
+    const formatPrice = (p) => `S/ ${Number(p).toFixed(2)}`;
 
     return {
       catalogItems,
-      loadCatalogItems,
       deleteItem,
       goToEdit,
       onPublish,
