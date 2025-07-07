@@ -11,6 +11,7 @@
           <th>Name</th>
           <th>Brand</th>
           <th>Price</th>
+          <th>Quantity</th>
         </tr>
         </thead>
         <tbody>
@@ -21,191 +22,163 @@
           <td>{{ item.name }}</td>
           <td>{{ item.brand }}</td>
           <td>{{ formatPrice(item.unitPrice) }}</td>
+          <td>
+            <input type="number"
+                   min="1"
+                   placeholder="e.g. 2"
+                   v-model.number="quantities[item.id]"
+                   :disabled="!selectedItems[item.id]"
+                   class="qty-input" />
+          </td>
         </tr>
         </tbody>
       </table>
 
-      <button class="create-btn" @click="createOrder">🛒 Create Order</button>
+      <p class="total-amount">Total Amount: {{ formatPrice(totalAmount) }}</p>
+
+      <button class="create-btn" @click="createOrder">🛒 Save Order</button>
     </div>
   </SideNavbar>
 </template>
 
-
 <script>
-import {ref, onMounted, h} from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Checkbox from 'primevue/checkbox';
-import { CatalogService } from '@/order-operation-and-monitoring/services/catalog.service';
-import userService from '@/authentication/services/user.service';
-import { v4 as uuidv4 } from 'uuid';
-import {PurchaseOrderService} from "@/order-operation-and-monitoring/services/purchase-order.service.js";
-import profileService from "@/profile-management/services/profile.service.js";
-import SideNavbar from "@/public/components/side-navbar.vue";
-import ToolbarContent from "@/public/components/toolbar-content.component.vue";
+
+import { CatalogService }        from '@/order-operation-and-monitoring/services/catalog.service';
+import { PurchaseOrderService }  from '@/order-operation-and-monitoring/services/purchase-order.service';
+import { AccountService }        from '@/payment-and-subscriptions/services/account.service';
+import { useAuthenticationStore } from '@/authentication/services/authentication.store';
+
+import ToolbarContent from '@/public/components/toolbar-content.component.vue';
+import SideNavbar     from '@/public/components/side-navbar.vue';
 
 export default {
   name: 'PurchaseOrderCreateComponent',
-  components: {
-    ToolbarContent,
-    SideNavbar,
-    Card,
-    Button,
-    DataTable,
-    Column,
-    Checkbox
-  },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const catalogService = new CatalogService();
-    const orderService = new PurchaseOrderService();
+  components: { SideNavbar, ToolbarContent },
 
-    const catalogItems = ref([]);
+  setup () {
+    /* ---------- services & stores ---------- */
+    const route           = useRoute();
+    const router          = useRouter();
+    const catalogService  = new CatalogService();
+    const orderService    = new PurchaseOrderService();
+    const accountService  = new AccountService();
+    const authStore       = useAuthenticationStore();
+
+    /* ---------- refs ---------- */
+    const catalogId     = +route.params.catalogId;
+    const catalog       = ref(null);
+    const catalogItems  = ref([]);
     const selectedItems = ref({});
+    const quantities    = ref({});
 
-    const catalogId = +route.params.catalogId;
+    const buyerAcc     = ref(null);
+    const supplierAcc  = ref(null);
 
-    const buyer = userService.getCurrentUserProfile();
+    /* ---------- computed ---------- */
+    const totalAmount  = computed(() =>
+        catalogItems.value.reduce((sum, item) => {
+          if (selectedItems.value[item.id]) {
+            const qty = quantities.value[item.id] || 1;
+            return sum + (item.unitPrice * qty);
+          }
+          return sum;
+        }, 0)
+    );
+
+    /* ---------- helpers ---------- */
+    const formatPrice = (price) =>
+        Number.isFinite(price)
+            ? price.toLocaleString('es-PE', { style: 'currency', currency: 'PEN' })
+            : 'S/ 0.00';
+
+    /* ---------- data loading ---------- */
+    const loadCatalogItems = async () => {
+      const items = await catalogService.getCatalogItems(catalogId);
+
+      catalogItems.value = items.map(i => ({
+        ...i,
+        unitPrice: Math.max(0, Number(i.unitPrice) || 0)
+      }));
+
+      // inicializar cantidades en 1
+      catalogItems.value.forEach(i => { quantities.value[i.id] = 1; });
+    };
 
     onMounted(async () => {
-      try {
-        catalog.value = await catalogService.getCatalogById(catalogId);
-        console.log('Catalog uploaded:', catalog.value);
+      /* comprador (buyer) */
+      const myAccountId = authStore.account?.accountId;
+      if (myAccountId) buyerAcc.value = await accountService.getAccountById(myAccountId);
 
-        if (catalog.value?.profileId) {
-          supplier.value = await profileService.getProfileById(catalog.value.profileId);
-          console.log('Provider profile loaded:', supplier.value);
-        }
-      } catch (err) {
-        console.error('Error loading catalog or supplier:', err);
-      }
+      /* catálogo y proveedor */
+      catalog.value = await catalogService.getCatalogById(catalogId);
+      if (catalog.value?.accountId)
+        supplierAcc.value = await accountService.getAccountById(catalog.value.accountId);
+
+      /* productos */
+      await loadCatalogItems();
     });
 
-    const loadCatalogItems = async () => {
-      try {
-        const items = await catalogService.getCatalogItems(catalogId);
-
-        catalogItems.value = items.map(item => {
-          const unitPrice = Number(item.unitPrice);
-          if (!Number.isFinite(unitPrice) || unitPrice < 0) {
-            console.warn(`Invalid price on item ID: ${item.id}`);
-          }
-
-          return {
-            ...item,
-            unitPrice: unitPrice >= 0 ? unitPrice : 0
-          };
-        });
-
-        console.log(`Items processed successfully: ${catalogItems.value.length}`);
-        console.table(catalogItems.value.map(i => ({
-          id: i.id,
-          name: i.name,
-          brand: i.brand,
-          price: i.unitPrice
-        })));
-      } catch (err) {
-        console.error('Error loading catalog items:', err);
-      }
-    };
-
-
-    const formatPrice = (unitPrice) => {
-      if (!Number.isFinite(unitPrice)) return 'S/0.00';
-      return unitPrice.toLocaleString('es-PE', { style: 'currency', currency: 'PEN' });
-    };
-
-
-
-    const renderCheckbox = (rowData) => {
-      return h(Checkbox, {
-        modelValue: selectedItems.value[rowData.id] || false,
-        'onUpdate:modelValue': value => {
-          selectedItems.value[rowData.id] = value;
-        },
-        binary: true
-      });
-    };
-
+    /* ---------- order creation ---------- */
     const createOrder = async () => {
-      const profile = userService.getCurrentUserProfile();
+      const chosenIds = Object.keys(selectedItems.value).filter(id => selectedItems.value[id]);
+      if (!chosenIds.length) { alert('Selecciona al menos un producto'); return; }
 
-      if (!profile) {
-        alert('Unauthenticated user');
+      if (!buyerAcc.value?.accountId || !supplierAcc.value?.accountId) {
+        alert('Faltan datos del comprador o proveedor');
         return;
       }
 
-      const selectedItemIds = Object.keys(selectedItems.value).filter(id => selectedItems.value[id]);
-      if (!selectedItemIds.length) {
-        alert('Select at least one product');
-        return;
-      }
-
-      const items = catalogItems.value.filter(item => selectedItemIds.includes(item.id));
-      const totalAmount = items.reduce((sum, item) => {
-        const amount = item.unitPrice;
-        return Number.isFinite(amount) && amount >= 0 ? sum + amount : sum;
-      }, 0);
-
-      if (!Number.isFinite(totalAmount) || totalAmount < 0) {
-        console.warn('Invalid Amount:', totalAmount);
-        alert('Error calculating the total order amount.');
-        return;
-      }
-
-      const totalItems = items.length;
-
-      let supplier = ref({});
-
-      const catalog = await catalogService.getCatalogById(catalogId);
-      const supplierProfile = catalog.profileId;
-
-      if (supplierProfile) {
-        try {
-          supplier.value = await profileService.getProfileById(supplierProfile);
-          console.log('Provider profile loaded:', supplier.value);
-        } catch (err) {
-          console.error('Error loading provider profile:', err);
-        }
-      }
-
-      const order = {
-        id: uuidv4(),
-        date: { _date: new Date().toISOString() },
-        status: 'Sent',
-        buyer: {
-          ...profile
-        },
-        supplier: {
-          ...supplier.value
-        },
-        items,
-        totalAmount: totalAmount,
-        totalItems
+      const buyer = {
+        accountId    : buyerAcc.value.accountId,
+        userOwnerId  : buyerAcc.value.userOwnerId ?? '',
+        role         : buyerAcc.value.accountRole,
+        businessName : buyerAcc.value.businessName,
+        email        : buyerAcc.value.email
       };
 
+      const supplier = {
+        accountId    : supplierAcc.value.accountId,
+        userOwnerId  : supplierAcc.value.userOwnerId ?? '',
+        role         : supplierAcc.value.accountRole,
+        businessName : supplierAcc.value.businessName,
+        email        : supplierAcc.value.email
+      };
+
+      const items = catalogItems.value
+          .filter(i => chosenIds.includes(i.id))
+          .map(i => ({
+            ...i,
+            customQuantity: Number(quantities.value[i.id]) || 1
+          }));
+
+      const payload = {
+        orderDate   : new Date().toISOString(),
+        buyer,
+        supplier,
+        items,
+        totalAmount : totalAmount.value,
+        totalItems  : items.length
+      };
 
       try {
-        await orderService.createPurchaseOrder(order);
-        alert('Order created successfully');
+        await orderService.createPurchaseOrder(payload);
+        alert('Orden creada con éxito');
         router.push('/orders');
       } catch (err) {
-        console.error('Error creating order:', err);
+        console.error('Error al crear orden:', err.response?.data || err);
+        alert('Ocurrió un error al crear la orden');
       }
     };
 
-    onMounted(loadCatalogItems);
-
+    /* ---------- expose to template ---------- */
     return {
-      catalogId,
       catalogItems,
       selectedItems,
+      quantities,
+      totalAmount,
       formatPrice,
-      renderCheckbox,
       createOrder
     };
   }
@@ -213,7 +186,6 @@ export default {
 </script>
 
 <style scoped>
-
 .purchase-order-container {
   padding: 2rem;
   max-width: 1000px;
@@ -222,68 +194,60 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin: 4rem auto 0;
   font-size: 1.3rem;
-  p {
-    margin-bottom: 1rem;
-    font-size: 2rem;
-    color: #5A033A;
-    font-weight: bold;
-  }
-  table {
-    width: 100%;
-    border: 2px solid #4E4E4E;
-    margin-top: 2rem;
-    text-align: center;
-    thead {
-      background-color: #6E0081;
-      color: white;
-    }
-    th, td {
-      padding: 1rem;
-      border: 1px solid #4E4E4E;
-    }
-    th {
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-    .check {
-      width: 1.2rem;
-      height: 1.2rem;
-    }
-  }
-  .create-btn {
-    background-color: #5A033A;
-    color: white;
-    padding: 0.7rem 1.5rem;
-    border: none;
-    border-radius: 45px;
-    font-size: 1.3rem;
-    cursor: pointer;
-    margin-top: 2rem;
-    transition: background-color 0.3s ease;
-  }
+}
+.purchase-order-container p {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #5A033A;
+  font-weight: bold;
+}
+table {
+  width: 100%;
+  border: 2px solid #4E4E4E;
+  margin-top: 2rem;
+  text-align: center;
+}
+thead {
+  background-color: #6E0081;
+  color: white;
+}
+th, td {
+  padding: 1rem;
+  border: 1px solid #4E4E4E;
+}
+th {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.check {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.qty-input {
+  width: 4rem;
+  text-align: center;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+.create-btn {
+  background-color: #5A033A;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 45px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: background-color 0.3s ease;
+}
+.create-btn:hover {
+  background-color: #6E0081;
 }
 
-.purchase-card h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.6rem;
-  color: #333;
-}
-
-.p-datatable-striped {
+.total-amount {
   margin-top: 1rem;
-  border-radius: 6px;
-  overflow: hidden;
+  font-size: 1.5rem;
+  color: #5A033A;
+  font-weight: bold;
 }
-
-.p-datatable .p-datatable-thead > tr > th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-  color: #444;
-  padding: 0.75rem;
-}
-
-.p-datatable .p-datatable-tbody > tr > td {
-  padding: 0.75rem;
-}
-
 </style>
