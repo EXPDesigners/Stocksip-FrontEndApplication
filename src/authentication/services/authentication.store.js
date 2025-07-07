@@ -14,7 +14,7 @@ const authenticationService = new AuthenticationService();
  * It contains actions to sign-in, sign-up, and sign-out.
  */
 export const useAuthenticationStore = defineStore('authentication',{
-    state: () => ({ signedIn: false, userId: '', username: '' }),
+    state: () => ({ signedIn: false, userId: '', username: '' , recoveryEmail: ''}),
     getters: {
         /**
          * Getter to check if user is signed in
@@ -45,6 +45,12 @@ export const useAuthenticationStore = defineStore('authentication',{
          * @returns {string} - Current account ID from local storage
          */
         currentAccountId: () => localStorage.getItem('accountId'),
+
+        /**
+         * Getter to get the current account role
+         * @returns {string} - Current email to recover the account
+         */
+        currentRecoveryEmail: () => localStorage.getItem('recoveryEmail'),
 
         account: () => {
             const accountId = localStorage.getItem('accountId');
@@ -164,6 +170,19 @@ export const useAuthenticationStore = defineStore('authentication',{
             localStorage.removeItem('accountId');
             console.log('Signed out');
             router.push({ name: 'sign-in' });
+        },
+        setRecoveryEmail(email) {
+            this.recoveryEmail = email;
+            localStorage.setItem('recoveryEmail', email);
+        },
+
+        getRecoveryEmail() {
+            return this.recoveryEmail || localStorage.getItem('recoveryEmail');
+        },
+
+        clearRecoveryEmail() {
+            this.recoveryEmail = '';
+            localStorage.removeItem('recoveryEmail');
         }
     }
 });

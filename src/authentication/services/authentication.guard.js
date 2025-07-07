@@ -14,7 +14,7 @@ export const authenticationGuard = async (to, from, next) => {
     console.log('[Guard] Navigating to:', to.name)
     const authenticationStore = useAuthenticationStore();
     const isAnonymous = !authenticationStore.isSignedIn;
-    const publicRoutes = ['/sign-in', '/sign-up', '/page-not-found', '/password-recovery', '/confirmation-code', '/payments-success', '/payments-cancel', 'payments-upgrade-success'];
+    const publicRoutes = ['/sign-in', '/sign-up', '/page-not-found', '/password-recovery', '/reset-password', '/confirmation-code', '/payments-success', '/payments-cancel', 'payments-upgrade-success'];
     const routeRequiresToBeAuthenticated = !publicRoutes.includes(to.path);
     const routeIsPublic = publicRoutes.includes(to.path);
     if (isAnonymous && routeRequiresToBeAuthenticated) return next({ name: 'sign-in'});
