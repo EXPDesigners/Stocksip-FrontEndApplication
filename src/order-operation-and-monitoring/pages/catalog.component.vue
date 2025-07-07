@@ -49,7 +49,7 @@ export default {
     };
 
     onMounted(async () => {
-      const account = authStore.account;                 // ← cuenta actual
+      const account = authStore.account;
       console.log('Cuenta actual:', account);
 
       if (!account?.accountRole) {

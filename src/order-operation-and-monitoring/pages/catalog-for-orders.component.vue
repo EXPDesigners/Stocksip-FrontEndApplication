@@ -38,7 +38,7 @@
           <Button
               label="New Order"
               icon="pi pi-shopping-cart"
-              @click="goToOrderPage(catalog.id)"
+              @click="goToOrderPage(catalog.catalogId)"
               class="new-order"
           />
         </template>
