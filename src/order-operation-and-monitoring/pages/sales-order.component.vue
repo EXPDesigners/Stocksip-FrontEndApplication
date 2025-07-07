@@ -160,26 +160,117 @@ export default {
 </script>
 
 <style scoped>
+:root {
+  --primary-900: #5A033A;   /* vino            */
+  --primary-700: #6E0081;   /* púrpura oscuro  */
+  --accent-100 : #f7eddc;   /* crema / fondo   */
+  --text-900   : #242424;
+  --text-600   : #555;
+}
+
+/* =============  LAYOUT ============= */
 .order-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem;
-  background-color: #f7eddc;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--accent-100);
   min-height: 100vh;
 }
+
+/* ======  ORDER CARD  ====== */
 .order-card {
-  padding: 1rem;
+  border-radius: 1.25rem;
+  border: 3px solid var(--primary-900);
+  overflow: hidden;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .08);
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  .order-title {
-    color: #5A033A;
-  }
-  .order-content {
-    color: #4E4E4E;
-  }
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, .12);
 }
 
+/* ----- header / título ----- */
+.order-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: .75rem 1.25rem;
+  background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
+  color: #5A033A;
+}
 
+/* ----- contenido ----- */
+.order-content {
+  padding: 1.5rem;
+  color: var(--text-600);
+  line-height: 1.4;
+}
+.order-content p {
+  color: #4E4E4E;
+}
+.order-content h4 {
+  margin: 1rem 0 .5rem;
+  color: #4E4E4E;
+  font-weight: 600;
+}
+.order-content ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: .25rem 0 0;
+  color: #4E4E4E;
+}
+.order-content li {
+  margin-bottom: .25rem;
+  color: #4E4E4E;
+}
+
+/* ======  STATUS CHIP  ====== */
+.st-Received,
+.st-InProcess,
+.st-Arrived,
+.st-Canceled {
+  padding: .25rem .75rem;
+  border-radius: 9999px;
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+  color: #fff;
+}
+.st-Received   { background: #2e8b57; }
+.st-InProcess  { background: #ff9800; }
+.st-Arrived    { background: #2196f3; }
+.st-Canceled   { background: #e53935; }
+
+/* ======  BUTTONS  ====== */
+.p-button {
+  border-radius: 9999px !important;
+}
+.p-button.p-button-text {
+  color: var(--primary-700);
+}
+.p-button.p-button-text:hover {
+  background: var(--primary-700);
+  color: #fff;
+}
+
+/* ======  DIALOG ====== */
+.p-dialog {
+  border-radius: 1rem;
+}
+.p-dialog-header {
+  background: var(--primary-900);
+  color: #fff;
+}
+.p-dialog .p-button {
+  min-width: 110px;
+}
+.dlg-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .75rem;
+  margin-top: 2rem;
+}
 </style>
