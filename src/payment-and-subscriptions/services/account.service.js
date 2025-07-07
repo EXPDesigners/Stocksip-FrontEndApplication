@@ -2,7 +2,6 @@ import httpInstance from "@/shared/services/http.instance.js";
 
 const accountStatusEndpoint = import.meta.env.VITE_ACCOUNT_STATUS_ENDPOINT_PATH;
 
-import http from '@/shared/services/http.instance.js';              // Axios con interceptor JWT
 import { useAuthenticationStore } from '@/authentication/services/authentication.store.js';
 
 const accountCurrentBenefitsLimitsEndpoint = import.meta.env.VITE_ACCOUNT_CURRENT_BENEFITS_LIMITS;

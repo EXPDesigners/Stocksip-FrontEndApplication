@@ -4,7 +4,6 @@ import {WarehouseService} from "@/inventory-management/services/warehouse.servic
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 import SideNavbar from "@/public/components/side-navbar.vue";
 import {Button as PvButton} from "primevue";
-import {Warehouse} from "@/inventory-management/model/warehouse.entity.js";
 import {AccountService} from "@/payment-and-subscriptions/services/account.service.js";
 
 export default {
