@@ -56,7 +56,8 @@
       "capacity": "Capacidad",
       "warehouse-image": "Imagen del Almacén"
     },
-    "error-message": "Ya has creado un almacén con el mismo nombre o dirección."
+    "error-message": "Ya has creado un almacén con el mismo nombre o dirección.",
+    "limitMessage": "Estás utilizando {current} de {max} almacenes permitidos."
   },
   "components": {
     "save": "Guardar",

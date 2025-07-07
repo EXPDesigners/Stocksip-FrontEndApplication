@@ -56,7 +56,8 @@
       "min-temperature": "Min Temperature",
       "warehouse-image": "Warehouse Image"
     },
-    "error-message": "You have already created a warehouse with the same name or address."
+    "error-message": "You have already created a warehouse with the same name or address.",
+    "limitMessage": "You are using {current} of {max} allowed warehouses."
   },
   "components": {
     "save": "Save",

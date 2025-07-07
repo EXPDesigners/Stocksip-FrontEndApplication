@@ -11,6 +11,7 @@ export class WarehouseService extends BaseService {
 
     accountEndpoint = '';
     accountWarehouseEndpoint = '';
+    accountWarehousesCountEndpoint = '';
 
     constructor() {
         super();
@@ -18,6 +19,7 @@ export class WarehouseService extends BaseService {
         this.resourceEndpoint = import.meta.env.VITE_WAREHOUSE_ENDPOINT_PATH;
         this.accountEndpoint = import.meta.env.VITE_ACCOUNT_ENDPOINT_PATH;
         this.accountWarehouseEndpoint = import.meta.env.VITE_ACCOUNT_WAREHOUSES_ENDPOINT_PATH;
+        this.accountWarehousesCountEndpoint = import.meta.env.VITE_WAREHOUSES_COUNT_ENDPOINT_PATH;
     }
 
     /**
@@ -95,6 +97,14 @@ export class WarehouseService extends BaseService {
 
         return response.data;
     }
+
+    async getWarehousesCount() {
+        const accountId = this.getAccountId();
+        const endpoint = `${import.meta.env.VITE_BASE_API_URL}${this.accountWarehousesCountEndpoint.replace('{accountId}', accountId)}`;
+        const response = await httpInstance.get(endpoint);
+        return response.data;
+    }
+
 
     #createWarehouseFormData(warehouseData, imageFile) {
         const formData = new FormData();
