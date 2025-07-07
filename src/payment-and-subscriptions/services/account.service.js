@@ -1,3 +1,7 @@
+import httpInstance from "@/shared/services/http.instance.js";
+
+const accountStatusEndpoint = import.meta.env.VITE_ACCOUNT_STATUS_ENDPOINT_PATH;
+
 import http from '@/shared/services/http.instance.js';              // Axios con interceptor JWT
 import { useAuthenticationStore } from '@/authentication/services/authentication.store.js';
 
@@ -12,16 +16,11 @@ export class AccountService {
         return store.currentAccountId;
     }
 
-    async getAccountById(accountId) {
-        const response = await http.get(`${this.baseUrl}${this.endpoint}/${accountId}`);
-        return response.data;
-    }
-
-    async getCatalogsByAccount(accountId, published = true) {
-        const url = `${this.baseUrl}/api/v1/accounts/${accountId}/catalogs`;
-        const response = await http.get(url, {
-            params: { published }
+    async getAccountStatus(accountId) {
+        const endpoint = accountStatusEndpoint.replace('{accountId}', accountId);
+        const response = await httpInstance.get(endpoint, {
         });
+        console.log("🧾 Response from account status:", response.data);
         return response.data;
     }
 }

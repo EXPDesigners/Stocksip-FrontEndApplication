@@ -34,6 +34,9 @@ import {authenticationGuard} from "../authentication/services/authentication.gua
 
 import PaymentSuccessComponent from "@/payment-and-subscriptions/pages/payment-success.component.vue";
 import PaymentCancelComponent from "@/payment-and-subscriptions/pages/payment-cancel.component.vue";
+import PaymentUpgradeSuccess from "@/payment-and-subscriptions/pages/payment-upgrade-success.vue";
+
+import PlanChooseComponent from "@/payment-and-subscriptions/pages/plan-choose.component.vue";
 
 const routes = [
     {
@@ -218,6 +221,16 @@ const routes = [
         path: '/payments-cancel',
         name: 'PaymentCancel',
         component: PaymentCancelComponent
+    },
+    {
+        path: '/payments-upgrade-success',
+        name: 'PaymentUpgradeSuccess',
+        component: PaymentUpgradeSuccess
+    },
+    {
+        path: '/plan-choose',
+        name: 'PlanChoose',
+        component: PlanChooseComponent
     }
 ];
 

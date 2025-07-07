@@ -87,31 +87,43 @@ export const useAuthenticationStore = defineStore('authentication',{
          * @param router - Vue router instance
          */
         async signIn(signInRequest, router) {
-            authenticationService.signIn(signInRequest)
-                .then(response => {
-                    const { id, username, token, accountId, accountRole } = response.data;
+            try {
+                const response = await authenticationService.signIn(signInRequest);
+                const { id, username, token, accountId, accountRole } = response.data;
 
-                    this.signedIn = true;
-                    this.userId   = id;
-                    this.username = username;
+                const signInResponse = new SignInResponse(id, username, token, accountId);
 
-                    localStorage.setItem('token',       token);
-                    localStorage.setItem('accountId',   accountId);
-                    localStorage.setItem('accountRole', accountRole);
+                this.signedIn = true;
+                this.userId = signInResponse.id;
+                this.username = signInResponse.username;
 
-                    const currentAccount = {
-                        accountId,
-                        accountRole,
-                        username
-                    };
-                    localStorage.setItem('currentAccount', JSON.stringify(currentAccount));
+                localStorage.setItem('token', token);
+                localStorage.setItem('accountId', accountId);
+                localStorage.setItem('userId', id);
+                localStorage.setItem('username', username);
+                localStorage.setItem('accountRole', accountRole);
 
-                    router.push({ name: 'Dashboard' });
-                })
-                .catch(error => {
-                    console.error(error);
-                    router.push({ name: 'sign-in' });
-                });
+                const currentAccount = {
+                    accountId,
+                    accountRole,
+                    username
+                };
+                localStorage.setItem('currentAccount', JSON.stringify(currentAccount));
+
+                const accountService = new AccountService();
+                const { accountStatus } = await accountService.getAccountStatus(accountId);
+                console.log("✅ Account Status:", accountStatus);
+
+                if (accountStatus === "INACTIVE") {
+                    router.push({ name: "PlanChoose" });
+                } else {
+                    router.push({ name: "Dashboard" });
+                }
+
+            } catch (error) {
+                console.error("❌ Sign-in error:", error);
+                router.push({ name: 'sign-in' });
+            }
         },
         async signUp(signUpdRequest, router) {
             /**
