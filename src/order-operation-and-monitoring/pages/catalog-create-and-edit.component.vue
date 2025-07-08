@@ -49,7 +49,7 @@
             <Button label="Reset" @click="resetForm" class="p-button-secondary" />
           </div>
 
-          <div v-if="showError" class="error">Please, complete all the labels.</div>
+          <div v-if="showError" class="error">Please complete all fields.</div>
         </div>
       </div>
     </div>
@@ -95,7 +95,7 @@ export default {
       if (!catalog.value.catalogId) return;
 
       catalogItems.value = await catalogService.getCatalogItems(catalog.value.catalogId);
-      console.log('[LOAD] items de catálogo', catalogItems.value);
+      console.log('[Catalog] Loaded catalog items:', catalogItems.value);
     };
 
     const loadCatalog = async () => {
@@ -104,7 +104,7 @@ export default {
         isEditMode.value = true;
         const loaded     = await catalogService.getCatalogById(id);
         catalog.value    = { ...loaded };
-        console.log('[LOAD] catálogo', catalog.value);
+        console.log('[Catalog] Loaded catalog data:', catalog.value);
         await loadCatalogItems();
       }
     };
@@ -129,21 +129,21 @@ export default {
         isPublished:  false
       };
 
-      console.log(isEditMode.value ? '[UPDATE] payload' : '[CREATE] payload', payload);
+      console.log(isEditMode.value ? '[Catalog] Updating payload:' : '[Catalog] Creating payload:', payload);
 
       try {
         if (isEditMode.value) {
           await catalogService.updateCatalog(catalog.value.catalogId, payload);
-          console.log('[UPDATE] catálogo OK');
+          console.log('[Catalog] Updated successfully');
         } else {
           const created   = await catalogService.createCatalog(payload);
           catalog.value   = { ...created };
           isEditMode.value = true;
-          console.log('[CREATE] catálogo OK', created);
+          console.log('[Catalog] Created successfully:', created);
         }
         await handleCatalogSaveSuccess();
       } catch (err) {
-        console.error('Error saving catalog:', err);
+        console.error('[Catalog] Error saving catalog:', err);
       }
     };
 
@@ -152,7 +152,7 @@ export default {
       const hasData = values.some(v => v !== '' && v !== null && v !== 0);
 
       if (!hasData) {
-        alert(isEditMode.value ? 'Catalog updated' : 'Catalog created');
+        alert(isEditMode.value ? 'Catalog updated successfully.' : 'Catalog created successfully.');
         return;
       }
 
@@ -175,11 +175,11 @@ export default {
         const createdItem = await catalogService.addCatalogItem(itemPayload);
         catalogItems.value.push(createdItem);
         resetForm();
-        alert(isEditMode.value ? 'Catalog updated and product added' : 'Catalog created and product added');
+        alert(isEditMode.value ? 'Catalog updated and product added.' : 'Catalog created and product added.');
       } catch (err) {
         const msg = err.response?.data ?? err.message;
-        console.error('Error adding product:', msg);
-        alert('Error al añadir producto: ' + msg);
+        console.error('[Catalog] Error adding product:', msg);
+        alert('Failed to add product: ' + msg);
       }
     };
 
