@@ -4,39 +4,57 @@
  */
 export class CareGuide {
     /**
-     * @param {Object} data
-     * @param {number|string} data.id
-     * @param {string} data.name
-     * @param {string} data.type
-     * @param {string} data.description
-     * @param {string} data.imageUrl
+     * @param {Object} data - Care guide data
+     * @param {string} data.id - Care guide ID
+     * @param {string} data.accountId - Account ID
+     * @param {string|null} data.productId - Product ID (can be null if not assigned)
+     * @param {string} data.title - Title of the care guide
+     * @param {string} data.summary - Summary of the care guide
+     * @param {number} data.minTemp - Minimum temperature
+     * @param {number} data.maxTemp - Maximum temperature
+     * @param {string} data.placeStorage - Storage place
+     * @param {string} data.recommendation - Recommendation
      */
-    constructor(data) {
-        if (!data) {
-            throw new Error('Los datos de la guía son requeridos');
-        }
-
-        this.id = data.id;
-        this.name = data.name || '';
-        this.type = data.type || '';
-        this.description = data.description || '';
-        this.imageUrl = data.imageUrl || '';
-
-        this.validate();
+    constructor({
+        id = '',
+        accountId = '',
+        productId = null,
+        title = '',
+        summary = '',
+        minTemp = 0,
+        maxTemp = 0,
+        placeStorage = '',
+        recommendation = ''
+    } = {}) {
+        this.id = id;
+        this.accountId = accountId;
+        this.productId = productId;
+        this.title = title;
+        this.summary = summary;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.placeStorage = placeStorage;
+        this.recommendation = recommendation;
     }
 
     validate() {
         if (!this.id) {
             throw new Error('El ID de la guía es requerido');
         }
-        if (!this.name) {
-            throw new Error('El nombre de la guía es requerido');
+        if (!this.title) {
+            throw new Error('El título de la guía es requerido');
         }
-        if (!this.type) {
-            throw new Error('El tipo de la guía es requerido');
-        }
-        if (!this.description) {
+        if (!this.summary) {
             throw new Error('La descripción de la guía es requerida');
+        }
+        if (!this.minTemp || !this.maxTemp) {
+            throw new Error('Los rangos de temperatura deben estar completos');
+        }
+        if (!this.placeStorage) {
+            throw new Error('El lugar de almacenamiento es requerido');
+        }
+        if (!this.recommendation) {
+            throw new Error('La recomendación es requerida');
         }
     }
 
@@ -46,10 +64,14 @@ export class CareGuide {
     toJSON() {
         return {
             id: this.id,
-            name: this.name,
-            type: this.type,
-            description: this.description,
-            imageUrl: this.imageUrl
+            accountId: this.accountId,
+            productId: this.productId,
+            title: this.title,
+            summary: this.summary,
+            minTemp: this.minTemp,
+            maxTemp: this.maxTemp,
+            placeStorage: this.placeStorage,
+            recommendation: this.recommendation
         };
     }
 
@@ -68,10 +90,10 @@ export class CareGuide {
     }
 
     parseDescription() {
-        const tempMatch = this.description.match(/Temperatura recomendada: ([\d-]+°C)/);
-        const storageMatch = this.description.match(/Almacenar en (.+?)\./);
-        const durationMatch = this.description.match(/Duración después de abierto: (.+?)\./);
-        const commentsMatch = this.description.match(/Comentarios: (.+?)(?:\.|$)/);
+        const tempMatch = this.summary.match(/Temperatura recomendada: ([\d-]+°C)/);
+        const storageMatch = this.summary.match(/Almacenar en (.+?)\./);
+        const durationMatch = this.summary.match(/Duración después de abierto: (.+?)\./);
+        const commentsMatch = this.summary.match(/Comentarios: (.+?)(?:\.|$)/);
 
         return {
             temperature: tempMatch ? tempMatch[1] : 'No especificada',

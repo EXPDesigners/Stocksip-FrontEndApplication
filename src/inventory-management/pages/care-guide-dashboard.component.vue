@@ -1,93 +1,78 @@
 <script>
 import SideNavbar from "@/public/components/side-navbar.vue";
 import CareGuideList from "@/inventory-management/components/care-guide-list.component.vue";
-import CareGuideDetail from "@/inventory-management/components/care-guide-detail.component.vue";
+import CareGuideSummaryComponent from "@/inventory-management/components/care-guide-summary.component.vue";
 import { CareGuideService } from '../services/care-guide.service.js';
+import { ProductService } from "@/inventory-management/services/product.service.js";
 
 export default {
   name: "care-guide-dashboard",
   components: {
-    CareGuideDetail,
+    CareGuideDetail: CareGuideSummaryComponent,
     SideNavbar,
     CareGuideList
   },
   data() {
     return {
       guides: [],
+      products: [],
       selectedGuide: null,
       searchQuery: '',
-      selectedType: 'all',
       loading: false,
       error: null
     }
   },
   computed: {
+    /**
+     * Returns the list of guides filtered by search query (by title)
+     * @returns {Array}
+     */
     filteredGuides() {
       if (!this.guides) return [];
       return this.guides.filter(guide => {
-        if (!guide || !guide.name) return false;
-        const matchesSearch = guide.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-        const matchesType = this.selectedType === 'all' || guide.type === this.selectedType;
-        return matchesSearch && matchesType;
+        if (!guide || !guide.title) return false;
+        return guide.title.toLowerCase().includes(this.searchQuery.toLowerCase());
       });
     }
   },
   methods: {
+    /**
+     * Loads all care guides for the current account
+     */
     async loadGuides() {
       this.loading = true;
       this.error = null;
       try {
-        const response = await CareGuideService.getAll();
+        const accountId = localStorage.getItem('accountId');
+        const response = await CareGuideService.getAll(accountId);
         this.guides = response || [];
       } catch (error) {
         this.error = error.message;
-        console.error('Error al cargar las guías:', error);
+        console.error('Error loading care guides:', error);
         this.guides = [];
       } finally {
         this.loading = false;
       }
     },
+    /**
+     * Handles search input for filtering guides by title
+     */
     async handleSearch() {
-      if (!this.searchQuery) {
-        await this.loadGuides();
-        return;
-      }
-      this.loading = true;
-      this.error = null;
-      try {
-        const response = await CareGuideService.searchByName(this.searchQuery);
-        this.guides = response || [];
-      } catch (error) {
-        this.error = error.message;
-        console.error('Error al buscar guías:', error);
-        this.guides = [];
-      } finally {
-        this.loading = false;
-      }
+      // Filtering is done locally in computed property
     },
-    async handleTypeFilter() {
-      if (this.selectedType === 'all') {
-        await this.loadGuides();
-        return;
-      }
-      this.loading = true;
-      this.error = null;
-      try {
-        const response = await CareGuideService.getByType(this.selectedType);
-        this.guides = response || [];
-      } catch (error) {
-        this.error = error.message;
-        console.error('Error al filtrar por tipo:', error);
-        this.guides = [];
-      } finally {
-        this.loading = false;
-      }
+    /**
+     * Handles edit action for a care guide
+     * @param {Object} guide - The care guide to edit
+     */
+    handleEdit(guide) {
+      this.$router.push(`/care-guides/${guide.id}/edit`);
     },
-    async handleEdit(guide) {
-      this.$router.push(`/reports/conservations/${guide.id}/edit`);
-    },
+    /**
+     * Handles delete action for a care guide
+     * @param {string} guideId - The ID of the care guide to delete
+     */
     async handleDelete(guideId) {
-      if (!confirm('¿Estás seguro de que deseas eliminar esta guía?')) {
+      if (!confirm('Are you sure you want to delete this care guide?')) {
         return;
       }
       this.loading = true;
@@ -100,30 +85,66 @@ export default {
         }
       } catch (error) {
         this.error = error.message;
-        console.error('Error al eliminar la guía:', error);
+        console.error('Error deleting care guide:', error);
       } finally {
         this.loading = false;
       }
     },
+    /**
+     * Navigates to the create care guide page
+     */
     createGuide() {
-      const maxId = this.guides.length > 0 ? Math.max(...this.guides.map(g => Number(g.id) || 0)) : 0;
-      const newId = maxId + 1;
-      this.$router.push(`/reports/conservations/${newId}/new`);
+      this.$router.push(`/care-guides/new`);
+    },
+    /**
+     * Handles viewing the details of a care guide
+     * @param {Object} guide - The care guide to view
+     */
+    handleViewDetail(guide) {
+      this.selectedGuide = guide;
     }
   },
   async mounted() {
     this.guides = [];
-    await this.loadGuides();
+    this.products = [];
+    const accountId = localStorage.getItem('accountId');
+    try {
+      this.loading = true;
+      const [guidesResponse, productsResponse] = await Promise.all([
+        CareGuideService.getAll(accountId),
+        new ProductService().getAllByAccountId()
+      ]);
+      this.products = productsResponse.data;
+      // Assign productName to each care guide
+      this.guides = guidesResponse.map(guide => {
+        if (guide.productId) {
+          const product = this.products.find(p => p.productId === guide.productId);
+          guide.productName = product ? product.name : 'No Product Assigned';
+        } else {
+          guide.productName = 'No Product Assigned';
+        }
+        return guide;
+      });
+    } catch (error) {
+      this.error = error.message;
+      this.guides = [];
+    } finally {
+      this.loading = false;
+    }
   }
 }
 </script>
 
 <template>
+  <!--
+    Dashboard for listing, searching, creating, editing, and viewing care guides.
+    Uses CareGuideList and CareGuideDetail components.
+  -->
   <div class="dashboard-container">
     <SideNavbar />
     <div class="main-content">
       <div class="header">
-        <h1>Conservation Guides</h1>
+        <h1>Care Guides</h1>
       </div>
 
       <div class="card-search">
@@ -132,27 +153,19 @@ export default {
             <input
                 type="text"
                 v-model="searchQuery"
-                placeholder="Search by name..."
+                placeholder="Search by title..."
                 @input="handleSearch"
             />
-            <select v-model="selectedType" @change="handleTypeFilter">
-              <option value="all">All</option>
-              <option value="Ron">Ron</option>
-              <option value="Whisky">Whisky</option>
-              <option value="Vodka">Vodka</option>
-              <option value="Vino">Vino</option>
-              <option value="Pisco">Pisco</option>
-            </select>
           </div>
-          <button class="btn-primary create-btn" @click="createGuide">
-            <i class="fas fa-plus"></i> New Guide
+          <button class="btn main-action-btn" @click="createGuide">
+            <i class="fas fa-plus"></i> New Care Guide
           </button>
         </div>
       </div>
 
       <div v-if="loading" class="loading-container">
         <div class="loading-spinner"></div>
-        <p>Loading guides...</p>
+        <p>Loading care guides...</p>
       </div>
 
       <div v-else-if="error" class="error-container">
@@ -165,9 +178,9 @@ export default {
         <div class="list-container">
           <CareGuideList
               :guides="filteredGuides"
-              @ver-detalle="selectedGuide = $event"
-              @editar="handleEdit"
-              @eliminar="handleDelete"
+              @view-detail="handleViewDetail"
+              @edit="handleEdit"
+              @delete="handleDelete"
           />
         </div>
         <div class="detail-container" v-if="selectedGuide">
@@ -295,5 +308,25 @@ h2{
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.btn.main-action-btn {
+  background-color: #6E0081;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(110, 0, 129, 0.08);
+}
+.btn.main-action-btn:hover {
+  background-color: #4b006e;
+  box-shadow: 0 4px 16px rgba(110, 0, 129, 0.15);
 }
 </style>
