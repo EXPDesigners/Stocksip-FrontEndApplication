@@ -59,76 +59,53 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { v4 as uuidv4 } from 'uuid';
-
 import { CatalogService } from '@/order-operation-and-monitoring/services/catalog.service';
-import userService from '@/authentication/services/user.service';
-import { Money } from '@/shared/model/money';
-import { Currency } from '@/shared/model/currency';
+import { useAuthenticationStore } from '@/authentication/services/authentication.store';
 
-import Card from 'primevue/card';
+import SideNavbar from '@/public/components/side-navbar.vue';
+import ToolbarContent from '@/public/components/toolbar-content.component.vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import SideNavbar from "@/public/components/side-navbar.vue";
-import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 
 export default {
   name: 'CatalogCreateAndEdit',
   components: {
-    ToolbarContent,
     SideNavbar,
-    Card, Button, InputText, InputNumber, DataTable, Column
+    ToolbarContent,
+    Button,
+    InputText,
+    InputNumber
   },
   setup() {
     const route = useRoute();
     const catalogService = new CatalogService();
+    const authStore = useAuthenticationStore();
 
+    const catalog = ref({ catalogId: 0, name: '', accountId: '', isPublished: false });
     const catalogItems = ref([]);
     const isEditMode = ref(false);
     const showError = ref(false);
 
-    const catalog = ref({
-      id: 0,
-      name: '',
-      profileId: 0,
-      dateCreated: '',
-      isPublished: false
-    });
-
     const newProduct = ref({
-      name: '',
-      productType: '',
-      content: 0,
-      brand: '',
-      price: null
+      name: '', productType: '', content: 0, brand: '', price: null
     });
 
     const loadCatalogItems = async () => {
-      try {
-        const items = await catalogService.getCatalogItems(catalog.value.id);
-        catalogItems.value = items.map(item => ({
-          ...item,
-          unitPrice: +item.unitPrice
-        }));
-      } catch (err) {
-        console.error('Error loading catalog items:', err);
-      }
-    };
+      if (!catalog.value.catalogId) return;
 
+      catalogItems.value = await catalogService.getCatalogItems(catalog.value.catalogId);
+      console.log('[LOAD] items de catálogo', catalogItems.value);
+    };
 
     const loadCatalog = async () => {
       const id = Number(route.params.catalogId || 0);
       if (id > 0) {
         isEditMode.value = true;
-        try {
-          catalog.value = await catalogService.getCatalogById(id);
-          await loadCatalogItems();
-        } catch (err) {
-          console.error('Error loading catalog:', err);
-        }
+        const loaded     = await catalogService.getCatalogById(id);
+        catalog.value    = { ...loaded };
+        console.log('[LOAD] catálogo', catalog.value);
+        await loadCatalogItems();
       }
     };
 
@@ -138,32 +115,33 @@ export default {
         return;
       }
 
-      showError.value = false;
-
-      const currentProfile = userService.getCurrentUserProfile();
-      if (!currentProfile) {
-        console.error('Could not get the current profile');
-        showError.value = true;
+      const accountId = authStore.currentAccountId;
+      if (!accountId) {
+        alert('Account not found');
         return;
       }
 
       const payload = {
         ...catalog.value,
-        name: catalog.value.name.trim(),
-        profileId: currentProfile.profileId,
-        dateCreated: new Date().toISOString(),
-        isPublished: false
+        accountId,
+        name:         catalog.value.name.trim(),
+        dateCreated:  catalog.value.dateCreated || new Date().toISOString(),
+        isPublished:  false
       };
+
+      console.log(isEditMode.value ? '[UPDATE] payload' : '[CREATE] payload', payload);
 
       try {
         if (isEditMode.value) {
-          await catalogService.updateCatalog(payload);
-          await handleCatalogSaveSuccess();
+          await catalogService.updateCatalog(catalog.value.catalogId, payload);
+          console.log('[UPDATE] catálogo OK');
         } else {
-          catalog.value = await catalogService.createCatalog(payload);
+          const created   = await catalogService.createCatalog(payload);
+          catalog.value   = { ...created };
           isEditMode.value = true;
-          await handleCatalogSaveSuccess();
+          console.log('[CREATE] catálogo OK', created);
         }
+        await handleCatalogSaveSuccess();
       } catch (err) {
         console.error('Error saving catalog:', err);
       }
@@ -171,36 +149,37 @@ export default {
 
     const handleCatalogSaveSuccess = async () => {
       const values = Object.values(newProduct.value);
-      const filled = values.some(v => v !== '' && v !== null && v !== 0);
+      const hasData = values.some(v => v !== '' && v !== null && v !== 0);
 
-      if (filled) {
-        const valid = values.every(v => v !== '' && v !== null && v !== 0);
-        if (!valid) {
-          showError.value = true;
-          return;
-        }
+      if (!hasData) {
+        alert(isEditMode.value ? 'Catalog updated' : 'Catalog created');
+        return;
+      }
 
-        const newItem = {
-          id: uuidv4(),
-          catalogId: catalog.value.id,
-          dateAdded: new Date().toISOString(),
-          name: newProduct.value.name,
-          productType: newProduct.value.productType,
-          brand: newProduct.value.brand,
-          content: +newProduct.value.content,
-          unitPrice: +newProduct.value.price
-        };
+      const allFilled = values.every(v => v !== '' && v !== null && v !== 0);
+      if (!allFilled) {
+        showError.value = true;
+        return;
+      }
 
-        try {
-          await catalogService.addCatalogItem(newItem);
-          catalogItems.value.push(newItem);
-          resetForm();
-          alert(isEditMode.value ? 'Catalog updated and product added' : 'Catalog created and product added');
-        } catch (err) {
-          console.error('Error adding product:', err);
-        }
-      } else {
-        alert(isEditMode.value ? 'Catalog updated correctly' : 'Catalog created successfully');
+      const itemPayload = {
+        catalogId: catalog.value.catalogId,
+        name: newProduct.value.name,
+        productType: newProduct.value.productType,
+        brand: newProduct.value.brand,
+        content: Number(newProduct.value.content),
+        unitPrice: Number(newProduct.value.price)
+      };
+
+      try {
+        const createdItem = await catalogService.addCatalogItem(itemPayload);
+        catalogItems.value.push(createdItem);
+        resetForm();
+        alert(isEditMode.value ? 'Catalog updated and product added' : 'Catalog created and product added');
+      } catch (err) {
+        const msg = err.response?.data ?? err.message;
+        console.error('Error adding product:', msg);
+        alert('Error al añadir producto: ' + msg);
       }
     };
 
@@ -214,11 +193,7 @@ export default {
       };
     };
 
-    const formatPrice = (price) => price?.format?.('es-PE') ?? 'S/0.00';
-
-    onMounted(() => {
-      loadCatalog();
-    });
+    onMounted(loadCatalog);
 
     return {
       catalog,
@@ -227,8 +202,7 @@ export default {
       newProduct,
       showError,
       onSave,
-      resetForm,
-      formatPrice
+      resetForm
     };
   }
 };

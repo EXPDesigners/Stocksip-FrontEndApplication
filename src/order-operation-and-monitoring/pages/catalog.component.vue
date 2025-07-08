@@ -16,13 +16,15 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import CatalogList from "@/order-operation-and-monitoring/components/catalog-list.component.vue";
-import CatalogForOrders from "@/order-operation-and-monitoring/pages/catalog-for-orders.component.vue";
+
+import { useAuthenticationStore } from '@/authentication/services/authentication.store.js';
 import { CatalogService } from '@/order-operation-and-monitoring/services/catalog.service.js';
-import userService from "@/authentication/services/user.service.js"; // 👈 SIN "new"
-import Button from 'primevue/button';
-import ToolbarContent from "@/public/components/toolbar-content.component.vue";
-import SideNavbar from "@/public/components/side-navbar.vue";
+
+import CatalogList       from '@/order-operation-and-monitoring/components/catalog-list.component.vue';
+import CatalogForOrders  from '@/order-operation-and-monitoring/pages/catalog-for-orders.component.vue';
+import ToolbarContent    from '@/public/components/toolbar-content.component.vue';
+import SideNavbar        from '@/public/components/side-navbar.vue';
+import Button            from 'primevue/button';
 
 export default {
   name: 'CatalogComponent',
@@ -34,46 +36,39 @@ export default {
     Button
   },
   setup() {
-    const router = useRouter();
-    const catalogService = new CatalogService();
+    const router            = useRouter();
+    const catalogService    = new CatalogService();
+    const authStore         = useAuthenticationStore();   // ← obtenemos el store
 
-    const catalogs = ref([]);
-    const profile = ref(null);
-    const isSupplier = ref(false);
-    const isLiquorStoreOwner = ref(false);
+    const catalogs          = ref([]);
+    const isSupplier        = ref(false);
+    const isLiquorStoreOwner= ref(false);
 
     const goToNewCatalog = () => {
       router.push('/catalog/new');
     };
 
     onMounted(async () => {
-      const currentProfile = userService.getCurrentUserProfile();
-      console.log('Current profile:', currentProfile);
+      const account = authStore.account;
+      console.log('Cuenta actual:', account);
 
-      if (!currentProfile?.role) {
-        console.warn('Profile not found or no role');
+      if (!account?.accountRole) {
+        console.error('Cuenta no válida o sin rol');
         return;
       }
 
-      profile.value = currentProfile;
-
       try {
-        const role = profile.value.role.toLowerCase().trim();
-        console.log('Normalized role:', role);
-
-        if (role === 'supplier') {
+        if (account.accountRole === 'Supplier') {
           isSupplier.value = true;
-          catalogs.value = await catalogService.getCatalogByProfile(profile.value.profileId);
-          console.log('Supplier catalogs:', catalogs.value);
-        } else if (role === 'liquor store owner') {
+          catalogs.value   = await catalogService.getCatalogsByAccount(account.accountId);
+        } else if (account.accountRole === 'Liquor Store Owner') {
           isLiquorStoreOwner.value = true;
-          catalogs.value = await catalogService.getPublishedCatalogs();
-          console.log('Published catalogs:', catalogs.value);
+          catalogs.value           = await catalogService.getPublishedCatalogs();
         } else {
-          console.warn('Unrecognized role:', role);
+          console.warn('Rol no reconocido:', account.accountRole);
         }
       } catch (err) {
-        console.error('Error loading catalogs:', err);
+        console.error('Error cargando catálogos:', err);
       }
     });
 

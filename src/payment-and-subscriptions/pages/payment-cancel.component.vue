@@ -1,7 +1,8 @@
 <script>
 
 export default {
-  name: "payment-cancel"
+  name: "payment-cancel",
+
 }
 </script>
 

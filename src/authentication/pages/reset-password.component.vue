@@ -1,94 +1,119 @@
 <script>
-import {AuthenticationService} from "@/authentication/services/authentication.service.js";
-import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
+import { AuthenticationService } from "@/authentication/services/authentication.service.js";
+import { useAuthenticationStore } from "@/authentication/services/authentication.store.js";
 import { useToast } from "primevue/usetoast";
 
 const authenticationService = new AuthenticationService();
 
 export default {
-  name: "password-recovery",
+  name: "reset-password",
   data() {
     return {
       form: {
-        email: ''
+        password: '',
+        confirmPassword: ''
       },
       errors: {
-        email: ''
+        password: '',
+        confirmPassword: '',
+        general: ''
       },
-      toast: useToast(),
-    }
+      toast: useToast()
+    };
   },
   methods: {
-    validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    },
     async onSubmit() {
-      // Reset errors
-      this.errors.email = '';
+      this.errors = {
+        password: '',
+        confirmPassword: '',
+        general: ''
+      };
 
-      // Validate email
-      if (!this.form.email) {
-        this.errors.email = 'Email is required';
+      const authStore = useAuthenticationStore();
+
+      if (!this.form.password) {
+        this.errors.password = 'Password is required';
         return;
       }
-      if (!this.validateEmail(this.form.email)) {
-        this.errors.email = 'Please enter a valid email';
+
+      if (this.form.password.length < 6) {
+        this.errors.password = 'Password must be at least 6 characters';
+        return;
+      }
+
+      if (this.form.password !== this.form.confirmPassword) {
+        this.errors.confirmPassword = 'Passwords do not match';
         return;
       }
 
       try {
-        await authenticationService.sendRecoveryCode(this.form.email);
-        const authStore = useAuthenticationStore();
-        authStore.setRecoveryEmail(this.form.email);
-        this.$router.push('/confirmation-code');
-      } catch (err) {
+        const email = authStore.getRecoveryEmail();
+
+        if (!email) {
+          this.errors.general = 'Recovery session expired. Please restart the process.';
+          return;
+        }
+
+        await authenticationService.resetPassword(email, this.form.password);
+
         this.toast.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to send recovery email. Please try again.',
+          severity: 'success',
+          summary: 'Password Reset Successful',
+          detail: 'Your password has been reset successfully.',
           life: 3000
-        })
-        console.error(err);
+        });
+        this.$router.push('/sign-in');
+      } catch (err) {
+        this.errors.general = 'Failed to reset password. Try again.';
+      } finally {
       }
-    },
-    beforeRouteLeave(to, from, next) {
-      const authStore = useAuthenticationStore();
-      authStore.clearRecoveryEmail();
-      next();
     }
   }
-}
+};
 </script>
 
 <template>
   <div class="recover-container">
     <div class="recover-header">
-      <h2>Recover password</h2>
+      <h2>Reset Password</h2>
     </div>
     <p class="recover-description">
-      Enter your email address. We'll send you a message to recover your account.
+      Enter your new password below. Make sure it's strong and secure.
     </p>
 
     <form @submit.prevent="onSubmit" class="recover-form">
       <div class="form-group">
         <input
-            v-model="form.email"
-            type="email"
-            placeholder="Email"
+            v-model="form.password"
+            type="password"
+            placeholder="New Password"
             class="form-input"
         />
-        <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
+        <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
+      </div>
+
+      <div class="form-group">
+        <input
+            v-model="form.confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            class="form-input"
+        />
+        <span v-if="errors.confirmPassword" class="error-message">{{ errors.confirmPassword }}</span>
+      </div>
+
+      <div v-if="errors.general" class="form-group">
+        <span class="error-message">{{ errors.general }}</span>
       </div>
 
       <button class="send-button-recover" type="submit">
-        Send
+        Reset
       </button>
     </form>
   </div>
 </template>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=Roboto:wght@400;500;700&display=swap');
 
 .recover-container {

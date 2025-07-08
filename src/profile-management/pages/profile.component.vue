@@ -7,8 +7,7 @@ import SideNavbar from '@/public/components/side-navbar.vue';
 import ToolbarContent from '@/public/components/toolbar-content.component.vue';
 
 import PlanDetails from "@/profile-management/components/plan-details.component.vue";
-import profileService from "@/profile-management/services/profile.service.js";
-import userService from "@/authentication/services/user.service.js";
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'ProfileComponent',
@@ -22,6 +21,12 @@ export default {
   },
   setup() {
     const fileInput = ref(null);
+    const router = useRouter();
+
+    const goToPlanChange = () => {
+      router.push('/plan-choose');
+    };
+
     const userData = reactive({
       profileId: 0,
       name: '',
@@ -53,35 +58,16 @@ export default {
     };
 
     onMounted(async () => {
-      const currentUser = userService.getCurrentUser();
-      console.log('Current user:', currentUser);
-
-      if (!currentUser || !currentUser.profileId) {
-        console.error('No profileId found in currentUser');
-        return;
-      }
-
-
-      const profileId = currentUser.profileId;
-
-      console.log('Fetching profile for ID:', profileId);
-
-      try {
-        const profile = await profileService.getProfileById(profileId);
-        console.log('Profile fetched:', profile);
-        Object.assign(userData, profile);
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-      }
     });
 
     return {
       userData,
       fileInput,
       uploadNewPhoto,
-      onFileSelected
+      onFileSelected,
+      goToPlanChange
     };
-  }
+  },
 };
 </script>
 
@@ -116,7 +102,7 @@ export default {
             <p><strong>Role:</strong> {{ userData.role }}</p>
             <p><strong>Current Plan:</strong> Free</p>
           </div>
-          <a class="change-plan-link" href="#">Do you want to change your plan?</a>
+          <a class="change-plan-link" @click.prevent="goToPlanChange">Do you want to change your plan?</a>
         </div>
       </section>
 

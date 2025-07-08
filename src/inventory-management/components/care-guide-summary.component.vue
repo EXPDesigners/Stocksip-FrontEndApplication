@@ -1,6 +1,10 @@
 <script>
 export default {
   name: 'care-guide-detail',
+  /**
+   * Props definition
+   * @property {Object} guide - Care guide object to display details
+   */
   props: {
     guide: {
       type: Object,
@@ -9,35 +13,45 @@ export default {
   },
   emits: ['close'],
   computed: {
-    details() {
-      return this.guide.toDetailedJSON();
+    /**
+     * Returns the temperature range as a formatted string
+     * @returns {string}
+     */
+    temperatureRange() {
+      if (this.guide.minTemp !== undefined && this.guide.maxTemp !== undefined) {
+        return `${this.guide.minTemp}°C - ${this.guide.maxTemp}°C`;
+      }
+      return '-';
     }
   }
 }
 </script>
 
 <template>
+  <!--
+    Modal displaying the details of a care guide.
+    Shows title, summary, temperature range, storage place, and recommendation.
+    Emits 'close' event when overlay or close button is clicked.
+  -->
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Detalles del Producto</h2>
+        <h2>Care Guide Details</h2>
         <button class="close-btn" @click="$emit('close')">✖</button>
       </div>
 
-      <div v-if="guide" class="product-card">
+      <div v-if="guide" class="care-guide-card">
         <div class="header">
           <div>
-            <h3>{{ guide.name }}</h3>
-            <p>Tipo de Licor: {{ guide.type }}</p>
+            <h3>{{ guide.title }}</h3>
+            <p><strong>Summary:</strong> {{ guide.summary }}</p>
           </div>
-          <img :src="guide.imageUrl" class="product-image" alt="Imagen del producto" />
         </div>
 
         <ul class="info-list">
-          <li><i class="pi pi-thermometer"></i> Temperatura: {{ details.temperature }}</li>
-          <li><i class="pi pi-sun"></i> Almacenamiento: {{ details.storage }}</li>
-          <li><i class="pi pi-clock"></i> Duración: {{ details.duration }}</li>
-          <li><i class="pi pi-comment"></i> Comentarios: {{ details.comments }}</li>
+          <li><i class="pi pi-thermometer"></i> <strong>Temperature Range:</strong> {{ temperatureRange }}</li>
+          <li><i class="pi pi-sun"></i> <strong>Storage Place:</strong> {{ guide.placeStorage }}</li>
+          <li><i class="pi pi-comment"></i> <strong>Recommendation:</strong> {{ guide.recommendation }}</li>
         </ul>
       </div>
     </div>
@@ -80,7 +94,7 @@ export default {
   cursor: pointer;
   color: #999;
 }
-.product-card {
+.care-guide-card {
   padding: 1rem 0;
 }
 .header {
@@ -88,13 +102,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-}
-.product-image {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .info-list {
   list-style: none;

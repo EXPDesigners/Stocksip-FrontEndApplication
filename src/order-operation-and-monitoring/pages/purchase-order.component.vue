@@ -1,13 +1,14 @@
 <template>
   <SideNavbar>
-    <ToolbarContent :pageTitle="$t('orders.title')" />
     <div class="order-container-page">
       <div class="purchase-order-wrapper">
         <div class="actions">
           <router-link to="/catalog" class="new-order-button">
-            {{ $t('orders.new-order') }}
+            <i class="pi pi-plus" style="margin-right: 0.5rem;"></i>
+            New Order
           </router-link>
         </div>
+
         <PurchaseOrderListComponent :orders="orders" />
       </div>
     </div>
@@ -19,9 +20,11 @@ import PurchaseOrderListComponent from "@/order-operation-and-monitoring/compone
 import { PurchaseOrderService } from "@/order-operation-and-monitoring/services/purchase-order.service.js";
 import SideNavbar from "@/public/components/side-navbar.vue";
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
+import {$t} from "@primeuix/styled";
 
 export default {
   name: 'PurchaseOrder',
+  methods: {$t},
   components: {
     ToolbarContent,
     SideNavbar,

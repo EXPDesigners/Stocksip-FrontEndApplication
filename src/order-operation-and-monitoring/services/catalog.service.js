@@ -1,61 +1,76 @@
-import axios from 'axios';
-import { Money} from "@/shared/model/money.js";
-import { Currency} from "@/shared/model/currency.js";
+import http from '@/shared/services/http.instance.js';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_BASE_API_URL;
 
 export class CatalogService {
-    async getCatalogByProfile(profileId) {
-        const response = await axios.get(`${apiUrl}/catalogs?profileId=${profileId}`);
-        return response.data;
+
+    async getCatalogsByAccount(accountId, onlyPublished = false) {
+        const params = { accountId };
+        if (onlyPublished) params.published = true;
+
+        const { data } = await http.get('/catalogs', { params });
+        return data;
     }
-
-    async getCatalogItems(catalogId) {
-        const response = await axios.get(`${apiUrl}/catalogItems?catalogId=${catalogId}`);
-        return response.data.map(item => ({
-            ...item,
-            unitPrice: Number(item.unitPrice)
-        }));
-    }
-
-
-    async addCatalogItem(item) {
-        const plainItem = {
-            ...item,
-            unitPrice: Number(item.unitPrice)
-        };
-
-        const response = await axios.post(`${apiUrl}/catalogItems`, plainItem);
-        return response.data;
-    }
-
-
-    async getCatalogById(id) {
-        const response = await axios.get(`${apiUrl}/catalogs/${id}`);
-        return response.data;
-    }
-
-    async updateCatalog(catalog) {
-        const response = await axios.put(`${apiUrl}/catalogs/${catalog.id}`, catalog);
-        return response.data;
-    }
-
-    async deleteCatalogItem(id) {
-        await axios.delete(`${apiUrl}/catalogItems/${id}`);
-    }
-
     async getPublishedCatalogs() {
-        const response = await axios.get(`${apiUrl}/catalogs?isPublished=true`);
+        const { data } = await http.get('/catalogs?published=true');
+        return data;
+    }
+
+    async publishCatalog(catalogId) {
+        const { data } = await http.post(`/catalogs/${catalogId}/publish`);
+        return data;
+    }
+
+    async getPublishedCatalogsByAccount(accountId) {
+        const { data } = await http.get(
+            `/api/v1/accounts/${accountId}/catalogs`,
+            { params: { published: true } }
+        );
+        return data;
+    }
+
+    async getPublishedCatalogsByEmail(email) {
+        const response = await http.get('/catalogs/published', {
+            params: { providerEmail: email }
+        });
         return response.data;
     }
 
-    async getPublishedCatalogsByProfile(profileId) {
-        const response = await axios.get(`${apiUrl}/catalogs?profileId=${profileId}&isPublished=true`);
-        return response.data;
+    async getCatalogById(catalogId) {
+        const { data } = await http.get(`/catalogs/${catalogId}`);
+        return data;
     }
 
     async createCatalog(catalog) {
-        const response = await axios.post(`${apiUrl}/catalogs`, catalog);
-        return response.data;
+        const { data } = await http.post('/catalogs', catalog); // baseURL ya es /api/v1
+        return data;
+    }
+
+    async updateCatalog(catalogId, catalog) {
+        const { data } = await http.put(`/catalogs/${catalogId}`, catalog);
+        return data;
+    }
+
+    async getCatalogItems(catalogId) {
+        const { data } = await http.get('catalogs/catalogitems', {
+            params: { catalogId }
+        });
+        return data;
+    }
+
+    async addCatalogItem(item) {
+        const { data } = await http.post('/catalogs/catalogitems', item);
+        return data;
+    }
+    async deleteCatalogItem(itemId) {
+        console.log('[DELETE] Enviando ID:', itemId);
+
+        if (!itemId || typeof itemId !== 'string' || itemId.length < 36) {
+            console.warn('[DELETE] ID no válido:', itemId);
+            return;
+        }
+        // aquí **NO** concatenamos /catalogId
+        //   y nos aseguramos de usar exactamente la ruta del backend
+        await http.delete(`/catalogs/catalogitems/${itemId}`);
     }
 }

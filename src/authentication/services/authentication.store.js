@@ -2,6 +2,7 @@ import {AuthenticationService} from "./authentication.service.js";
 import {defineStore} from "pinia";
 import {SignInResponse} from "../model/sign-in.response.js";
 import {SignUpResponse} from "../model/sign-up.response.js";
+import { AccountService } from "@/payment-and-subscriptions/services/account.service.js";
 
 const authenticationService = new AuthenticationService();
 
@@ -13,7 +14,7 @@ const authenticationService = new AuthenticationService();
  * It contains actions to sign-in, sign-up, and sign-out.
  */
 export const useAuthenticationStore = defineStore('authentication',{
-    state: () => ({ signedIn: false, userId: '', username: '' }),
+    state: () => ({ signedIn: false, userId: '', username: '' , recoveryEmail: ''}),
     getters: {
         /**
          * Getter to check if user is signed in
@@ -43,7 +44,25 @@ export const useAuthenticationStore = defineStore('authentication',{
          * Getter to get the current account ID
          * @returns {string} - Current account ID from local storage
          */
-        currentAccountId: () => localStorage.getItem('accountId')
+        currentAccountId: () => localStorage.getItem('accountId'),
+
+        /**
+         * Getter to get the current account role
+         * @returns {string} - Current email to recover the account
+         */
+        currentRecoveryEmail: () => localStorage.getItem('recoveryEmail'),
+
+        account: () => {
+            const accountId = localStorage.getItem('accountId');
+            const accountRole = localStorage.getItem('accountRole');
+            if (accountId && accountRole) {
+                return {
+                    accountId,
+                    accountRole
+                };
+            }
+            return null;
+        }
     },
     actions: {
         /**
@@ -75,23 +94,43 @@ export const useAuthenticationStore = defineStore('authentication',{
          * @param router - Vue router instance
          */
         async signIn(signInRequest, router) {
-            authenticationService.signIn(signInRequest)
-                .then(response => {
-                    let signInResponse = new SignInResponse(response.data.id, response.data.username, response.data.token, response.data.accountId);
-                    this.signedIn = true;
-                    this.userId = signInResponse.id;
-                    this.username = signInResponse.username;
-                    localStorage.setItem('token', signInResponse.token);
-                    localStorage.setItem('accountId', signInResponse.accountId);
-                    localStorage.setItem('userId', signInResponse.id);
-                    localStorage.setItem('username', signInResponse.username);
-                    console.log(signInResponse);
-                    router.push({ name: 'Dashboard' });
-                })
-                .catch(error => {
-                    console.log(error);
-                    router.push({ name: 'sign-in' });
-                });
+            try {
+                const response = await authenticationService.signIn(signInRequest);
+                const { id, username, token, accountId, accountRole } = response.data;
+
+                const signInResponse = new SignInResponse(id, username, token, accountId);
+
+                this.signedIn = true;
+                this.userId = signInResponse.id;
+                this.username = signInResponse.username;
+
+                localStorage.setItem('token', token);
+                localStorage.setItem('accountId', accountId);
+                localStorage.setItem('userId', id);
+                localStorage.setItem('username', username);
+                localStorage.setItem('accountRole', accountRole);
+
+                const currentAccount = {
+                    accountId,
+                    accountRole,
+                    username
+                };
+                localStorage.setItem('currentAccount', JSON.stringify(currentAccount));
+
+                const accountService = new AccountService();
+                const { accountStatus } = await accountService.getAccountStatus(accountId);
+                console.log("✅ Account Status:", accountStatus);
+
+                if (accountStatus === "INACTIVE") {
+                    router.push({ name: "PlanChoose" });
+                } else {
+                    router.push({ name: "Dashboard" });
+                }
+
+            } catch (error) {
+                console.error("❌ Sign-in error:", error);
+                router.push({ name: 'sign-in' });
+            }
         },
         async signUp(signUpdRequest, router) {
             /**
@@ -131,6 +170,19 @@ export const useAuthenticationStore = defineStore('authentication',{
             localStorage.removeItem('accountId');
             console.log('Signed out');
             router.push({ name: 'sign-in' });
+        },
+        setRecoveryEmail(email) {
+            this.recoveryEmail = email;
+            localStorage.setItem('recoveryEmail', email);
+        },
+
+        getRecoveryEmail() {
+            return this.recoveryEmail || localStorage.getItem('recoveryEmail');
+        },
+
+        clearRecoveryEmail() {
+            this.recoveryEmail = '';
+            localStorage.removeItem('recoveryEmail');
         }
     }
 });

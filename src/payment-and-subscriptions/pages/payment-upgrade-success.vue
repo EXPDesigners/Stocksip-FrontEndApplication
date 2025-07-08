@@ -1,15 +1,14 @@
 <script>
 import { onMounted } from 'vue'
-import {useRoute, useRouter} from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import httpInstance from "@/shared/services/http.instance.js"
 import { SubscriptionService } from "@/payment-and-subscriptions/services/subscription.service.js"
-import {useAuthenticationStore} from "@/authentication/services/authentication.store.js";
 
 export default {
-  name: "payment-success",
+  name: "payment-upgrade-success",
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const authStore = useAuthenticationStore()
     const subscriptionService = new SubscriptionService()
 
     onMounted(async () => {
@@ -22,10 +21,10 @@ export default {
       }
 
       try {
-        const response = await subscriptionService.completeSubscription(token, accountId, planId)
-        console.log('Complete subscription:', response)
+        const response = await subscriptionService.completeUpgrade(token, accountId, planId)
+        console.log('Upgrade complete:', response)
       } catch (error) {
-        console.error('Error completing subscription:', error)
+        console.error('Error completing upgrade:', error)
       }
     })
 
@@ -33,9 +32,7 @@ export default {
       router.push('/dashboard')
     }
 
-    return {
-      goToDashboard
-    }
+    return { goToDashboard }
   }
 }
 </script>
@@ -43,10 +40,9 @@ export default {
 <template>
   <div class="confirmation-container">
     <div class="card">
-      <h2 class="title">¡Suscripción activada!</h2>
-      <p class="message">Tu suscripción ha sido activada correctamente.</p>
-      <p class="message">¡Gracias por tu compra!</p>
-      <p class="message">Ahora puedes disfrutar de los beneficios de tu plan.</p>
+      <h2 class="title">¡Plan actualizado!</h2>
+      <p class="message">Tu plan ha sido actualizado exitosamente.</p>
+      <p class="message">¡Gracias por mejorar tu suscripción!</p>
       <button class="dashboard-button" @click="goToDashboard">
         Ir al Dashboard
       </button>
@@ -99,6 +95,6 @@ export default {
 }
 
 .dashboard-button:hover {
-  background-color: #43a047;
+  background-color: #1565c0;
 }
 </style>

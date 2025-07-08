@@ -54,9 +54,9 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/reports" v-tooltip="$t('toolbar.reports')">
+          <router-link to="/care-guides" v-tooltip="$t('toolbar.care')">
             <i class="pi pi-file"></i>
-            <span v-if="isExpanded">{{ $t('toolbar.reports') }}</span>
+            <span v-if="isExpanded">{{ $t('toolbar.care') }}</span>
           </router-link>
         </li>
         <li>
@@ -69,12 +69,6 @@ export default {
           <router-link to="/products" v-tooltip="$t('toolbar.storage')">
             <i class="pi pi-building"></i>
             <span v-if="isExpanded">{{ $t('toolbar.storage') }}</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/" v-tooltip="$t('toolbar.settings')">
-            <i class="pi pi-cog"></i>
-            <span v-if="isExpanded">{{ $t('toolbar.settings') }}</span>
           </router-link>
         </li>
         <li>

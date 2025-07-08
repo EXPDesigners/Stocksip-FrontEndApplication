@@ -10,11 +10,33 @@ import {useAuthenticationStore} from "./authentication.store.js";
  * @param from - Route from which navigation is done
  * @param next - Function to call to navigate to the next route
  */
-export const authenticationGuard = (to, from, next) => {
+export const authenticationGuard = async (to, from, next) => {
+    console.log('[Guard] Navigating to:', to.name)
     const authenticationStore = useAuthenticationStore();
     const isAnonymous = !authenticationStore.isSignedIn;
-    const publicRoutes = ['/sign-in', '/sign-up', '/page-not-found', '/password-recovery', '/confirmation-code', '/payment-success', '/payment-cancel'];
+    const publicRoutes = ['/sign-in', '/sign-up', '/page-not-found', '/password-recovery', '/reset-password', '/confirmation-code', '/payments-success', '/payments-cancel', 'payments-upgrade-success'];
     const routeRequiresToBeAuthenticated = !publicRoutes.includes(to.path);
+    const routeIsPublic = publicRoutes.includes(to.path);
     if (isAnonymous && routeRequiresToBeAuthenticated) return next({ name: 'sign-in'});
-    else next();
+
+    const accountId = authenticationStore.currentAccountId;
+    if (!isAnonymous && !routeIsPublic && to.name !== 'PlanChoose') {
+        try {
+            const accountService = new (await import('@/payment-and-subscriptions/services/account.service.js')).AccountService();
+            const { accountStatus } = await accountService.getAccountStatus(accountId);
+
+            if (accountStatus === 'INACTIVE') {
+                if (from.name !== 'PlanChoose' && to.name !== 'PlanChoose') {
+                    return next({ name: 'PlanChoose' });
+                } else {
+                    return next();
+                }
+            }
+        } catch (error) {
+            console.error('Error checking account status:', error);
+            return next({ name: 'sign-in' });
+        }
+    }
+
+    return next();
 }

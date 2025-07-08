@@ -17,9 +17,6 @@ import ReportsComponent from '../analytics-and-reporting/pages/report-management
 import ReportCreateAndEdit from '../analytics-and-reporting/pages/report-create-and-edit.component.vue'
 import CareGuideComponent from '../inventory-management/pages/care-guide-dashboard.component.vue'
 import CareGuideCreate from '../inventory-management/pages/care-guide-create-and-edit.component.vue'
-import ResupplyPlanDashboard from '../inventory-management/pages/resupply-plan-dashboard.component.vue'
-import ResupplyPlanCreate from '../inventory-management/pages/resupply-plan-create.component.vue'
-import ResupplyPlanEdit from '../inventory-management/pages/resupply-plan-edit.componet.vue'
 
 import CatalogComponent from "@/order-operation-and-monitoring/pages/catalog.component.vue";
 import CatalogCreateAndEditComponent from "@/order-operation-and-monitoring/pages/catalog-create-and-edit.component.vue";
@@ -34,6 +31,11 @@ import {authenticationGuard} from "../authentication/services/authentication.gua
 
 import PaymentSuccessComponent from "@/payment-and-subscriptions/pages/payment-success.component.vue";
 import PaymentCancelComponent from "@/payment-and-subscriptions/pages/payment-cancel.component.vue";
+import PaymentUpgradeSuccess from "@/payment-and-subscriptions/pages/payment-upgrade-success.vue";
+
+import PlanChooseComponent from "@/payment-and-subscriptions/pages/plan-choose.component.vue";
+
+import ResetPasswordComponent from "@/authentication/pages/reset-password.component.vue";
 
 const routes = [
     {
@@ -93,21 +95,21 @@ const routes = [
         props: true
     },
     {
-        path: '/reports/conservations',
+        path: '/care-guides',
         name: 'care-guide',
         component: CareGuideComponent
     },
     {
-        path: '/reports/conservations/:id/new',
+        path: '/care-guides/new',
         name: 'care-guide-create',
         component: CareGuideCreate,
-        props: true
+        props: { isEdit: false }
     },
     {
-        path: '/reports/conservations/:id/edit',
+        path: '/care-guides/:id/edit',
         name: 'care-guide-edit',
         component: CareGuideCreate,
-        props: true
+        props: route => ({ id: route.params.id, isEdit: true })
     },
     {
         path: '/inventory/id_i/products',
@@ -139,22 +141,6 @@ const routes = [
         path: '/warehouses/edit/:warehouseId',
         name: 'EditWarehouse',
         component: CreateAndEditWarehouse,
-    },
-    {
-        path: '/resupplies',
-        name: 'Resupplies',
-        component: ResupplyPlanDashboard
-    },
-    {
-        path: '/resupplies/:id/plans/new',
-        name: 'resupply-plan-create',
-        component: ResupplyPlanCreate,
-        props: true
-    },
-    {
-        path: '/resupplies/:id/plans/edit',
-        name: 'resupply-plan-edit',
-        component: ResupplyPlanEdit,
     },
     {
         path: '/warehouses/:warehouseId/inventory',
@@ -218,6 +204,21 @@ const routes = [
         path: '/payments-cancel',
         name: 'PaymentCancel',
         component: PaymentCancelComponent
+    },
+    {
+        path: '/payments-upgrade-success',
+        name: 'PaymentUpgradeSuccess',
+        component: PaymentUpgradeSuccess
+    },
+    {
+        path: '/plan-choose',
+        name: 'PlanChoose',
+        component: PlanChooseComponent
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ResetPasswordComponent
     }
 ];
 

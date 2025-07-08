@@ -56,7 +56,8 @@
       "capacity": "Capacidad",
       "warehouse-image": "Imagen del Almacén"
     },
-    "error-message": "Ya has creado un almacén con el mismo nombre o dirección."
+    "error-message": "Ya has creado un almacén con el mismo nombre o dirección.",
+    "limitMessage": "Estás utilizando {current} de {max} almacenes permitidos."
   },
   "components": {
     "save": "Guardar",
@@ -149,7 +150,8 @@
     "success-deleted": "¡Producto eliminado con éxito!",
     "success-created": "¡Producto creado con éxito!",
     "success-updated": "¡Producto actualizado con éxito!",
-    "duplicate-product": "No se puede crear un producto con el mismo nombre."
+    "duplicate-product": "No se puede crear un producto con el mismo nombre.",
+    "limitMessage": "Estás utilizando {current} de {max} productos permitidos."
   },
   "inventory": {
     "title": "Inventario",

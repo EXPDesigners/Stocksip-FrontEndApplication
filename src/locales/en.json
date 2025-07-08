@@ -24,7 +24,7 @@
     "dashboard": "Dashboard",
     "inventory": "Inventory",
     "alerts": "Alerts",
-    "reports": "Reports",
+    "care": "Care",
     "order": "Orders",
     "storage": "Storage",
     "settings": "Settings",
@@ -56,7 +56,8 @@
       "min-temperature": "Min Temperature",
       "warehouse-image": "Warehouse Image"
     },
-    "error-message": "You have already created a warehouse with the same name or address."
+    "error-message": "You have already created a warehouse with the same name or address.",
+    "limitMessage": "You are using {current} of {max} allowed warehouses."
   },
   "components": {
     "save": "Save",
@@ -148,7 +149,8 @@
     "success-deleted": "Product deleted successfully!",
     "success-created": "Product created successfully!",
     "success-updated": "Product updated successfully!",
-    "duplicate-product": "A product with this name already exists."
+    "duplicate-product": "A product with this name already exists.",
+    "limitMessage": "You are using {current} of {max} allowed products."
   },
   "inventory": {
     "title": "Inventory",

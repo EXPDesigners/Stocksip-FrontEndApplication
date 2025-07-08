@@ -6,6 +6,13 @@
       <toolbar-content :pageTitle="$t('products.title')"/>
       <div class="products-content">
         <div class="product-management-content">
+
+          <div v-if="products && products.length > 0" class="limits-info">
+            <p>
+              {{ $t('products.limitMessage', { current: productsCount, max: maxProducts }) }}
+            </p>
+          </div>
+
           <product-list-component v-if="products && products.length > 0" :products="products" @deleted="getProducts"/>
 
           <div v-else class="empty-products">
@@ -38,6 +45,7 @@ import WarehouseList from "@/inventory-management/components/warehouse-list.comp
 import {ProductService} from "@/inventory-management/services/product.service.js";
 import {Product} from "@/inventory-management/model/product.entity.js";
 import {Button as PvButton} from "primevue";
+import {AccountService} from "@/payment-and-subscriptions/services/account.service.js";
 
 export default {
   name: 'ProductManagementComponent',
@@ -52,7 +60,9 @@ export default {
   data() {
     return {
       products: [],
-      productsApi: new ProductService()
+      productsApi: new ProductService(),
+      productsCount: 0,
+      maxProducts: 0,
     }
   },
   setup() {
@@ -87,10 +97,24 @@ export default {
         this.error = "Failed to load products";
         console.error(error);
       }
+    },
+    async loadProductLimits() {
+      try {
+        const productService = new ProductService();
+        const accountService = new AccountService();
+        const current = await productService.getProductsCount();
+        const benefits = await accountService.getCurrentAccountBenefitsLimits();
+
+        this.productsCount = current.count;
+        this.maxProducts = benefits.maxProducts;
+      } catch (error) {
+        console.error("Error loading limits:", error);
+      }
     }
   },
   created() {
     this.getProducts();
+    this.loadProductLimits();
   }
 };
 </script>
@@ -156,5 +180,15 @@ export default {
 .empty-title {
   font-size: 2.5rem;
   color: #790b38;
+}
+
+.limits-info {
+  margin: 0 0 1.5rem auto;
+  font-size: 1.1rem;
+  color: #333;
+  max-width: 1200px;
+  padding: 0 1rem;
+  text-align: right;
+  width: fit-content;
 }
 </style>
