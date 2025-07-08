@@ -33,16 +33,21 @@ export default {
 
 <style scoped>
 .grid-container {
-  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 1.5rem;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .grid-item {
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
 }
+
 </style>

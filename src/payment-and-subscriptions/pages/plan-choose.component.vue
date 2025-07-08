@@ -71,9 +71,23 @@ export default {
 </script>
 
 <template>
-  <plan-list :plans="plans" :current-plan-id="currentPlanId" @choose="subscribeToPlan"></plan-list>
+  <div class="plan-list-wrapper">
+    <plan-list
+        :plans="plans"
+        :current-plan-id="currentPlanId"
+        @choose="subscribeToPlan"
+    />
+  </div>
 </template>
 
+
 <style scoped>
+
+
+.plan-list-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
 
 </style>
