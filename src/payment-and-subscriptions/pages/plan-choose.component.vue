@@ -88,6 +88,9 @@ export default {
   display: flex;
   justify-content: center;
   padding: 2rem;
+  min-height: 100vh;
+  max-width: 100vw;
+  background-color: #F4EDE3;
 }
 
 </style>

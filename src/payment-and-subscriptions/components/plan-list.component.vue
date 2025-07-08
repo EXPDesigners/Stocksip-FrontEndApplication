@@ -35,15 +35,16 @@ export default {
 .grid-container {
   display: flex;
   justify-content: center;
-  padding: 2rem 1rem;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+
   max-width: 1200px;
-  width: 100%;
+  width: fit-content;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .grid-item {

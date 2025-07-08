@@ -138,7 +138,7 @@ export default {
 .price-amount {
   font-size: 2rem;
   font-weight: bold;
-  color: #2e7d32;
+  color: #5A033A;
 }
 
 .price-period {
@@ -162,7 +162,7 @@ export default {
 }
 
 .features-list .icon {
-  color: #4caf50;
+  color: #5A033A;
   margin-right: 0.5rem;
 }
 
@@ -172,6 +172,11 @@ export default {
   display: flex;
   justify-content: center;
   border-top: 1px solid #eee;
+  pv-button {
+    width: 100%;
+    max-width: 200px;
+    background-color: #5A033A;
+  }
 }
 
 .premium {
@@ -179,7 +184,7 @@ export default {
 }
 
 .selected {
-  border: 2px solid #4caf50;
+  border: 2px solid #5A033A;
 }
 </style>
 

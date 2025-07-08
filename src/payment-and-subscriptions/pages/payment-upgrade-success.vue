@@ -38,7 +38,63 @@ export default {
 </script>
 
 <template>
-  <p>Tu plan ha sido actualizado exitosamente.</p>
-  <p>¡Gracias por mejorar tu suscripción!</p>
-  <button @click="goToDashboard">Ir al Dashboard</button>
+  <div class="confirmation-container">
+    <div class="card">
+      <h2 class="title">¡Plan actualizado!</h2>
+      <p class="message">Tu plan ha sido actualizado exitosamente.</p>
+      <p class="message">¡Gracias por mejorar tu suscripción!</p>
+      <button class="dashboard-button" @click="goToDashboard">
+        Ir al Dashboard
+      </button>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f7eddc;
+  padding: 2rem;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.message {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 0.8rem;
+}
+
+.dashboard-button {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  background-color: #5A033A;
+  color: white;
+  border: none;
+  border-radius: 45px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-button:hover {
+  background-color: #1565c0;
+}
+</style>
