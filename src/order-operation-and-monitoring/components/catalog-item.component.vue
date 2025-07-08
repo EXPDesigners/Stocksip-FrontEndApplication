@@ -32,7 +32,6 @@
           <template #body="{ data }">{{ formatPrice(data.unitPrice) }}</template>
         </Column>
         <Column header="Actions" style="width: 100px;">
-          console.log('[CatalogItem] data en botón eliminar:', data);
           <template #body="{ data }">
             <Button icon="pi pi-trash" severity="danger" text @click="deleteItem(data.id)" />
           </template>
@@ -52,7 +51,8 @@ import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
-import {CatalogService} from '@/order-operation-and-monitoring/services/catalog.service.js';
+import { CatalogService } from '@/order-operation-and-monitoring/services/catalog.service.js';
+
 export default {
   name: 'CatalogItem',
   props: {
@@ -64,64 +64,77 @@ export default {
     DataTable,
     Column
   },
-  setup(props) {
+  setup (props, { emit }) {
     const router = useRouter();
     const toast = useToast();
     const catalogService = new CatalogService();
 
     const catalogItems = ref([]);
 
-    async function loadCatalogItems(catalogId) {
+    /**
+     * Load products for a given catalog ID
+     */
+    async function loadCatalogItems (catalogId) {
       if (!catalogId) return;
       try {
         catalogItems.value = await catalogService.getCatalogItems(catalogId);
       } catch (e) {
-        console.error('Error cargando ítems:', e);
+        console.error('[CatalogItem] Error loading items:', e);
       }
     }
 
+    // Reload items whenever the catalog ID changes
     watch(
-        () => props.catalog?.catalogId,   // ← aquí el cambio importante
+        () => props.catalog?.catalogId,
         (catalogId) => loadCatalogItems(catalogId),
         { immediate: true }
     );
 
-    async function deleteItem(itemId) {
-      console.log('[CatalogItem] intento de eliminar →', itemId);   // ①
+    /**
+     * Remove a product from the catalog
+     */
+    async function deleteItem (itemId) {
+      console.log('[CatalogItem] Attempting to delete →', itemId);
 
-      if (!confirm('¿Eliminar este producto del catálogo?')) return;
+      if (!confirm('Do you want to remove this product from the catalog?')) return;
       try {
         await catalogService.deleteCatalogItem(itemId);
         catalogItems.value = catalogItems.value.filter(i => i.id !== itemId);
-        toast.add({ severity: 'info', summary: 'Producto eliminado', life: 2200 });
+        toast.add({ severity: 'info', summary: 'Product removed', life: 2200 });
       } catch (err) {
-        console.error('[CatalogItem] error al eliminar:', err);     // ②
-        toast.add({ severity: 'error', summary: 'No se pudo eliminar', life: 3000 });
+        console.error('[CatalogItem] Error while deleting:', err);
+        toast.add({ severity: 'error', summary: 'Could not remove product', life: 3000 });
       }
     }
 
+    /**
+     * Navigate to the edit view
+     */
     const goToEdit = () => {
       if (props.catalog?.catalogId) {
         router.push(`/catalog/edit/${props.catalog.catalogId}`);
       }
     };
 
+    /**
+     * Publish the catalog
+     */
     async function onPublish () {
       if (!props.catalog?.catalogId) return;
 
-      const ok = confirm('¿Deseas publicar este catálogo?');
+      const ok = confirm('Publish this catalog?');
       if (!ok) return;
 
       try {
         const updated = await catalogService.publishCatalog(props.catalog.catalogId);
-        toast.add({ severity: 'success', summary: 'Catálogo publicado', life: 2500 });
-        emits('published', updated);
+        toast.add({ severity: 'success', summary: 'Catalog published', life: 2500 });
+        emit('published', updated);
       } catch (err) {
-        console.error('[CatalogItem] error al publicar:', err);
+        console.error('[CatalogItem] Error while publishing:', err);
       }
     }
 
-    const formatDate = (d) => new Date(d).toLocaleDateString('es-PE');
+    const formatDate = (d) => new Date(d).toLocaleDateString('en-US');
     const formatPrice = (p) => `S/ ${Number(p).toFixed(2)}`;
 
     return {
@@ -167,32 +180,31 @@ export default {
 .actions {
   margin-left: 0.5rem;
   margin-bottom: 2rem;
-  .edit {
-    background-color: #890E4F;
-    color: white;
-    font-size: 1.2rem;
-    border: none;
-    padding: 0.5rem 1.6rem;
-    border-radius: 45px;
-  }
-  .edit:hover {
-    background-color: #6E0081;
-    color: white;
-    border: none;
-  }
-  .publish {
-    background-color: white;
-    color: #890E4F;
-    font-size: 1.2rem;
-    border: #890E4F 4px solid;
-    padding: 0.5rem 1.6rem;
-    border-radius: 45px;
-  }
-  .publish:hover {
-    border: #6E0081 4px solid;
-    background-color: white;
-    color: #6E0081;
-  }
 }
-
+.actions .edit {
+  background-color: #890E4F;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  padding: 0.5rem 1.6rem;
+  border-radius: 45px;
+}
+.actions .edit:hover {
+  background-color: #6E0081;
+  color: white;
+  border: none;
+}
+.actions .publish {
+  background-color: white;
+  color: #890E4F;
+  font-size: 1.2rem;
+  border: #890E4F 4px solid;
+  padding: 0.5rem 1.6rem;
+  border-radius: 45px;
+}
+.actions .publish:hover {
+  border: #6E0081 4px solid;
+  background-color: white;
+  color: #6E0081;
+}
 </style>
