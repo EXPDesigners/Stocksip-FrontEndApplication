@@ -93,14 +93,18 @@ export default {
 
     const loadCatalogItems = async () => {
       if (!catalog.value.catalogId) return;
+
       catalogItems.value = await catalogService.getCatalogItems(catalog.value.catalogId);
+      console.log('[LOAD] items de catálogo', catalogItems.value);
     };
 
     const loadCatalog = async () => {
       const id = Number(route.params.catalogId || 0);
       if (id > 0) {
         isEditMode.value = true;
-        catalog.value = await catalogService.getCatalogById(id);
+        const loaded     = await catalogService.getCatalogById(id);
+        catalog.value    = { ...loaded };
+        console.log('[LOAD] catálogo', catalog.value);
         await loadCatalogItems();
       }
     };
@@ -120,17 +124,22 @@ export default {
       const payload = {
         ...catalog.value,
         accountId,
-        name: catalog.value.name.trim(),
-        dateCreated: catalog.value.dateCreated || new Date().toISOString(),
-        isPublished: false
+        name:         catalog.value.name.trim(),
+        dateCreated:  catalog.value.dateCreated || new Date().toISOString(),
+        isPublished:  false
       };
+
+      console.log(isEditMode.value ? '[UPDATE] payload' : '[CREATE] payload', payload);
 
       try {
         if (isEditMode.value) {
           await catalogService.updateCatalog(catalog.value.catalogId, payload);
+          console.log('[UPDATE] catálogo OK');
         } else {
-          catalog.value = await catalogService.createCatalog(payload);
+          const created   = await catalogService.createCatalog(payload);
+          catalog.value   = { ...created };
           isEditMode.value = true;
+          console.log('[CREATE] catálogo OK', created);
         }
         await handleCatalogSaveSuccess();
       } catch (err) {

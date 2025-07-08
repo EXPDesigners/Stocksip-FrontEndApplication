@@ -11,7 +11,7 @@
     <div class="market-container">
       <Card
           v-for="catalog in catalogs"
-          :key="catalog.id"
+          :key="catalog.catalogId"
           class="catalog-card"
       >
         <template #title>
@@ -21,11 +21,14 @@
         </template>
         <template #subtitle>Publicado el {{ formatDate(catalog.dateCreated) }}
           <div class="catalog-content">
-            <Button label="See all products" icon="pi pi-eye" text @click="loadItems(catalog.id)" />
-            <ul v-if="selectedItems[catalog.id] !== undefined">
-              <li v-if="selectedItems[catalog.id].length === 0">No hay productos en este catálogo</li>
-              <li v-for="item in selectedItems[catalog.id]" :key="item.id" class="product-info">
-                <h4>{{ item.name }}</h4>
+            <Button label="See all products" icon="pi pi-eye" text @click="loadItems(catalog.catalogId)" />
+            <ul v-if="selectedItems[catalog.catalogId]">
+              <li
+                  v-for="item in selectedItems[catalog.catalogId]"
+                  :key="item.id"
+                  class="product-info"
+              >
+                {{ item.name }} - {{ formatPrice(item.unitPrice) }}
               </li>
             </ul>
           </div>
@@ -35,7 +38,7 @@
           <Button
               label="New Order"
               icon="pi pi-shopping-cart"
-              @click="goToOrderPage(catalog.id)"
+              @click="goToOrderPage(catalog.catalogId)"
               class="new-order"
           />
         </template>
@@ -74,53 +77,64 @@ export default {
     const router = useRouter();
     const toast = useToast();
 
-    onMounted(() => {
-      const profile = userService.getCurrentUser();
-      if (profile?.role === 'Liquor Store Owner') {
-        isAllowed.value = true;
-        catalogs.value = [];
+    async function loadItems (catalogId) {
+      if (!catalogId) {
+        console.warn('[CatalogForOrders] catalogId vacío →', catalogId)
+        return
       }
-    });
-
-    const loadItems = async (catalogId) => {
       try {
-        const items = await catalogService.getCatalogItems(catalogId);
-
-        selectedItems.value = {
-          ...selectedItems.value,
-          [catalogId]: items
-        };
-
-        console.log('Productos cargados para catálogo', catalogId, items);
+        console.log('[CatalogForOrders] solicitando items de', catalogId)
+        const items = await catalogService.getCatalogItems(catalogId)
+        selectedItems.value = { ...selectedItems.value, [catalogId]: items }
+        console.log('[CatalogForOrders] recibidos', items.length, 'items')
       } catch (err) {
-        console.error('Error al cargar productos del catálogo:', err);
+        console.error('[CatalogForOrders] Error al cargar productos', err)
+        toast.add({ severity:'error', summary:'Error al cargar productos', life:3000 })
       }
-    };
+    }
 
-    const loadProviderCatalogs = async () => {
+    async function loadProviderCatalogs() {
       if (!providerEmail.value) return;
 
       try {
-        const profile = await userService.getProfileByEmail(providerEmail.value);
-        if (!profile || profile.role !== 'Supplier') {
-          toast.add({ severity: 'warn', summary: 'Proveedor no válido', life: 3000 });
-          return;
-        }
+        catalogs.value = await catalogService.getPublishedCatalogsByEmail(
+            providerEmail.value.trim().toLowerCase()
+        );
 
-        catalogs.value = await catalogService.getPublishedCatalogsByProfile(profile.profileId);
+        if (!catalogs.value.length) {
+          toast.add({
+            severity: 'info',
+            summary: 'Sin catálogos',
+            detail: 'El proveedor no tiene catálogos publicados',
+            life: 4000
+          });
+        }
       } catch (err) {
-        toast.add({ severity: 'error', summary: 'Error al buscar proveedor o catálogos', life: 3000 });
-        console.error(err);
+        const status = err.response?.status;
+        const detail = err.response?.data ?? err.message;
+
+        if (status === 404) {
+          toast.add({ severity: 'warn', summary: 'Proveedor no encontrado', life: 3000 });
+        } else if (status === 403) {
+          toast.add({ severity: 'warn', summary: 'La cuenta no es Supplier', life: 3000 });
+        } else {
+          toast.add({ severity: 'error', summary: 'Error', detail, life: 5000 });
+        }
+        console.error('[CatalogForOrders] Error al cargar catálogos publicados:', err);
       }
-    };
+    }
 
     const goToOrderPage = (catalogId) => {
       router.push(`/purchase-order/new/${catalogId}`);
     };
 
-    const formatPrice = (unitPrice) => {
-      const money = new Money(unitPrice.amount ?? 0, unitPrice.currency ?? new Currency('PEN'));
-      return money.format('es-PE');
+    const formatPrice = (value) => {
+      const amount = Number(value ?? 0);
+      return new Intl.NumberFormat('es-PE', {
+        style: 'currency',
+        currency: 'PEN',          // “S/”
+        minimumFractionDigits: 2
+      }).format(amount);
     };
 
     const formatDate = (dateStr) => {

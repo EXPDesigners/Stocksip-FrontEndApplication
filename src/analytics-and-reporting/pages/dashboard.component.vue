@@ -122,9 +122,9 @@ export default {
               <span class="access-icon"><i class="pi pi-shopping-cart"></i></span>
               <span class="access-link">Orders</span>
             </router-link>
-            <router-link to="/zones" class="access-btn acceso-zonas access-btn-lg">
+            <router-link to="/warehouses" class="access-btn acceso-zonas access-btn-lg">
               <span class="access-icon"><i class="pi pi-building"></i></span>
-              <span class="access-link">Zones</span>
+              <span class="access-link">Inventory</span>
             </router-link>
           </div>
         </div>

@@ -4,7 +4,7 @@ import {WarehouseService} from "@/inventory-management/services/warehouse.servic
 import ToolbarContent from "@/public/components/toolbar-content.component.vue";
 import SideNavbar from "@/public/components/side-navbar.vue";
 import {Button as PvButton} from "primevue";
-import {Warehouse} from "@/inventory-management/model/warehouse.entity.js";
+import {AccountService} from "@/payment-and-subscriptions/services/account.service.js";
 
 export default {
   name: "warehouses",
@@ -12,6 +12,8 @@ export default {
   data() {
     return {
       warehouses: [],
+      warehousesCount: 0,
+      maxWarehouses: 0
     };
   },
   methods: {
@@ -25,12 +27,26 @@ export default {
         console.error(error);
       }
     },
+    async loadWarehouseLimits() {
+      try {
+        const warehouseService = new WarehouseService();
+        const accountService = new AccountService();
+        const current = await warehouseService.getWarehousesCount();
+        const benefits = await accountService.getCurrentAccountBenefitsLimits();
+
+        this.warehousesCount = current.count;
+        this.maxWarehouses = benefits.maxWarehouses;
+      } catch (error) {
+        console.error("Error loading limits:", error);
+      }
+    },
     navigateToCreate() {
       this.$router.push('/warehouses/new');
     },
   },
   created() {
     this.getWarehouses();
+    this.loadWarehouseLimits();
   }
 }
 </script>
@@ -40,12 +56,21 @@ export default {
     <side-navbar />
     <div class="warehouse-main">
       <toolbar-content :pageTitle="$t('warehouses.title')"/>
-      <div class="warehouse-content">
-        <warehouse-list v-if="warehouses && warehouses.length > 0" :warehouses="warehouses"></warehouse-list>
 
-        <div v-else class="empty-warehouses">
-          <h3 class="empty-title">{{ $t('warehouses.emptyTitle') }}</h3>
-          <p>{{ $t('warehouses.emptyDescription') }}</p>
+      <div class="warehouse-content">
+        <div class="warehouse-management-content">
+          <div v-if="warehouses && warehouses.length > 0" class="limits-info">
+            <p>
+              {{ $t('warehouses.limitMessage', { current: warehousesCount, max: maxWarehouses }) }}
+            </p>
+          </div>
+
+          <warehouse-list v-if="warehouses && warehouses.length > 0" :warehouses="warehouses"></warehouse-list>
+
+          <div v-else class="empty-warehouses">
+            <h3 class="empty-title">{{ $t('warehouses.emptyTitle') }}</h3>
+            <p>{{ $t('warehouses.emptyDescription') }}</p>
+          </div>
         </div>
 
         <div class="floating-action-container">
@@ -55,6 +80,7 @@ export default {
               class="create-button p-button-raised p-button-rounded"
               @click="navigateToCreate"
               aria-label="Create a new Warehouse"
+              :disabled="warehousesCount >= maxWarehouses"
           />
         </div>
       </div>
@@ -76,7 +102,11 @@ export default {
 }
 
 .warehouse-content {
-    padding: 2rem;
+  padding: 1rem 0;
+}
+
+.warehouse-management-content {
+  padding: 1rem 2rem;
 }
 
 .floating-action-container {
@@ -94,6 +124,7 @@ export default {
   bottom: 30px;
   right: 30px;
   z-index: 1000;
+  width: 12rem;
 }
 
 .create-button:hover {
@@ -115,4 +146,13 @@ export default {
   color: #790b38;
 }
 
+.limits-info {
+  margin: 0 0 1.5rem auto;
+  font-size: 1.1rem;
+  color: #333;
+  max-width: 1200px;
+  padding: 0 1rem;
+  text-align: right;
+  width: fit-content;
+}
 </style>

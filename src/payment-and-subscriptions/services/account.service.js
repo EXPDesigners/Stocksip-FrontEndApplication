@@ -2,13 +2,15 @@ import httpInstance from "@/shared/services/http.instance.js";
 
 const accountStatusEndpoint = import.meta.env.VITE_ACCOUNT_STATUS_ENDPOINT_PATH;
 
-import http from '@/shared/services/http.instance.js';              // Axios con interceptor JWT
 import { useAuthenticationStore } from '@/authentication/services/authentication.store.js';
+
+const accountCurrentBenefitsLimitsEndpoint = import.meta.env.VITE_ACCOUNT_CURRENT_BENEFITS_LIMITS;
 
 export class AccountService {
     constructor() {
         this.baseUrl = import.meta.env.VITE_BASE_API_URL;
         this.endpoint = import.meta.env.VITE_ACCOUNT_ENDPOINT_PATH; // Ej: '/api/v1/accounts'
+        this.accountCurrentBenefitsLimitsEndpoint = accountCurrentBenefitsLimitsEndpoint;
     }
 
     getCurrentAccountId() {
@@ -23,4 +25,19 @@ export class AccountService {
         console.log("🧾 Response from account status:", response.data);
         return response.data;
     }
+
+    async getCurrentAccountBenefitsLimits() {
+        const accountId = this.getCurrentAccountId();
+        const endpoint = this.accountCurrentBenefitsLimitsEndpoint.replace('{accountId}', accountId);
+
+        try {
+            const response = await httpInstance.get(endpoint);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching current account benefits limits:", error);
+            throw error;
+        }
+    }
+
+
 }

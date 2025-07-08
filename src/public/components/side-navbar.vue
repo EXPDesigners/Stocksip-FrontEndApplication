@@ -72,12 +72,6 @@ export default {
           </router-link>
         </li>
         <li>
-          <router-link to="/" v-tooltip="$t('toolbar.settings')">
-            <i class="pi pi-cog"></i>
-            <span v-if="isExpanded">{{ $t('toolbar.settings') }}</span>
-          </router-link>
-        </li>
-        <li>
           <router-link to="/profile" v-tooltip="$t('toolbar.profile')">
             <i class="pi pi-user"></i>
             <span v-if="isExpanded">{{ $t('toolbar.profile') }}</span>
