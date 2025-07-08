@@ -102,31 +102,31 @@ export default {
         unitPrice: Math.max(0, Number(i.unitPrice) || 0)
       }));
 
-      // inicializar cantidades en 1
+      // initialize quantities to 1
       catalogItems.value.forEach(i => { quantities.value[i.id] = 1; });
     };
 
     onMounted(async () => {
-      /* comprador (buyer) */
+      /* buyer */
       const myAccountId = authStore.account?.accountId;
       if (myAccountId) buyerAcc.value = accountService.getCurrentAccountId(myAccountId);
 
-      /* catálogo y proveedor */
+      /* catalog & supplier */
       catalog.value = await catalogService.getCatalogById(catalogId);
       if (catalog.value?.accountId)
         supplierAcc.value = accountService.getCurrentAccountId(catalog.value.accountId);
 
-      /* productos */
+      /* products */
       await loadCatalogItems();
     });
 
     /* ---------- order creation ---------- */
     const createOrder = async () => {
       const chosenIds = Object.keys(selectedItems.value).filter(id => selectedItems.value[id]);
-      if (!chosenIds.length) { alert('Selecciona al menos un producto'); return; }
+      if (!chosenIds.length) { alert('Please select at least one product'); return; }
 
       if (!buyerAcc.value?.accountId || !supplierAcc.value?.accountId) {
-        alert('Faltan datos del comprador o proveedor');
+        alert('Buyer or supplier data is missing');
         return;
       }
 
@@ -164,11 +164,11 @@ export default {
 
       try {
         await orderService.createPurchaseOrder(payload);
-        alert('Orden creada con éxito');
+        alert('Order created successfully');
         router.push('/orders');
       } catch (err) {
-        console.error('Error al crear orden:', err.response?.data || err);
-        alert('Ocurrió un error al crear la orden');
+        console.error('Error while creating order:', err.response?.data || err);
+        alert('An error occurred while creating the order');
       }
     };
 
