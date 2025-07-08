@@ -109,12 +109,12 @@ export default {
     onMounted(async () => {
       /* comprador (buyer) */
       const myAccountId = authStore.account?.accountId;
-      if (myAccountId) buyerAcc.value = await accountService.getAccountById(myAccountId);
+      if (myAccountId) buyerAcc.value = accountService.getCurrentAccountId(myAccountId);
 
       /* catálogo y proveedor */
       catalog.value = await catalogService.getCatalogById(catalogId);
       if (catalog.value?.accountId)
-        supplierAcc.value = await accountService.getAccountById(catalog.value.accountId);
+        supplierAcc.value = accountService.getCurrentAccountId(catalog.value.accountId);
 
       /* productos */
       await loadCatalogItems();
