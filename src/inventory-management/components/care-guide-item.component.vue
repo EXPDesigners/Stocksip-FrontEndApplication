@@ -1,6 +1,10 @@
 <script>
 export default {
   name: "care-guide-item",
+  /**
+   * Props definition
+   * @property {Object} guide - Care guide object to display in the list
+   */
   props: {
     guide: Object
   },
@@ -8,31 +12,30 @@ export default {
 </script>
 
 <template>
+  <!--
+    Table row representing a single care guide.
+    Emits 'view-detail' and 'edit' events to the parent component.
+  -->
   <tr>
-    <td><img :src="guide.imageUrl" class="thumb" /></td>
     <td>
-      <a @click="$emit('ver-detalle', guide)" class="product-name">{{ guide.name }}</a>
+      <a @click="$emit('view-detail', guide)" class="guide-title">{{ guide.title }}</a>
     </td>
-    <td>{{ guide.type }}</td>
     <td>
-      <button class="btn editar" @click="$emit('editar', guide)">Edit</button>
+      <span>{{ guide.productName }}</span>
+    </td>
+    <td>
+      <button class="btn edit" @click="$emit('edit', guide)">Edit</button>
     </td>
   </tr>
 </template>
 
 <style scoped>
-.thumb {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-.product-name {
+.guide-title {
   color: #6E0081;
   cursor: pointer;
   text-decoration: underline;
 }
-.btn.editar {
+.btn.edit {
   background-color: #5A033A;
   color: white;
   padding: 0.4rem 1rem;
